@@ -55,3 +55,21 @@
     </div>
   </div>
 </div>
+
+
+Zerofee antigo
+<div className="bg-white rounded-lg shadow-md p-4 flex flex-col flex-1 ml-4">
+  <span className="font-medium">Para obter isenção de Tarifa:</span>
+    <div>
+      <ul className='display: inline-flex'> 
+        {card.zerofees.map((item) => (
+          <li>
+            <p><span className="font-medium">Tipo de despesas: </span>{item.expenses}</p>
+            <p><span className="font-medium">Investimentos: </span>{item.investments}</p>
+            <p><span className="font-medium">Isenção de: </span>{item.fee_discount}%</p>
+            <p><span className="font-medium">Notas: </span>{item.notes}</p>
+          </li>
+          ))}
+      </ul>
+    </div>      
+</div>
