@@ -3,7 +3,6 @@ import { api } from './services/api'
 import CurrencyFormatter from './components/CurrencyFormatter';
 import DivideNumber from './components/DivideNumber';
 import { FaCheck } from "react-icons/fa";
-import brad_card from './assets/brad_visa.jpg'
 
 interface CardProps{
   id: string;
@@ -36,6 +35,8 @@ interface CardProps{
   spread_rate:           number;
   iof_rate:              number;
   ranking_vip_lounges:   number;
+  src_card_picture:      string;
+  brandId:               string;
   zerofees: [{
     id: string
     expenses: string;
@@ -74,6 +75,21 @@ interface CardProps{
     access_limit: string;
     conditions:   string;
   }]
+  exclusives: {
+    id: string;
+    tag_name: string;
+    tag_amount: number;
+    exclusive_offers: string[];
+    additional_info: string[];
+  }
+  brand: {
+    id: string;
+    brand_name: string;
+    variant_name: string;
+    general_benefits: [];
+    isActive: boolean;
+    site_info: string;
+  }
 }
 
 export default function App(){
@@ -87,7 +103,6 @@ export default function App(){
   async function loadCards() {
     const response = await api.get("/cards")
     setCards(response.data);
-
   }
 
   return(
@@ -96,7 +111,7 @@ export default function App(){
       <h2 className="mb-5 text-3xl text-gray-950 md:text-center md:text-5xl">Descubra o cartão de crédito ideal para o seu perfil!</h2>
       <p className="text-xl text-gray-700 md:text-center md:text-1xl">Aqui você encontra informações sobre elegibilidade, pontuação, programa de milhas, salas VIP e muito mais..</p>
       
-      <div className="p-8">
+      <div className="p-72">
         
         {cards.map( (card) => (
           <div 
@@ -104,16 +119,9 @@ export default function App(){
             className="rounded-lg p-4 ml-2 mt-2 border-gray-400 border-solid border-2 grid grid-cols-4 grid-rows-2 gap-2">      
             
             {/* 1a div */}
-            <div className='bg-sky-600'>
-              <p className=" ml-4 text-2xl font-semibold display: block mb-2">{card.card_name}</p>
-              <img className='h-34 w-52 ml-4 rounded mb-2' src={brad_card} alt="brad card" />
-              <p><span className="text-white text-sm ml-4">Somente correntistas: </span>
-                {card.account_holder
-                ?
-                <span className='text-gray-950 font-semibold'>Sim</span>
-                :
-                <span className='text-gray-950 font-semibold'>Não</span>}
-              </p>
+            <div className='bg-sky-500'>
+              <p className=" ml-4 text-2xl font-semibold display: block">{card.card_name}</p>
+              <img className='h-34 w-52 ml-4 rounded mb-2' src={card.src_card_picture} alt="card generic" />
               <p> 
                 <span className="text-white text-sm ml-4">Emitido por: </span>
                 <span className='text-gray-950 font-semibold'>{card.issuer}</span>
@@ -170,7 +178,7 @@ export default function App(){
               </p>}
               <p>
                 <span className="text-white text-sm ml-4">Aceito nas Carteiras Digitais:    
-                  <ul className='text-gray-950 font-semibold display: inline-flex gap-2 mb-2 ml-2'>
+                  <ul className='text-gray-950 font-semibold display: inline-flex gap-2 ml-4'>
                     {card.virtual_wallets.map((item) => (
                       <li className='first:ml-2'>{item}</li>
                     ))}
@@ -180,9 +188,17 @@ export default function App(){
             </div>
             
             {/* 2a div */}
-            <div className='bg-lime-700'>
+            <div className='bg-lime-600'>
               <span className="text-white text-xl ml-4 font-bold">Para obter o cartão:</span>
-              <p><span className="text-white text-sm ml-4 font-bold">Com:</span></p>
+              <p><span className="text-white text-sm ml-4">Somente correntistas: </span>
+                {card.account_holder
+                ?
+                <span className='text-gray-950 font-semibold'>Sim</span>
+                :
+                <span className='text-gray-950 font-semibold'>Não</span>}
+              </p>
+
+              <p><span className="text-white text-sm ml-4 font-semibold">Com:</span></p>
               <p>
                 <span>                    
                   <ul className='text-gray-950 font-semibold'>
@@ -201,22 +217,31 @@ export default function App(){
                   <span className="text-gray-950 font-semibold">até {card.add_cards_amount}</span>
                 </p>
               :
-                <p className="text-white text-sm ml-4 mt-2">Obs.: <span className="text-gray-950 font-semibold">{card.obs_add_cards}</span></p>}
+                <p>
+                  <span className="text-white text-sm ml-4 mt-2">Obs.: </span>
+                  <span className="text-gray-950 font-semibold">{card.obs_add_cards}</span>
+                </p>}
 
               {card.add_cards_charge > 0
               ?
-              <p className="text-white text-sm ml-4">Valor mínimo de fatura por adicional: <span className="text-gray-950 font-semibold">{card.add_cards_charge}</span></p>
+              <p>
+                <span className="text-white text-sm ml-4">Valor mínimo de fatura por adicional: </span>
+                <span className="text-gray-950 font-semibold">{card.add_cards_charge}</span>
+              </p>
               :
-              <p className="text-white text-sm ml-4">Valor mínimo de fatura por adicional: <span className="text-gray-950 font-semibold">Não há</span></p>}
+              <p> 
+                <span className="text-white text-sm ml-4">Valor mínimo de fatura por adicional: </span>
+                <span className="text-gray-950 font-semibold">Não há</span>
+              </p>}
               
               <p className='ml-4'>
-                <span className="text-white text-sm mb-2">Valor limite do cartão: </span>
+                <span className="text-white text-sm">Valor limite do cartão: </span>
                 <span className='text-gray-950 font-semibold'>{card.card_limit}</span>
               </p>              
             </div>
             
             {/* 3a div */}
-            <div className='bg-blue-600'>
+            <div className='bg-blue-500'>
               <span className="text-white text-xl ml-4 font-bold">Para isentar Anuidade:</span>
               {card.annual_fee > 0
               ?
@@ -253,7 +278,7 @@ export default function App(){
                             </span>
                           </p>
                           <p className='ml-4'>
-                            <span className="text-white text-sm mb-2">Notas: </span>
+                            <span className="text-white text-sm ml-4">Notas: </span>
                             <span className='text-gray-950 font-semibold'>{item.notes}</span>
                           </p>
                           <p><span className="text-white text-sm ml-4"></span></p>   
@@ -277,7 +302,7 @@ export default function App(){
             
             {/* 4a div */}
             <div className='bg-orange-500'>
-              <span className="text-white text-xl ml-4 font-bold">Sistema de pontuação:</span>
+              <span className="text-white text-xl ml-4 font-semibold">Pontuação:</span>
                 <ul> 
                   {card.rewards.map((item) => (
                     <li>
@@ -296,13 +321,13 @@ export default function App(){
                       <p>
                         <span className='inline-flex text-green-500'><FaCheck /></span>
                         <span className="text-white text-sm">Pontos expiram: </span>
-                        <span className='text-gray-950 font-semibold mb-2'>Não </span>
+                        <span className='text-gray-950 font-semibold ml-4'>Não </span>
                       </p>
                       :
                       <p>
                         <span className='inline-flex text-red-600'><FaCheck /></span>
                         <span className="text-white text-sm">Pontos expiram: </span>
-                      <span className='text-gray-950 font-semibold mb-2'>Sim</span></p>}
+                      <span className='text-gray-950 font-semibold ml-4'>Sim</span></p>}
 
                       <p><span className="text-white text-sm ml-4"></span></p>
                       
@@ -314,8 +339,8 @@ export default function App(){
                 <p>
                   <span className='inline-flex text-red-600'><FaCheck /></span>
                   <span className="text-white text-sm">Spread: </span>
-                  <span className='text-gray-950 font-semibold mb-2'>{card.spread_rate}%</span>
-                  <span className='text-gray-950 font-semibold mb-2'>{card.spread_on}</span>
+                  <span className='text-gray-950 font-semibold'>{card.spread_rate}%</span>
+                  <span className='text-gray-950 font-semibold ml-2'>{card.spread_on}</span>
                 </p>
                 :
                 <p>
@@ -324,24 +349,31 @@ export default function App(){
                 </p>}
                 <p>
                   <span className="text-white text-sm ml-4">IOF: </span>
-                  <span className='text-gray-950 font-semibold mb-2'>{card.iof_rate}%</span>
+                  <span className='text-gray-950 font-semibold'>{card.iof_rate}%</span>
                 </p>
             </div>  
             
             {/* 5a div */}
             <div className='bg-yellow-600'>
-            <span className="text-white text-xl ml-4 font-bold">Programa de milhagem:</span>
+            <span className="text-white text-xl ml-4 font-bold">Programa de milhas:</span>
                 <ul>
                   {card.mileages.map((item) => (
                     <li>
                       <p><span className="text-gray-950 font-semibold ml-4">{item.program_name}</span></p>
                       <p><span className="text-white text-sm ml-4">Pontos podem ser transferidos para: </span></p>
                       
-                      
+                      {(item.transfer_program[0] == 'Livelo')
+                      ?
+                      <p>
+                        <span className='inline-flex text-green-500'><FaCheck /></span>
+                        <span className="text-white text-sm ml-2">Programa: </span>
+                        <span className='text-gray-950 font-semibold'>{item.transfer_program}</span>
+                      </p>
+                      :
                       <p>
                         <span className="text-white text-sm ml-6">Programa: </span>
                         <span className='text-gray-950 font-semibold'>{item.transfer_program}</span>
-                      </p>
+                      </p>}
                       
                       <p className='ml-6'>
                         <span className="text-white text-sm">Companhias aéreas: </span>
@@ -357,21 +389,29 @@ export default function App(){
                       ?
                       <p>
                         <span className="text-white text-sm ml-6">Transfere pontos para a fatura: </span>
-                        <span className='text-gray-950 font-semibold mb-2'>Não </span>
+                        <span className='text-gray-950 font-semibold ml-4'>Não </span>
                       </p>
                       :
                       <p><span className="text-white text-sm ml-6">Transfere pontos para a fatura: </span>
-                      <span className='text-gray-950 font-semibold mb-2'>Sim</span></p>}
+                      <span className='text-gray-950 font-semibold ml-4'>Sim</span></p>}
                     
                       <p><span className="text-white text-sm ml-6 mb-4">Transfere pontos para cashback: </span>{item.pay_cashback}</p>
                     </li>
                     ))}
                 </ul>
                 <p className='mt-4'><span className="text-white text-xl ml-4 font-bold">Cashback:</span></p>
+                {(card.ranking_annuity > 6)
+                ?
+                <p>
+                  <span className='inline-flex text-green-500'><FaCheck /></span>
+                  <span className="text-white text-sm ml-2">Percentual de: </span>
+                  <span className='text-gray-950 font-semibold'>{card.cashback}</span>
+                </p>
+                :
                 <p>
                   <span className="text-white text-sm ml-6">Percentual de: </span>
                   <span className='text-gray-950 font-semibold'>{card.cashback}</span>
-                </p>
+                </p>}
                 <p className='ml-6'>
                   <span className="text-white text-sm">Notas: </span>
                   <span className='text-gray-950 font-semibold'>{card.obs_cashback}</span>
@@ -380,7 +420,7 @@ export default function App(){
               </div>      
 
             {/* 6a div */}
-            <div className='bg-emerald-700'>
+            <div className='bg-emerald-600'>
             <span className="text-white text-xl ml-4 font-bold">Salas VIP:</span>
             <p>
               <span className="text-white text-sm ml-4">Aplicativo: </span>
@@ -424,27 +464,59 @@ export default function App(){
                         <span className="text-gray-950 font-semibold">{item.conditions}</span>
                       </p>}
 
-
                       <p><span className="text-white text-sm ml-4"></span></p>
                     </li>
                     ))}
                 </ul>
-              </div> 
-
+              </div>
+            
             {/* 7a div */}
-            <div className='bg-violet-600'>
-                <span className="text-white text-xl ml-4 font-bold">Outros Benefícios:</span>
-                <p>
-                  <span className="text-white text-sm ml-4">*Fast Pass: </span>
-                  <span className='text-gray-950 font-semibold mb-2'>Aeroporto de Guarulhos em SP</span>
+            <div className='bg-stone-400'>
+              <p><span className="text-white text-xl ml-4 font-bold">Benefícios Exclusivos:</span></p>
+              {(card.exclusives != null)
+              ?
+              <div><p>
+                    <span className="text-white text-sm ml-4">Tag veicular: </span>
+                    <span className="text-gray-950 font-semibold">{card.exclusives.tag_name}</span>
                   </p>
+                  <p>
+                    <span className="text-white text-sm ml-4">Quantidade Tags: </span>
+                    <span className='text-gray-950 font-bold'>{card.exclusives.tag_amount}</span>
+                  </p>
+              
+                  <p><span className="text-white text-sm ml-4 font-semibold">Ofertas Exclusivas: </span></p>
+                  <p>
+                    <span>                    
+                      <ul className='text-gray-950 font-semibold'>
+                        {card.exclusives.exclusive_offers.map((item) => (
+                          <li className='ml-4'>{item}</li>
+                        ))}
+                      </ul>
+                    </span>
+                  </p>
+              </div>
+              :
+              <div><p>
+                  <span className="text-gray-950 font-semibold ml-4">Não há</span>
+              </p></div>}
             </div>
 
-            {/* 7a div */}
-            <div className='bg-cyan-600'>
-                <span className="text-white text-sm ml-4 font-bold">Salas VIP:</span>
-            </div>              
-          </div>          
+            {/* 8a div */}
+            <div className='bg-cyan-500'>
+              <div>
+                <p>
+                  <span className="text-white text-xl ml-4 font-bold">Benefícios da Bandeira: </span>
+                  <span className="text-white text-xl ml-2 font-bold">{card.brand.brand_name}</span>
+                </p>
+                <p>
+                  <span className='text-gray-950 font-semibold ml-4'>{card.brand.variant_name}</span>
+                </p>
+                <p>
+                  <span className='text-gray-950 font-semibold ml-4'>{card.brand.site_info}</span>
+                </p>
+              </div>  
+            </div>
+          </div>
         ))}
       </div>
     </div>

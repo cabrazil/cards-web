@@ -45,3 +45,33 @@
       </div>
       ))}
   </ul>
+
+
+  <p>
+    <span className="text-white text-xl ml-4 font-bold">Benefícios da Bandeira:</span>
+    <span className="text-white text-xl ml-2 font-bold">{card.card_brand}</span>
+    </p>
+    {(card.card_brand == 'Visa')
+    ?
+    <><p>
+      <span className="text-white text-sm ml-4">*Fast Pass: </span>
+      <span className='text-gray-950 font-semibold'>Aeroporto de Guarulhos em SP</span>
+    </p><p><span className='text-gray-950 font-semibold ml-4'>Visa Airport Companion</span>
+    </p><p><span className='text-gray-950 font-semibold ml-4'>Visa Infinite Lounge</span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Visa Infinite Fast Pass</span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Seguro Emergência Médica Internacional</span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Seguro para Veículos de Locadora</span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Serviço de Saque Emergêncial</span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Substituição Emergêncial do Cartão</span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>teste.com</span></p></>
+    :
+    <><p><span className='text-gray-950 font-semibold ml-4'>Acesso às Salas VIP</span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Concierge 24h e assistência de viagem</span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Proteção e seguros de compras </span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Descontos em restaurantes e isenção de rolha </span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Acesso a eventos exclusivos </span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Serviço de Saque Emergêncial</span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>Substituição Emergêncial do Cartão</span></p>
+    <p><span className='text-gray-950 font-semibold ml-4'>teste.com</span></p></>}
+
+</div>              
