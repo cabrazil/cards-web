@@ -9,7 +9,7 @@ interface CardProps{
   created_at:            string;
   updated_at:            string;
   card_name:             string;
-  issuer:                string;
+  issuer_name:           string;
   annual_fee:            number;
   card_brand:            string;
   category:              string;
@@ -37,6 +37,7 @@ interface CardProps{
   ranking_vip_lounges:   number;
   src_card_picture:      string;
   brandId:               string;
+  issuerId:              string;
   zerofees: [{
     id: string
     expenses: string;
@@ -124,7 +125,7 @@ export default function App(){
               <img className='h-34 w-52 ml-4 rounded mb-2' src={card.src_card_picture} alt="card generic" />
               <p> 
                 <span className="text-white text-sm ml-4">Emitido por: </span>
-                <span className='text-gray-950 font-semibold'>{card.issuer}</span>
+                <span className='text-gray-950 font-semibold'>{card.issuer_name}</span>
               </p>
         
               {card.international_card
