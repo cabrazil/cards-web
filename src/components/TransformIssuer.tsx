@@ -1,5 +1,5 @@
-function transformIssuersToValueLabel(issuers) {
-  return issuers.map(issuer => ({ 
+function transformIssuers(issuers: any[]) {
+  return issuers.map((issuer: { issuer_name: any; }) => ({ 
       value: issuer.issuer_name, 
       label: issuer.issuer_name 
   }));
@@ -27,7 +27,7 @@ const issuersData = [
   }
 ];
 
-const result = transformIssuersToValueLabel(issuersData);
+const result = transformIssuers(issuersData);
 console.log(result);
 // Saída: 
 // [
