@@ -1,40 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { api } from '../services/api';
+
+const COLORS = {
+  PRIMARY: '#1F3B4D',      // Azul-marinho profundo
+  SECUNDARY: '#d1d5db',    // Cinza-300
+  HIGHLIGHT: '#FFD700',    // Dourado
+  BACKGROUND: '#F5F5F5',   // Cinza-claro
+  TEXT_PRIMARY: '#333333', // Cinza-escuro
+  TEXT_SECONDARY: '#666666' // Cinza-médio
+};
 
 interface CreditCard {
-  name: string;
-  issuer: string;
+  id: string;
+  card_name: string;
+  issuer_name: string;
 }
 
 const CreditCardList: React.FC<{ segment: string; issuer: string }> = ({ segment, issuer }) => {
   const [creditCards, setCreditCards] = useState<CreditCard[]>([]);
 
   useEffect(() => {
-    const fetchCreditCards = async () => {
-      try {
-        //const response = await axios.get<CreditCard[]>(`/cardsegment?segment=${segment}&issuer=${issuer}`);
+    loadCards();
+  }, [segment, issuer])
 
-        const response = await axios.get<CreditCard[]>('/cardsegment', {
-          params: { segment, issuer }
-        });
-
-        setCreditCards(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar cartões de crédito:', error);
-      }
-    };
-
-    fetchCreditCards();
-  }, [segment, issuer]);
+  async function loadCards() {
+    const response = await api.get(`/cardsegment?segment=${segment}&issuer=${issuer}`);
+    setCreditCards(response.data);
+  }
 
   return (
-    <div>
-      {creditCards.map((card) => (
-        <div key={`${card.name}-${card.issuer}`}>
-          <h3>{card.name}</h3>
-          <p>Instituição: {card.issuer}</p>
+    <div className="credit-card-ranking">
+
+    <div className="credit-cards grid md:grid-cols-3 gap-4">
+      {creditCards.map(card => (
+        <div 
+          key={card.id} 
+          className="credit-card-card p-4 rounded-lg shadow-md"
+          style={{ 
+            backgroundColor: 'white', 
+            borderColor: COLORS.HIGHLIGHT 
+          }}
+        >
+          <h3 className="text-lg font-semibold" style={{ color: COLORS.TEXT_PRIMARY }}>
+            {card.card_name}
+          </h3>
+          <p style={{ color: COLORS.TEXT_SECONDARY }}>
+            Instituição: {card.issuer_name}
+          </p>
+          {/* Detalhes adicionais do cartão */}
         </div>
       ))}
+      </div>
     </div>
   );
 };

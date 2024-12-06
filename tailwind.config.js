@@ -7,13 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg-custom': '#5B767B',
-        'bg-custom2': '#5C5751',
-        'bg-custom3': '#CED7E4',
-        'text-label1': '#6F5594'
+        'PRIMARY': '#1F3B4D',      // Azul-marinho profundo
+        'SECUNDARY': '#d1d5db',    // Cinza-300
+        'HIGHLIGHT': '#FFD700',    // Dourado
+        'BACKGROUND': '#F5F5F5',   // Cinza-claro
+        'TEXT_PRIMARY': '#333333', // Cinza-escuro
+        'TEXT_SECONDARY': '#666666' // Cinza-médio
       }
     },
   },
   plugins: [],
 }
-
