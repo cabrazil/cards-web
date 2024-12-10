@@ -4,7 +4,7 @@ import { api } from '../services/api';
 const COLORS = {
   PRIMARY: '#1F3B4D',      // Azul-marinho profundo
   SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#FFD700',    // Dourado
+  HIGHLIGHT: '#FF9000',    // Dourado
   BACKGROUND: '#F5F5F5',   // Cinza-claro
   TEXT_PRIMARY: '#333333', // Cinza-escuro
   TEXT_SECONDARY: '#666666' // Cinza-médio
@@ -16,8 +16,15 @@ interface CreditCard {
   issuer_name: string;
 }
 
-const CreditCardList: React.FC<{ segment: string; issuer: string }> = ({ segment, issuer }) => {
+const CreditCardList: React.FC<{ segment: string; issuer: string; onCardSelect: 
+  (card: CreditCard) => void }> = ({
+  segment,
+  issuer,
+  onCardSelect,
+}) => {
   const [creditCards, setCreditCards] = useState<CreditCard[]>([]);
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+
 
   useEffect(() => {
     loadCards();
@@ -28,28 +35,40 @@ const CreditCardList: React.FC<{ segment: string; issuer: string }> = ({ segment
     setCreditCards(response.data);
   }
 
+  const handleCardClick = (card: CreditCard) => {
+    setSelectedCardId(card.id);
+    onCardSelect(card);
+  };
+
   return (
-    <div className="credit-card-ranking">
+    <div className="credit-card-ranking mb-4">
 
     <div className="credit-cards grid md:grid-cols-3 gap-4">
-      {creditCards.map(card => (
-        <div 
-          key={card.id} 
-          className="credit-card-card p-4 rounded-lg shadow-md"
-          style={{ 
-            backgroundColor: 'white', 
-            borderColor: COLORS.HIGHLIGHT 
-          }}
-        >
-          <h3 className="text-lg font-semibold" style={{ color: COLORS.TEXT_PRIMARY }}>
-            {card.card_name}
-          </h3>
-          <p style={{ color: COLORS.TEXT_SECONDARY }}>
-            Instituição: {card.issuer_name}
-          </p>
-          {/* Detalhes adicionais do cartão */}
-        </div>
-      ))}
+      {creditCards.length > 0 ? (
+        creditCards.map(card => (
+          <div 
+            key={card.id} 
+            className="credit-card-card bg-white p-4 rounded-lg shadow-md"
+            onClick={() => handleCardClick(card)}
+            style={{
+              border: selectedCardId === card.id ? '2px solid orange' : 'none',
+              cursor: 'pointer',
+            }}
+            
+          >
+            <h3 className="text-lg font-semibold" style={{ color: COLORS.TEXT_PRIMARY }}>
+              {card.card_name}
+            </h3>
+            <p style={{ color: COLORS.TEXT_SECONDARY }}>
+              Instituição: {card.issuer_name}
+            </p>
+            {/* Detalhes adicionais do cartão */}
+          </div>
+        ))
+
+        ) : (
+          <p>Nenhum cartão de crédito foi encontrado</p>
+        )}
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import { api } from '../services/api';
 const COLORS = {
   PRIMARY: '#1F3B4D',      // Azul-marinho profundo
   SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#FFD700',    // Dourado
+  HIGHLIGHT: '#FF9000',    // Dourado #FFD700
   BACKGROUND: '#F5F5F5',   // Cinza-claro
   TEXT_PRIMARY: '#333333', // Cinza-escuro
   TEXT_SECONDARY: '#666666' // Cinza-médio
@@ -88,7 +88,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="search-filters mb-8 flex space-x-4">
+    <div className="search-filters mb-8 flex space-x-4 ">
       <div className="income-filter flex-1">
         <label 
           htmlFor="income" 
@@ -129,13 +129,9 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
           />
         </div>
       </div>
-    
+      
       <button
-        className='px-4 py-2 rounded-md'
-        style={{ 
-          backgroundColor: COLORS.HIGHLIGHT, 
-          color: COLORS.TEXT_PRIMARY 
-        }}
+        className='px-4 bg-[#FF9000] text-[#333333] rounded-md font-semibold h-9 mt-8 transform hover:bg-yellow-500 duration-100'
         onClick={handleSearch}
       >
         Buscar
