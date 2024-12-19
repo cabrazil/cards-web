@@ -1,4 +1,4 @@
-import { CreditCard, TicketPlus, Award, Globe, Gift, FileText } from 'lucide-react';
+import { CreditCard, TicketPlus, Award, Globe, Gift, FileText, CircleDollarSign, CalendarOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { api } from '../services/api'
 import { FaCheck } from 'react-icons/fa';
@@ -53,6 +53,7 @@ interface CreditCardProps{
     rules: string;
     points_limit: number;
     expiration: boolean;
+    notes: string;
   }]
   mileages: [{
     id: string;
@@ -109,14 +110,16 @@ const COLORS = {
 
 const CardDetailSection = ({ title, icon, children, className = '' }) => (
   <div 
-    className={`card-section p-4 rounded-lg mb-4 shadow-sm ${className}`}
+    className={`card-section p-2 rounded-lg mb-4 shadow-sm ${className}`}
     style={{ 
       backgroundColor: 'white', 
       borderLeftColor: COLORS.HIGHLIGHT,
-      borderLeftWidth: '2px'
+      borderLeftWidth: '2px',
+      borderBottomColor: COLORS.HIGHLIGHT,
+      borderBottomWidth: '2px'
     }}
   >
-    <div className="flex items-center mb-3">
+    <div className="flex items-center mb-2">
       {icon}
       <h3 
         className="text-lg font-semibold ml-2"
@@ -130,21 +133,30 @@ const CardDetailSection = ({ title, icon, children, className = '' }) => (
 );
 
 export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
-  const [creditCard, setCreditCard] = useState<CreditCardProps | null>(null);
-    
-  useEffect(() => {
-    loadCards();
-  }, [cardId])
+  const [cardDetail, setCardDetail] = useState<CreditCardProps | null>(null);
 
   async function loadCards() {
     const response = await api.get(`/cardid?id=${cardId}`);
-    setCreditCard(response.data);
+    setCardDetail(response.data);
   }
+    
+  useEffect(() => {
+    try {
+      if (cardId) {
+        loadCards();
+      } else {
+        setCardDetail(null);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar detalhes do cartão de crédito:', error);
+    }
+  }, [cardId]);
 
   return (
-    <div className='grid md:grid-cols-2'>
+    
+    <div className='grid md:grid-cols-2 gap-3'>
 
-      {creditCard ? (
+      {cardDetail ? (
 
         <><section className="credit-card-details gap-4">
 
@@ -156,7 +168,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
             >
               <div style={{ color: COLORS.TEXT_PRIMARY }}>
                 <div className='flex justify-between'>
-                  {creditCard.international_card
+                  {cardDetail.international_card
                     ?
                     <>
                       <div className='flex'>
@@ -176,7 +188,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                   </div>
 
                   <div className='flex justify-between'>
-                  {creditCard.card_modality.length > 6
+                  {cardDetail.card_modality.length > 6
                     ?
                     <>
                       <div className='flex'>
@@ -184,7 +196,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                         <span>Modalidade: </span>
                       </div>
                       <div className="">
-                        <span className="text-gray-950 font-semibold">{creditCard.card_modality}</span>
+                        <span className="text-gray-950 font-semibold">{cardDetail.card_modality}</span>
                       </div>
                     </>
                     :
@@ -194,27 +206,27 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                         <span>Modalidade: </span>
                       </div>
                       <div className="">
-                        <span className="text-gray-950 font-semibold">{creditCard.card_modality}</span>
+                        <span className="text-gray-950 font-semibold">{cardDetail.card_modality}</span>
                       </div>
                     </>}
                   </div>
 
                 <div className="flex justify-between">
                   <span className="ml-4">Bandeira: </span>
-                  <span className='text-gray-950 font-semibold'>{creditCard.card_brand}</span>
+                  <span className='text-gray-950 font-semibold'>{cardDetail.card_brand}</span>
                   
                 </div>
                 <div className="flex justify-between">
                   <span className="ml-4">Variante: </span>
-                  <span className='text-gray-950 font-semibold'>{creditCard.category}</span>
+                  <span className='text-gray-950 font-semibold'>{cardDetail.category}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="ml-4">Material do cartão: </span>
-                  <span className='text-gray-950 font-semibold'>{creditCard.card_material}</span>
+                  <span className='text-gray-950 font-semibold'>{cardDetail.card_material}</span>
                 </div>
 
                 <div className='flex justify-between'>
-                  {creditCard.contactless
+                  {cardDetail.contactless
                     ?
                     <>
                       <div className='flex'>
@@ -242,7 +254,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                     </div>
                     <div>
                       <ul className='text-gray-950 font-semibold display: inline-flex gap-2'>
-                        {creditCard.virtual_wallets.map((item) => (
+                        {cardDetail.virtual_wallets.map((item) => (
                           <li className='first:ml-2'>{item}</li>
                         ))}
                       </ul>
@@ -260,7 +272,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
               <div style={{ color: COLORS.TEXT_PRIMARY }}
                   className='flex justify-between'
               >
-               {creditCard.rewards.map((item) => (
+               {cardDetail.rewards.map((item) => (
                   <div className="flex justify-between">
                     <ul className='flex'> 
                       <li>
@@ -297,13 +309,14 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                          </div>
                         :
                         <p>
-                          <span className='inline-flex text-red-600'><FaCheck /></span>
+                          <span className='inline-flex text-yellow-600'><FaCheck /></span>
                           <span className="">Pontos expiram: </span>
                         <span className='text-gray-950 font-semibold ml-4'>Sim</span></p>}
-
-                        <p><span className="ml-4">...</span></p>
-                        <p><span className="ml-4">...</span></p>
-                        <p><span className="ml-4">...</span></p>
+                        {item.notes &&
+                        <div className="flex justify-between">
+                          <span className="ml-4">Notas: </span>
+                          <span className='text-gray-950 font-semibold'>{item.notes}</span>
+                        </div>}
                         
                       </li>
                   </ul>
@@ -316,56 +329,67 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
             <CardDetailSection
               title="Programa de Milhas"
               icon={<Award color={COLORS.PRIMARY} />}
+              className='text-md font-semibold'
             >
-              <div style={{ color: COLORS.TEXT_SECONDARY }}>
-                <div className="flex justify-between mb-2">
-                  <span>Nome do Programa:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Não definido'}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Transferência para Companhias Aéreas:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Sim'}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Transferência para Hotéis:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Não'}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Cashback:</span>
-                  <span className="font-semibold">
-                    {creditCard.annual_fee ? `${creditCard.annual_fee}%` : 'Não oferece'}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Observação:</span>
-                  <span className="font-semibold">
-                    {creditCard.obs_cashback || 'Sem observações'}
-                  </span>
-                </div>
-              </div>
-            </CardDetailSection>
+              <div style={{ color: COLORS.TEXT_PRIMARY }}>
 
-            <CardDetailSection
-              title="Acesso às Salas VIP"
-              icon={<Globe color={COLORS.PRIMARY} />}
-            >
-              <div style={{ color: COLORS.TEXT_SECONDARY }}>
-                <div className="flex justify-between mb-2">
-                  <span>Salas Disponíveis:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Não especificado'}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Limite de Acessos:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Ilimitado'}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Tipo de Aeroporto:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Nacional e Internacional'}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Condições Especiais:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Não aplicável'}</span>
-                </div>
+                {cardDetail.mileages.map((item) => (
+
+                  <ul>
+                    <li>
+                    {(item.transfer_program[0] == 'Livelo')
+                      ?
+                      <div className="flex justify-between">
+                        <div>
+                          <span className='inline-flex text-green-500'><FaCheck /></span>
+                          <span className='ml-4'>Programa:</span>
+                        </div>
+                        <span className=" text-gray-950 font-semibold">{item.program_name || 'Não especificado'}</span>
+                      </div>
+                      :
+                      <div className="flex justify-between">
+                        <span className='ml-4'>Programa:</span>
+                        <span className=" text-gray-950 font-semibold">{item.program_name || 'Não especificado'}</span>
+                      </div>}
+
+                      <div className='flex justify-between'>
+                        <span className="ml-4">Pontos podem ser transferidos para: </span>
+                        <span className=" text-gray-950 font-semibold">{item.transfer_program || 'Não especificado'}</span>
+                      </div>
+
+                      {item.airlines[0] &&
+                      <div className="flex justify-between">
+                        <span className='ml-4'>Para companhias aéreas:</span>
+                        <span className="text-gray-950 font-semibold">{item.airlines}</span>
+                      </div>}
+
+                      {item.hotels[0] &&
+                      <div className="flex justify-between">
+                        <span className='ml-4'>Para hotéis:</span>
+                        <span className="text-gray-950 font-semibold">{item.hotels || 'Não transfere'}</span>
+                      </div>}
+
+                      {item.pay_bills &&
+                      <div className='flex justify-between'>
+                        <span className="ml-4">Pontos(cashback) para a fatura: </span>
+                        <span className='text-gray-950 font-semibold ml-4'>Sim</span>
+                      </div>}
+
+                      {item.pay_cashback &&
+                      <div className='flex justify-between'>
+                        <span className="ml-4">Pontos(cashback) para a conta corrente: </span>
+                        <span className='text-gray-950 font-semibold ml-4'>Sim</span>
+                      </div>}
+
+                      {item.other_options &&
+                      <div className='flex justify-between'>
+                        <span className="ml-4">Outros: </span>
+                        <span className='ml-4 text-gray-950 font-semibold text-right'>{item.other_options}</span>
+                    </div>}
+
+                    </li>
+                  </ul>
+                ))}
               </div>
             </CardDetailSection>
 
@@ -374,34 +398,34 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
               icon={<Gift color={COLORS.PRIMARY} />}
             >
               <div style={{ color: COLORS.TEXT_SECONDARY }}>
-                <div className="flex justify-between mb-2">
+                <div className="flex justify-between">
                   <span>Descontos em Lojas:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Não oferece'}</span>
+                  <span className="font-semibold">{cardDetail.card_brand || 'Não oferece'}</span>
                 </div>
-                <div className="flex justify-between mb-2">
+                <div className="flex justify-between">
                   <span>Descontos em Cinemas:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Não oferece'}</span>
+                  <span className="font-semibold">{cardDetail.card_brand || 'Não oferece'}</span>
                 </div>
-                <div className="flex justify-between mb-2">
+                <div className="flex justify-between">
                   <span>Descontos em Restaurantes:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Não oferece'}</span>
+                  <span className="font-semibold">{cardDetail.card_brand || 'Não oferece'}</span>
                 </div>
-                <div className="flex justify-between mb-2">
+                <div className="flex justify-between">
                   <span>Seguros:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Não oferece'}</span>
+                  <span className="font-semibold">{cardDetail.card_brand || 'Não oferece'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Outros Benefícios:</span>
-                  <span className="font-semibold">{creditCard.card_brand || 'Nenhum adicional'}</span>
+                  <span className="font-semibold">{cardDetail.card_brand || 'Nenhum adicional'}</span>
                 </div>
               </div>
             </CardDetailSection>
 
-            {creditCard.card_name && (
+            {cardDetail.card_name && (
               <div className="card-image flex justify-center items-center p-4 bg-white rounded-lg">
                 <img
-                  src={creditCard.card_brand}
-                  alt={`Cartão ${creditCard.card_name}`}
+                  src={cardDetail.card_brand}
+                  alt={`Cartão ${cardDetail.card_name}`}
                   className="max-h-48 object-contain" />
               </div>
             )}
@@ -417,7 +441,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
             >
               <div style={{ color: COLORS.TEXT_PRIMARY }}>
                 <div className='flex justify-between'>
-                  {creditCard.account_holder
+                  {cardDetail.account_holder
                     ?
                     <>
                       <div className=''>
@@ -439,7 +463,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                   <p>
                     <span>                    
                       <ul className='text-gray-950 font-semibold'>
-                        {creditCard.get_conditions.map((item) => (
+                        {cardDetail.get_conditions.map((item) => (
                           <li className='ml-4'>{item}</li>
                         ))}
                       </ul>
@@ -448,7 +472,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                 </div>
 
                 <div className='flex justify-between'>
-                  {creditCard.add_cards_amount > 5
+                  {cardDetail.add_cards_amount > 5
                     ?
                     <>
                       <div className='flex'>
@@ -456,27 +480,27 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                         <span>Cartões adicionais: </span>
                       </div>
                       <div className="">
-                      <span className="text-gray-950 font-semibold">Até {creditCard.add_cards_amount}</span>
+                      <span className="text-gray-950 font-semibold">Até {cardDetail.add_cards_amount}</span>
                       </div>
                     </>
                     :
                     <>
                       <div className=''>
                         <span className="text-white text-sm ml-4 mt-2">Obs.: </span>
-                        <span className="text-gray-950 font-semibold">{creditCard.obs_add_cards}</span>
+                        <span className="text-gray-950 font-semibold">{cardDetail.obs_add_cards}</span>
                       </div>
                     </>}
                 </div>
                   
                 <div className='flex justify-between'>
-                  {creditCard.add_cards_charge > 0
+                  {cardDetail.add_cards_charge > 0
                     ?
                     <>
                       <div>
                         <span className="ml-4">Valor mínimo de fatura por adicional: </span>
                       </div>
                       <div>
-                        <span className="text-gray-950 font-semibold">{creditCard.add_cards_charge}</span>
+                        <span className="text-gray-950 font-semibold">{cardDetail.add_cards_charge}</span>
                       </div>
                     </>
                     :
@@ -492,105 +516,143 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
 
                 <div className="flex justify-between">
                   <span className='ml-4'>Limite do cartão:</span>
-                  <span className="text-gray-950 font-semibold">{creditCard.card_limit || 'Não oferece'}</span>
+                  <span className="text-gray-950 font-semibold">{cardDetail.card_limit || 'Não oferece'}</span>
                 </div>
 
-                <div>
-                  <span className='ml-4'>...</span>
-                </div>
               </div>
             </CardDetailSection>
 
             <CardDetailSection
-              title="Para obter o Cartão"
-              icon={<CreditCard color={COLORS.PRIMARY} />}
+              title="Para isentar Anuidade"
+              icon={<CalendarOff color={COLORS.PRIMARY} />}
               className='text-md font-semibold'
             >
               <div style={{ color: COLORS.TEXT_PRIMARY }}>
-                <div className='flex justify-between'>
-                  {creditCard.account_holder
-                    ?
-                    <>
-                      <div className=''>
-                        <span className='ml-4'>Somente correntistas: </span>
-                      </div>
-                      <div className="">
-                        <span className="text-gray-950 font-semibold">Sim</span>
-                      </div>
-                    </>
-                    :
-                    <>
-                      <span className='ml-4'>Somente correntistas: </span>
-                      <span className="text-gray-950 font-semibold">Não</span>
-                    </>}
-                </div>
+                
+                {(cardDetail.annual_fee > 0)
+                  ?
+                  <div className='flex justify-between'>
+                    <div>
+                      <span className='inline-flex text-green-500'><FaCheck /></span>
+                      <span>Percentual de: </span>
+                    </div>
+                    <span className='text-gray-950 font-semibold'>{cardDetail.cashback}</span>
+                  </div>
+                  :
+                  <div className='flex justify-between'>
+                    <div>
+                      <span className='inline-flex text-green-500'><FaCheck /></span>
+                      <span>Anuidade: </span>
+                    </div>
+                    <span className='text-gray-950 font-semibold'>Isento</span>
+                  </div>}
 
-                <div className='flex justify-between'>
-                  <p><span className="ml-4">Precisa de:</span></p>
-                  <p>
-                    <span>                    
-                      <ul className='text-gray-950 font-semibold'>
-                        {creditCard.get_conditions.map((item) => (
-                          <li className='ml-4'>{item}</li>
-                        ))}
-                      </ul>
-                    </span>
-                  </p>
-                </div>
-
-                <div className='flex justify-between'>
-                  {creditCard.add_cards_amount > 5
-                    ?
-                    <>
-                      <div className='flex'>
-                        <span className='text-green-500'><FaCheck /></span>
-                        <span>Cartões adicionais: </span>
-                      </div>
-                      <div className="">
-                      <span className="text-gray-950 font-semibold">Até {creditCard.add_cards_amount}</span>
-                      </div>
-                    </>
-                    :
-                    <>
-                      <div className=''>
-                        <span className="text-white text-sm ml-4 mt-2">Obs.: </span>
-                        <span className="text-gray-950 font-semibold">{creditCard.obs_add_cards}</span>
-                      </div>
-                    </>}
-                </div>
-                  
-                <div className='flex justify-between'>
-                  {creditCard.add_cards_charge > 0
-                    ?
-                    <>
-                      <div>
-                        <span className="ml-4">Valor mínimo de fatura por adicional: </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-950 font-semibold">{creditCard.add_cards_charge}</span>
-                      </div>
-                    </>
-                    :
-                    <>
-                      <div>
-                        <span className="ml-4">Valor mínimo de fatura por adicional: </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-950 font-semibold">Não há</span>
-                      </div>
-                    </>} 
-                </div>
-
-                <div className="flex justify-between">
-                  <span className='ml-4'>Limite do cartão:</span>
-                  <span className="text-gray-950 font-semibold">{creditCard.card_limit || 'Não oferece'}</span>
-                </div>
-
-                <div>
-                  <span className='ml-4'>...</span>
-                </div>
+                  <div className='flex justify-between'>
+                    <span className="ml-4">Obs:</span>
+                    <span className='text-gray-950 font-semibold text-right'>{cardDetail.obs_cashback}</span>
+                  </div>
               </div>
             </CardDetailSection>
+
+            {cardDetail.cashback &&
+            <CardDetailSection
+              title="Cashback"
+              icon={<CircleDollarSign color={COLORS.PRIMARY} />}
+              className='text-md font-semibold'
+            >
+              <div style={{ color: COLORS.TEXT_PRIMARY }}>
+                
+                {(cardDetail.ranking_annuity > 6)
+                  ?
+                  <div className='flex justify-between'>
+                    <div>
+                      <span className='inline-flex text-green-500'><FaCheck /></span>
+                      <span>Percentual de: </span>
+                    </div>
+                    <div>
+                      <span className='text-gray-950 font-semibold text-right'>{cardDetail.cashback}</span>
+                    </div>
+                  </div>
+                  :
+                  <div className='flex justify-between'>
+                    <span className="ml-4">Percentual de: </span>
+                    <span className='text-gray-950 font-semibold text-right'>{cardDetail.cashback}</span>
+                  </div>}
+
+                  <div className='flex justify-between'>
+                    <span className="ml-4">Obs:</span>
+                    <span className='text-gray-950 font-semibold text-right'>{cardDetail.obs_cashback}</span>
+                  </div>
+              </div>
+            </CardDetailSection>}
+
+            {(cardDetail.ranking_vip_lounges > 0) &&
+            <CardDetailSection
+              title="Acesso às Salas VIP"
+              icon={<Globe color={COLORS.PRIMARY} />}
+              className='text-md font-semibold'
+            >
+              <div style={{ color: COLORS.TEXT_PRIMARY }}>
+
+              {cardDetail.vip_lounge_app &&
+              <div className="flex justify-between">
+                <span className='ml-4'>Aplicativo:</span>
+                <span className="text-gray-950 font-semibold">{cardDetail.vip_lounge_app}</span>
+              </div>}
+
+              {cardDetail.lounges.map((item) => (
+
+                <ul>
+                  <li>
+                  {item.lounge_name &&
+                    <div className="flex justify-between">
+                      <div>
+                        <span className='inline-flex text-green-500'><FaCheck /></span>
+                        <span className=''>Sala:</span>
+                      </div>
+                      <span className=" text-gray-950 font-semibold">{item.lounge_name}</span>
+                    </div>}
+
+                  {item.int_airport[0] &&
+                  <div className='flex justify-between'>
+                    
+                      <span className='ml-4'>Aeroportos nacionais:</span>
+                    
+                    
+                      <span className="ml-4 text-gray-950 font-semibold text-right">{item.br_airport}</span>
+                    
+                  </div>}
+
+                  {item.int_airport &&
+                  <div className="flex justify-between">
+                    <span className='ml-4'>Aeroportos internacionais:</span>
+                    <span className="text-gray-950 font-semibold">{item.int_airport}</span>
+                  </div>}
+
+                  {item.access_limit &&
+                  <div className='flex justify-between'>
+                    <span className="ml-4">Limite de acessos: </span>
+                    <span className='text-gray-950 font-semibold ml-4'>{item.access_limit}</span>
+                  </div>}
+
+                  {(cardDetail.ranking_vip_lounges < 4)
+                  ?
+                  <div className='flex justify-between'>
+                    <span className='inline-flex text-red-600'><FaCheck /></span>
+                    <span className="">Condições: </span>
+                    <span className='ml-4 text-gray-950 font-semibold text-right'>{item.conditions}</span>
+                  </div>
+                  :
+                  <div className='flex justify-between'>
+                    <span className='inline-flex text-green-600'><FaCheck /></span>
+                    <span className="">Condições: </span>
+                    <span className='ml-4 text-gray-950 font-semibold text-right'>{item.conditions}</span>
+                  </div>}
+                  </li>
+                </ul>
+                ))}
+              </div>
+            </CardDetailSection>}
 
           </div>
 

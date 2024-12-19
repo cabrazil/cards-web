@@ -84,7 +84,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
   const handleSearch = () => {
     if (selectedSegment && selectedIssuer) {
       onSearch(selectedSegment.value, selectedIssuer.value);
-    }
+    } 
   };
 
   return (
@@ -131,7 +131,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
       </div>
       
       <button
-        className='px-4 bg-[#FF9000] text-[#333333] rounded-md font-semibold h-9 mt-8 transform hover:bg-yellow-500 duration-100'
+        className='px-4 bg-[#FF9000] text-[#333333] rounded-md font-semibold h-9 mt-8 hover:scale-105'
         onClick={handleSearch}
       >
         Buscar

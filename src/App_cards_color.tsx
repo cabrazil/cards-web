@@ -148,7 +148,7 @@ export default function App(){
                   <span className="text-gray-950 font-semibold">Não</span>
                 </p>}
               
-              {card.card_modality.length == 6
+              {card.card_modality.length > 6
               ?
               <p> 
                 <span className='inline-flex text-yellow-500'><FaCheck /></span>

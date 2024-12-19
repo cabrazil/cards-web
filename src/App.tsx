@@ -29,22 +29,32 @@ const App: React.FC = () => {
   const handleSearch = (selectedSegment: string, selectedIssuer: string) => {
     setSegment(selectedSegment);
     setIssuer(selectedIssuer);
+    setSelectedCardId(null);
   };
 
   const handleCardSelect = (card: CreditCard) => {
     setSelectedCardId(card.id);
   };
 
+  const handleNoResults = () => {
+    setSelectedCardId(null);
+  };
+
   return (
     <div>
       <div 
-        className="credit-card-blog p-6 max-w-6xl mx-auto"
+        className="credit-card-blog p-6 max-w-7xl mx-auto"
         style={{ backgroundColor: COLORS.BACKGROUND }}
       >
         <Header />
         <SearchForm onSearch={handleSearch} />
         {segment && issuer && (
-          <CreditCardList segment={segment} issuer={issuer} onCardSelect={handleCardSelect} />
+          <CreditCardList 
+            segment={segment} 
+            issuer={issuer} 
+            onCardSelect={handleCardSelect}
+            onNoResults={handleNoResults}
+          />
         )}
         {selectedCardId && <CreditCardDetails cardId={selectedCardId} />}
         

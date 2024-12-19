@@ -25,7 +25,6 @@ export const useSearch = () => {
     setError(null);
 
     try {
-      // Substitua pela URL real da sua API de backend
       const response = await axios.get<ResultItem[]>('/api/search', {
         params: {
           segment: params.segment,
