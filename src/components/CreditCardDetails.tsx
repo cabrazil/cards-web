@@ -1,5 +1,5 @@
-import { CreditCard, TicketPlus, Award, Globe, Gift, FileText, CircleDollarSign, CalendarOff } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { CreditCard, TicketPlus, Award, Globe, Gift, FileText, CircleDollarSign, CalendarOff, Check } from 'lucide-react';
+import { ReactNode, useEffect, useState } from 'react';
 import { api } from '../services/api'
 import { FaCheck } from 'react-icons/fa';
 import CurrencyFormatter from './CurrencyFormatter';
@@ -76,6 +76,7 @@ type CreditCardProps = {
     int_airport:  string;
     access_limit: string;
     conditions:   string;
+    ispaid:       boolean;
   }[];
   exclusives: {
     id:               string;
@@ -102,6 +103,21 @@ type CreditCardProps = {
   issuerId:              string;
 };
 
+interface CardDetailSectionProps {
+  title: string;
+  icon: ReactNode;
+  children: ReactNode;
+  className?: string;
+}
+
+interface CardDetailSectionProps2 {
+  title: string;
+  icon: ReactNode;
+  img: string;
+  children: ReactNode;
+  className?: string;
+}
+
 const COLORS = {
   PRIMARY: '#1F3B4D',
   SECUNDARY: '#d1d5db',    // Cinza-300
@@ -111,7 +127,7 @@ const COLORS = {
   TEXT_SECONDARY: '#030712' //#666666
 };
 
-const CardDetailSection = ({ title, icon, children, className = '' }) => (
+const CardDetailSection = ({ title, icon, children, className = '' }: CardDetailSectionProps) => (
   <div 
     className={`card-section p-2 rounded-lg mb-4 shadow-sm ${className}`}
     style={{ 
@@ -135,7 +151,7 @@ const CardDetailSection = ({ title, icon, children, className = '' }) => (
   </div>
 );
 
-const CardDetailSection2 = ({ title, icon, img, children, className = '' }) => (
+const CardDetailSection2 = ({ title, icon, img, children, className = '' }: CardDetailSectionProps2) => (
   <div 
     className={`card-section p-2 rounded-lg mb-4 shadow-sm ${className}`}
     style={{ 
@@ -290,10 +306,34 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                   </>}
                 </div>
 
+                <div className='flex justify-between'>
+                  {cardDetail.iof_rate > 0 &&
+                  <>
+                   <div>
+                      <span className='ml-4'>IOF: </span>
+                    </div>
+                    <div>
+                      <span className="text-gray-950 font-semibold">{cardDetail.iof_rate}%</span>
+                    </div>
+                  </>}
+                </div>
+
+                <div className='flex justify-between'>
+                  {cardDetail.spread_rate > 0 &&
+                  <>
+                   <div>
+                      <span className='ml-4'>Spread: </span>
+                    </div>
+                    <div>
+                      <span className="text-gray-950 font-semibold">{cardDetail.spread_on}</span>
+                    </div>
+                  </>}
+                </div>
+
                 {(cardDetail.exclusives?.additional_info?.length) &&
                 <div className='flex justify-between'>                   
                   <div>
-                    <span className="ml-4">Notas: </span>
+                    <span className="ml-4">Obs: </span>
                   </div>
                   <div>
                     <ul className='text-gray-950 font-semibold text-right'>
@@ -320,12 +360,13 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                {cardDetail.rewards.map((item) => (
                   <div className="flex justify-between">
                     <ul className='flex'> 
-                      <li>
-                        <span className='ml-4'>{item.expenses}</span>        
+                      <li>       
                         {item.rules &&
-                          <div className=''>
-                            <span className='ml-4 text-gray-950 font-semibold'>{item.rules}</span>
-                          </div>}
+                          <><div className='flex justify-between'>
+                              <span className='ml-4'>{item.expenses}:</span>
+                              <span className='text-gray-950 font-semibold text-right'>{item.rules}</span>
+                            </div>
+                          </>}
 
                           <div className='ml-4'>
                             {item.points_per_dollar > 0
@@ -349,14 +390,20 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                             <span>Pontos expiram: </span>
                           </div>
                           <div>
-                              <span className='text-gray-950 font-semibold ml-4'>Não </span>
+                              <span className='text-gray-950 font-semibold text-right'>Não</span>
                           </div>
-                         </div>
+                        </div>
                         :
-                        <p>
-                          <span className='inline-flex text-yellow-600'><FaCheck /></span>
-                          <span className="">Pontos expiram: </span>
-                        <span className='text-gray-950 font-semibold ml-4'>Sim</span></p>}
+                        <div className='flex justify-between'>
+                          <div>
+                            <span className='inline-flex text-yellow-500'><FaCheck /></span>
+                            <span>Pontos expiram: </span>
+                          </div>
+                          <div>
+                              <span className='text-gray-950 font-semibold text-right'>Sim</span>
+                          </div>
+                        </div>}
+
                         {item.notes &&
                         <div className="flex justify-between">
                           <span className="ml-4">Notas: </span>
@@ -508,10 +555,10 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                   {cardDetail.account_holder
                     ?
                     <>
-                      <div className=''>
+                      <div>
                         <span className='ml-4'>Somente correntistas: </span>
                       </div>
-                      <div className="">
+                      <div>
                         <span className="text-gray-950 font-semibold">Sim</span>
                       </div>
                     </>
@@ -550,24 +597,26 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                 </div>
 
                 <div className='flex justify-between'>
-                  {cardDetail.add_cards_amount > 3
-                    ?
-                    <>
-                      <div className='flex'>
-                        <span className='text-green-500'><FaCheck /></span>
-                        <span>Cartões adicionais: </span>
-                      </div>
-                      <div className="">
-                      <span className="text-gray-950 font-semibold">Até {cardDetail.add_cards_amount}</span>
-                      </div>
-                    </>
-                    :
-                    <>
-                      <div className='flex'>
+                  {cardDetail.add_cards_amount === 0
+                    ? <span></span>
+                    : cardDetail.add_cards_amount >=4
+                      ?
+                      <>
+                        <div className='flex'>
+                         <span className='text-green-500'><FaCheck /></span>
+                         <span>Cartões adicionais: </span>
+                        </div>
+                        <div>
+                          <span className="text-gray-950 font-semibold">Até {cardDetail.add_cards_amount}</span>
+                        </div>
+                      </>
+                      :
+                      <>
+                        <div className='flex'>
                           <span className='text-yellow-500'><FaCheck /></span>
                           <span>Cartões adicionais: </span>
                         </div>
-                        <div className="">
+                        <div>
                         <span className="text-gray-950 font-semibold">Até {cardDetail.add_cards_amount}</span>
                         </div>
                     </>}
@@ -580,23 +629,13 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                 </div>}
                   
                 <div className='flex justify-between'>
-                  {cardDetail.add_cards_charge > 0
-                    ?
+                  {cardDetail.add_cards_charge > 0 &&
                     <>
                       <div>
                         <span className="ml-4">Valor mínimo de fatura por adicional: </span>
                       </div>
                       <div>
                         <span className="text-gray-950 font-semibold">{cardDetail.add_cards_charge}</span>
-                      </div>
-                    </>
-                    :
-                    <>
-                      <div>
-                        <span className="ml-4">Valor mínimo de fatura por adicional: </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-950 font-semibold">Não há</span>
                       </div>
                     </>} 
                 </div>
@@ -740,16 +779,24 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
 
                 <ul>
                   <li>
-                  {item.lounge_name &&
+                  {!item.ispaid
+                    ?
+                    <div className="flex justify-between">
+                      <div>    
+                        <span className='ml-4'>Sala:</span>
+                      </div>
+                      <span className="text-gray-950 font-semibold">{item.lounge_name}</span>
+                    </div>
+                    :
                     <div className="flex justify-between">
                       <div>
-                        <span className='inline-flex text-green-500'><FaCheck /></span>
-                        <span className=''>Sala:</span>
+                        <span className='inline-flex text-red-600'><FaCheck /></span>
+                        <span>Sala:</span>
                       </div>
-                      <span className=" text-gray-950 font-semibold">{item.lounge_name}</span>
+                      <span className="text-gray-950 font-semibold">{item.lounge_name}</span>
                     </div>}
 
-                  {item?.int_airport[0] &&
+                  {item?.br_airport[0] &&
                   <div className='flex justify-between'>
                     
                       <span className='ml-4'>Aeroportos nacionais:</span>
@@ -757,7 +804,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                     
                   </div>}
 
-                  {item?.int_airport &&
+                  {item?.int_airport[0] &&
                   <div className="flex justify-between">
                     <span className='ml-4'>Aeroportos internacionais:</span>
                     <span className="text-gray-950 font-semibold">{item.int_airport}</span>
@@ -769,16 +816,10 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                     <span className='text-gray-950 font-semibold ml-4'>{item.access_limit}</span>
                   </div>}
 
-                  {(cardDetail?.ranking_vip_lounges < 4)
-                  ?
+                  {(item.conditions.length) &&
+                  
                   <div className='flex justify-between'>
                     <span className="ml-4">Condições: </span>
-                    <span className='ml-4 text-gray-950 font-semibold text-right'>{item.conditions}</span>
-                  </div>
-                  :
-                  <div className='flex justify-between'>
-                    <span className='inline-flex text-green-600'><FaCheck /></span>
-                    <span className="">Condições: </span>
                     <span className='ml-4 text-gray-950 font-semibold text-right'>{item.conditions}</span>
                   </div>}
                   </li>
