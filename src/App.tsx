@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Header } from './components/Header';
 import SearchForm from './components/SearchForm';
 import CreditCardList from './components/CreditCardList';
@@ -9,7 +8,7 @@ import { CreditCardDetails } from './components/CreditCardDetails';
 const COLORS = {
   PRIMARY: '#1F3B4D',      // Azul-marinho profundo
   SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#FF9000',    // Dourado
+  HIGHLIGHT: '#4169e1',    // Azul Royal
   BACKGROUND: '#F5F5F5',   // Cinza-claro
   TEXT_PRIMARY: '#333333', // Cinza-escuro
   TEXT_SECONDARY: '#666666' // Cinza-médio
@@ -26,7 +25,7 @@ const App: React.FC = () => {
   const [issuer, setIssuer] = useState<string | null>(null);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
-  const handleSearch = (selectedSegment: string, selectedIssuer: string) => {
+  const handleSearch = (selectedSegment: string | null, selectedIssuer: string | null) => {
     setSegment(selectedSegment);
     setIssuer(selectedIssuer);
     setSelectedCardId(null);

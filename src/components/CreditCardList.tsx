@@ -4,7 +4,7 @@ import { api } from '../services/api';
 const COLORS = {
   PRIMARY: '#1F3B4D',      // Azul-marinho profundo
   SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#FF9000',    // Dourado
+  HIGHLIGHT: '#4169e1',    // Dourado
   BACKGROUND: '#F5F5F5',   // Cinza-claro
   TEXT_PRIMARY: '#333333', // Cinza-escuro
   TEXT_SECONDARY: '#666666' // Cinza-médio

@@ -1,4 +1,4 @@
-import { CreditCard, TicketPlus, Award, Globe, Gift, FileText, CircleDollarSign, CalendarOff, Check } from 'lucide-react';
+import { CreditCard, TicketPlus, Award, Globe, Gift, FileText, CircleDollarSign, CalendarOff } from 'lucide-react';
 import { ReactNode, useEffect, useState } from 'react';
 import { api } from '../services/api'
 import { FaCheck } from 'react-icons/fa';
@@ -119,9 +119,9 @@ interface CardDetailSectionProps2 {
 }
 
 const COLORS = {
-  PRIMARY: '#1F3B4D',
+  PRIMARY: '#1F3B4D',       
   SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#FF9000',
+  HIGHLIGHT: '#4169e1',    // #FF9000
   BACKGROUND: '#F5F5F5',
   TEXT_PRIMARY: '#4b5563',  //#333333
   TEXT_SECONDARY: '#030712' //#666666
@@ -184,12 +184,12 @@ const CardDetailSection2 = ({ title, icon, img, children, className = '' }: Card
 export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
   const [cardDetail, setCardDetail] = useState<CreditCardProps | null>(null);
 
-  async function loadCards() {
+  /* async function loadCards() {
     const response = await api.get(`/cardid?id=${cardId}`);
     setCardDetail(response.data);
-  }
+  } */
     
-  useEffect(() => {
+  /* useEffect(() => {
     try {
       if (cardId) {
         loadCards();
@@ -199,8 +199,29 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
     } catch (error) {
       console.error('Erro ao buscar detalhes do cartão de crédito:', error);
     }
-  }, [cardId]);
+  }, [cardId]); */
 
+  const loadCards = async () => {
+    try {
+      console.log('Fazendo requisição para a API com cardId:', cardId);
+      const response = await api.get(`/cardid?id=${cardId}`);
+      console.log('Resposta da API:', response.data);
+      setCardDetail(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar detalhes do cartão de crédito:', error);
+      setCardDetail(null);
+    }
+  }
+
+  useEffect(() => {
+    console.log('CardId recebido:', cardId);
+    if (cardId) {
+      loadCards();
+    } else {
+      setCardDetail(null);
+    }
+  }, [cardId]);
+  
   return (
     
     <div className='grid md:grid-cols-2 gap-3'>
@@ -354,65 +375,51 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
               icon={<TicketPlus color={COLORS.PRIMARY} />}
               className='text-md font-semibold'
             >
-              <div style={{ color: COLORS.TEXT_PRIMARY }}
-                  className='flex justify-between'
-              >
-               {cardDetail.rewards.map((item) => (
-                  <div className="flex justify-between">
-                    <ul className='flex'> 
-                      <li>       
-                        {item.rules &&
-                          <><div className='flex justify-between'>
-                              <span className='ml-4'>{item.expenses}:</span>
-                              <span className='text-gray-950 font-semibold text-right'>{item.rules}</span>
-                            </div>
-                          </>}
+              <div style={{ color: COLORS.TEXT_PRIMARY }}>
+                {cardDetail.rewards.map((item) => (
+                  <ul><li>
+                      {item.points_per_dollar > 0  &&
+                      <><div className='flex justify-between'>
+                          <span className='ml-4'>{item.expenses}:</span>
+                          <span className='text-gray-950 font-semibold text-right'>{item.rules} {item.points_per_dollar} pontos por dólar</span>
+                      </div></>}
 
-                          <div className='ml-4'>
-                            {item.points_per_dollar > 0
-                            ?
-                            <div className='flex justify-between'>
-                              <span> Pontos por dolar: </span>
-                              <span className='text-gray-950 font-semibold'>{item.points_per_dollar}</span>
-                            </div>
-                            :
-                            <>
-                              <span className='ml-4'> Pontos por real: </span>
-                              <span className='text-gray-950 font-semibold'>{item.points_per_real}</span>
-                            </>}
-                          </div>
-                        
-                        {(!item.expiration)
-                        ?
-                        <div className='flex justify-between'>
-                          <div>
-                            <span className='inline-flex text-green-500'><FaCheck /></span>
-                            <span>Pontos expiram: </span>
-                          </div>
-                          <div>
-                              <span className='text-gray-950 font-semibold text-right'>Não</span>
-                          </div>
+                      {item.points_per_real > 0  &&
+                      <><div className='flex justify-between'>
+                          <span className='ml-4'>{item.expenses}:</span>
+                          <span className='text-gray-950 font-semibold text-right'>{item.rules} {item.points_per_real} pontos por real</span>
+                      </div></>}
+
+                      
+                      {(!item.expiration)
+                      ?
+                      <div className='flex justify-between'>
+                        <div>
+                          <span className='inline-flex text-green-500'><FaCheck /></span>
+                          <span>Pontos expiram: </span>
                         </div>
-                        :
-                        <div className='flex justify-between'>
-                          <div>
-                            <span className='inline-flex text-yellow-500'><FaCheck /></span>
-                            <span>Pontos expiram: </span>
-                          </div>
-                          <div>
-                              <span className='text-gray-950 font-semibold text-right'>Sim</span>
-                          </div>
-                        </div>}
+                        <div>
+                            <span className='text-gray-950 font-semibold text-right'>Não</span>
+                        </div>
+                      </div>
+                      :
+                      <div className='flex justify-between'>
+                        <div>
+                          <span className='inline-flex text-yellow-500'><FaCheck /></span>
+                          <span>Pontos expiram: </span>
+                        </div>
+                        <div>
+                            <span className='text-gray-950 font-semibold text-right'>Sim</span>
+                        </div>
+                      </div>}
 
-                        {item.notes &&
-                        <div className="flex justify-between">
-                          <span className="ml-4">Notas: </span>
-                          <span className='text-gray-950 font-semibold'>{item.notes}</span>
-                        </div>}
-                        
-                      </li>
-                  </ul>
-                </div>
+                      {item.notes &&
+                      <div className="flex justify-between">
+                        <span className="ml-4">Notas: </span>
+                        <span className='text-gray-950 font-semibold'>{item.notes}</span>
+                      </div>}
+                      
+                    </li></ul>
                 ))}
               </div>
             </CardDetailSection>
@@ -442,7 +449,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
                       <div className="flex justify-between">
                         <div>
                           <span className='inline-flex text-green-500'><FaCheck /></span>
-                          <span className='ml-4'>Programa:</span>
+                          <span>Programa:</span>
                         </div>
                         <span className=" text-gray-950 font-semibold">{item.program_name || 'Não especificado'}</span>
                       </div>
