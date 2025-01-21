@@ -5,7 +5,7 @@ import { api } from '../services/api';
 const COLORS = {
   PRIMARY: '#1F3B4D',      // Azul-marinho profundo
   SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#FF9000',    // Dourado #FFD700
+  HIGHLIGHT: '#4169e1',    // Dourado #FF9000
   BACKGROUND: '#F5F5F5',   // Cinza-claro
   TEXT_PRIMARY: '#333333', // Cinza-escuro
   TEXT_SECONDARY: '#666666' // Cinza-médio
@@ -29,7 +29,7 @@ const customStyles = {
   }),
   option: (provided: any, state: { isSelected: any; }) => ({...provided,
     color: COLORS.TEXT_PRIMARY,
-    backgroundColor: state.isSelected ? "lightgrey" : "white"
+    backgroundColor: state.isSelected ? "#4169e1" : "white"
   }),
 }
 
@@ -49,9 +49,9 @@ interface SearchFormProps {
 }
 
 const segmentOptions = [
-  { value: 'ALTARENDA', label: 'ALTARENDA' },
-  { value: 'ENTRADA', label: 'ENTRADA' },
-  { value: 'INTERMEDIARIO', label: 'INTERMEDIARIO' },
+  { value: 'ALTARENDA', label: 'Alta Renda' },
+  { value: 'ENTRADA', label: 'Entrada' },
+  { value: 'INTERMEDIARIO', label: 'Intermediário' },
 ];
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
@@ -92,10 +92,10 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
       <div className="income-filter flex-1">
         <label 
           htmlFor="income" 
-          className="block mb-2"
+          className="block text-sm font-medium text-muted-foreground mb-2"
           style={{ color: COLORS.TEXT_PRIMARY }}
         >
-          Segmento Renda
+          Segmento de Renda 
         </label>
         <Select
           theme={customTheme}
@@ -111,7 +111,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
       <div className="institution-filter flex-1">
         <label 
           htmlFor="institution" 
-          className="block mb-2"
+          className="block text-sm font-medium text-muted-foreground mb-2"
           style={{ color: COLORS.TEXT_PRIMARY }}
         >
           Instituição Financeira
@@ -131,7 +131,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
       </div>
       
       <button
-        className='px-4 bg-[#FF9000] text-[#333333] rounded-md font-semibold h-9 mt-8 hover:scale-105'
+        className='px-4 rounded-md font-semibold h-9 mt-7 border-2 border-[#4169e1] text-[#4169e1] hover:bg-[#4169e1] hover:text-white'
         onClick={handleSearch}
       >
         Buscar

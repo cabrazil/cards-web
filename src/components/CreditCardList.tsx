@@ -4,7 +4,7 @@ import { api } from '../services/api';
 const COLORS = {
   PRIMARY: '#1F3B4D',      // Azul-marinho profundo
   SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#4169e1',    // Dourado
+  HIGHLIGHT: '#4169e1',    // Azul royal
   BACKGROUND: '#F5F5F5',   // Cinza-claro
   TEXT_PRIMARY: '#333333', // Cinza-escuro
   TEXT_SECONDARY: '#666666' // Cinza-médio
@@ -66,7 +66,7 @@ const CreditCardList: React.FC<{
               className="credit-card-card bg-white p-4 rounded-lg shadow-md"
               onClick={() => handleCardClick(card)}
               style={{
-                border: selectedCardId === card.id ? '2px solid orange' : 'none',
+                border: selectedCardId === card.id ? '2px solid #4169e1' : 'none',
                 cursor: 'pointer',
               }}
               
