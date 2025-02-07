@@ -1,11 +1,13 @@
 import React from 'react';
 import { FileText } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
-import  CardDetailSection2  from './CardDetailSection2';
+import DateFormated from '../DateFormatedBr';
+import CardDetailSection2  from './CardDetailSection2';
 
 // Interfaces
 interface CardProps {
   cardDetail: {
+    updated_at: string;
     international_card: boolean;
     card_modality: string;
     card_brand: string;
@@ -17,6 +19,7 @@ interface CardProps {
     spread_rate: number;
     spread_on: string;
     src_card_picture: string;
+    virtual_cards: boolean;
     exclusives?: {
       additional_info?: string[];
     };
@@ -34,13 +37,13 @@ interface CardFeatureProps {
 const CardFeature: React.FC<CardFeatureProps> = ({ 
   label, 
   value, 
-  icon = false, 
+  icon=false, 
   className = ''
 }) => (
-  <div className={`flex justify-between ${className}`}>
+  <div className={`ml-2 flex justify-between ${className}`}>
     <div className="flex">
       {icon && (
-        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
+        <span className={typeof value === 'boolean' ? (value ? 'text-green-500' : 'text-yellow-500') : 'text-green-500'}>
           <FaCheck />
         </span>
       )}
@@ -59,48 +62,69 @@ export const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
   const COLORS = {
     PRIMARY: '#1F3B4D',
     TEXT_PRIMARY: '#4b5563',
+    HIGHLIGHT: '#4169e1',
   };
 
   return (
     <CardDetailSection2
       title="Sobre o Cartão"
-      icon={<FileText color={COLORS.PRIMARY} />}
+      icon={<FileText color={COLORS.HIGHLIGHT} />}
       className="text-md font-semibold"
       img={cardDetail.src_card_picture}
     >
-      <div style={{ color: COLORS.TEXT_PRIMARY }}> 
+      <div style={{ color: COLORS.TEXT_PRIMARY }}>
+      {/* data de atualização da informação */}
+      <div className='ml-2 flex justify-between'>
+          <div>
+            <span>Informações atualizadas em: </span>
+          </div>
+          <div>
+            <span className="text-gray-950 font-semibold"><DateFormated data={cardDetail.updated_at} /></span>
+          </div>
+        </div>
+
+
         {/* Cartão Internacional */}
-        <CardFeature 
-          label="Cartão Internacional:"
-          value={cardDetail.international_card}
-          icon
-        />
+        {cardDetail.international_card
+        ?
+        <CardFeature label="Cartão Internacional:" value={cardDetail.international_card} icon={true} />
+        :
+        <CardFeature label="Cartão Internacional:" value={cardDetail.international_card} />}
 
         {/* Modalidade */}
-        <CardFeature 
-          label="Modalidade:"
-          value={cardDetail.card_modality}
-          icon
-        />
-
+        {(cardDetail.card_modality.length > 6)
+        ?
+        <div className='ml-2 flex justify-between'>
+          <div>
+            <span className='inline-flex text-green-500'><FaCheck /></span>
+            <span>Modalidade:</span>
+          </div>
+          <div>
+            <span className="text-gray-950 font-semibold">{cardDetail.card_modality}</span>
+          </div>
+        </div>
+        :
+        <CardFeature label="Modalidade:" value={cardDetail.card_modality} icon />}
+        
         {/* Bandeira e variante */}
-        <CardFeature 
-          label="Bandeira e variante:"
-          value={`${cardDetail.card_brand} ${cardDetail.category}`}
-          className="ml-4"
-        />
+        <CardFeature label="Bandeira e variante:" value={`${cardDetail.card_brand} ${cardDetail.category}`} />
 
         {/* Material do cartão */}
         <CardFeature 
           label="Material do cartão:"
           value={cardDetail.card_material}
-          className="ml-4"
+          className="ml-2"
         />
+
+        {/* Colocar se possui cartões virtuais */}
+        {cardDetail.virtual_cards && (
+          <CardFeature label="Aceita cartões virtuais:" value='Sim' className="ml-2" icon={true} />
+        )}
 
         {/* Carteiras Digitais */}
         <div className="flex justify-between">
           <div>
-            <span className="ml-4">Aceito nas Carteiras Digitais:</span>
+            <span className="ml-2">Aceito nas Carteiras Digitais:</span>
           </div>
           <div>
             <ul className="text-gray-950 font-semibold display: inline-flex gap-2">
@@ -115,26 +139,22 @@ export const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
         <CardFeature 
           label="Pagar por aproximação:"
           value={cardDetail.contactless}
-          icon
         />
 
         {/* IOF */}
-        {cardDetail.iof_rate > 0 && (
-          <CardFeature 
-            label="IOF:"
-            value={`${cardDetail.iof_rate}%`}
-            className="ml-4"
-          />
-        )}
+        
+        {cardDetail.iof_rate > 0
+        ?
+        <CardFeature label="IOF:" value={`${cardDetail.iof_rate}%`} className="ml-4" />
+        :
+        <CardFeature label="IOF:" value={`${cardDetail.iof_rate}%`} icon={true} />}
 
         {/* Spread */}
-        {cardDetail.spread_rate > 0 && (
-          <CardFeature 
-            label="Spread:"
-            value={cardDetail.spread_on}
-            className="ml-4"
-          />
-        )}
+        {cardDetail.spread_rate < 5
+        ?
+        <CardFeature label="Spread:" value={`${cardDetail.spread_rate}%`} icon={true} />
+        :
+        <CardFeature label="Spread:" value={`${cardDetail.spread_rate}%`} className="ml-4" />}
 
         {/* Informações adicionais */}
         {cardDetail.exclusives?.additional_info && cardDetail.exclusives.additional_info.length > 0 && (

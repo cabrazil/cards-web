@@ -13,10 +13,10 @@ interface CardProps {
     add_cards_charge: number;
     card_limit:       string;
     get_conditions:   string[];
-    zerofees?: {
+    zerofees: {
       id: string;
-      notes: string | null;
-    };
+      notes: string;
+    }[];
   }
 }
 
@@ -54,12 +54,13 @@ export const CardRequirements: React.FC<CardProps> = ({ cardDetail }) => {
   const COLORS = {
     PRIMARY: '#1F3B4D',
     TEXT_PRIMARY: '#4b5563',
+    HIGHLIGHT: '#4169e1',
   };
 
   return (
     <CardDetailSection
       title="Para obter o Cartão"
-      icon={<CreditCard color={COLORS.PRIMARY} />}
+      icon={<CreditCard color={COLORS.HIGHLIGHT} />}
       className='text-md font-semibold'
     >
       <div style={{ color: COLORS.TEXT_PRIMARY }}>
@@ -86,10 +87,10 @@ export const CardRequirements: React.FC<CardProps> = ({ cardDetail }) => {
         )}
 
         {/* Nota - Vem de Zerofee notes */}
-        {cardDetail.zerofees?.notes && cardDetail.zerofees.notes.length > 0 && (
+        {cardDetail.zerofees[0]?.notes && cardDetail.zerofees[0].notes.length > 0 && (
           <CardFeature 
             label="Nota:"
-            value={cardDetail.zerofees.notes}
+            value={cardDetail.zerofees[0].notes}
             icon
           />
         )}
@@ -146,7 +147,7 @@ export const CardRequirements: React.FC<CardProps> = ({ cardDetail }) => {
         <CardFeature 
           label="Limite do cartão:"
           value={cardDetail.card_limit}
-          icon
+
         />
       </div>
     </CardDetailSection>

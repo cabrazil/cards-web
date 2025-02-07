@@ -1,7 +1,9 @@
 import React from 'react';
-import { CreditCard } from 'lucide-react';
+import { CalendarOff } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import  CardDetailSection  from './CardDetailSection';
+import CurrencyFormatter from '../CurrencyFormatter';
+import DivideNumber from '../DivideNumber';
 
 // Interfaces
 interface ZerofeeProps {
@@ -20,7 +22,7 @@ interface ZerofeeProps {
       fee_discount:   number;
       notes:          string;
       get_conditions: string[];
-    };
+    }[];
   }
 }
 
@@ -60,96 +62,72 @@ export const Zerofee: React.FC<ZerofeeProps> = ({ cardDetail }) => {
   const COLORS = {
     PRIMARY: '#1F3B4D',
     TEXT_PRIMARY: '#4b5563',
+    HIGHLIGHT: '#4169e1',
   };
 
   return (
     <CardDetailSection
-      title="Para obter o Cartão"
-      icon={<CreditCard color={COLORS.PRIMARY} />}
+      title="Para isentar anuidade"
+      icon={<CalendarOff color={COLORS.HIGHLIGHT} />}
       className='text-md font-semibold'
     >
       <div style={{ color: COLORS.TEXT_PRIMARY }}>
-        {/* Correntistas */}
-        <CardFeature 
-          label="Somente correntistas:"
-          value={cardDetail.account_holder}
-          icon
-        />
+        {/* Anuidade */}
+        {(cardDetail.annual_fee > 0)
+          ?
+          <div className='flex justify-between'>
+            <><div>
+              <span className='inline-flex text-yellow-500'><FaCheck /></span>
+              <span>Anuidade de: </span>
+              
+            </div>
+            <div>
+              <span className='text-gray-950 font-semibold'><CurrencyFormatter amount={cardDetail.annual_fee} /></span>
+              <span className='text-gray-950 font-semibold'> (12 x <DivideNumber amount={cardDetail.annual_fee} divisor={12} />)</span>
+            </div></> 
+          </div>
+          :
+          <div className='flex justify-between'>
+            <div>
+              <span className='inline-flex text-green-500'><FaCheck /></span>
+              <span>Anuidade: </span>
+            </div>
+            <span className='text-gray-950 font-semibold'>Isento</span>
+          </div>}
         
         {/* Condições */}
-        <div className='flex justify-between'>
-          <p><span className="ml-4">Precisa de:</span></p>
-          <p>
-            <span>                    
-              <ul className='text-gray-950 font-semibold'>
-                {cardDetail.zerofees.get_conditions.map((item) => (
-                  <li className='ml-4 text-right'>{item}</li>
-                ))}
-              </ul>
-            </span>
-          </p>
-        </div>
-
-        {/* Obs Correntistas */}
-        <CardFeature 
-          label="Obs:"
-          value={cardDetail.zerofees.notes}
-          icon
-        />
-
-        {/* Cartões Adicionais */}
-        <div className='flex justify-between'>
-          {cardDetail.add_cards_amount === 0
-            ? <span></span>
-            : cardDetail.add_cards_amount >=4
-              ?
-              <>
-                <div className='flex'>
-                  <span className='text-green-500'><FaCheck /></span>
-                  <span>Cartões adicionais: </span>
+        {cardDetail.zerofees.map((item) => (
+          <ul>
+            {(item.fee_discount > 0) && (item.notes != 'Isento')
+            ?
+            <div>
+              <CardFeature label="Isenção de:" value={item.fee_discount} icon={true} />
+              <li>
+                <div className='flex justify-between'>
+                  <p><span className="ml-4">Precisa de:</span></p>
+                  <p>
+                    <span>                    
+                      <ul className='text-gray-950 font-semibold'>
+                        {item.get_conditions.map((item) => (
+                          <li className='ml-4 text-right'>{item}</li>
+                        ))}
+                      </ul>
+                    </span>
+                  </p>
                 </div>
-                <div>
-                  <span className="text-gray-950 font-semibold">Até {cardDetail.add_cards_amount}</span>
-                </div>
-              </>
-              :
-              <>
-                <div className='flex'>
-                  <span className='text-yellow-500'><FaCheck /></span>
-                  <span>Cartões adicionais: </span>
-                </div>
-                <div>
-                <span className="text-gray-950 font-semibold">Até {cardDetail.add_cards_amount}</span>
-                </div>
-            </>}
-        </div>
-
-        {/* Obs Correntistas */}
-        <CardFeature 
-          label="Obs:"
-          value={cardDetail.obs_add_cards}
-          icon
-        />
-
-        {/* Valor mínimo por fatura */}
-        <div className='flex justify-between'>
-          {cardDetail.add_cards_charge > 0 &&
-            <>
-              <div>
-                <span className="ml-4">Valor mínimo de fatura por adicional: </span>
-              </div>
-              <div>
-                <span className="text-gray-950 font-semibold">{cardDetail.add_cards_charge}</span>
-              </div>
-            </>} 
-        </div>
-
-        {/* Limite do cartão */}
-        <CardFeature 
-          label="Limite do cartão:"
-          value={cardDetail.card_limit}
-          icon
-        />
+              </li>
+            </div>
+            : 
+            <div>
+                <li>
+                  <p>
+                    <span className='inline-flex text-green-500'><FaCheck /></span>
+                    <span className='text-gray-950 font-semibold ml-4'>Não há exigências.</span>
+                  </p>
+                </li>
+            </div>} 
+          </ul>
+        ))}  
       </div>
     </CardDetailSection>
   );

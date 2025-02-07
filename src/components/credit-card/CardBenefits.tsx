@@ -1,14 +1,30 @@
 import React from 'react';
-import { CircleDollarSign } from 'lucide-react';
+import { Gift } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import CardDetailSection from './CardDetailSection';
 
+// Interfaces
 interface CardProps {
   cardDetail: {
-    id:                    string;
-    cashback:              string;
-    obs_add_cards:         string;
-    obs_cashback:          string[];
+    id:               string;
+    card_name:        string;
+    card_brand:       string;
+    category:         string;
+    exclusives: {
+      id:               string;
+      tag_name:         string;
+      tag_amount:       number;
+      exclusive_offers: string[];
+      additional_info:  string[];
+    };
+    brand: {
+      id:           string;
+      brand_name:   string;
+      variant_name: string;
+      general_benefits: string[];
+      isActive:     boolean;
+      site_info:    string;
+    };
   }
 }
 
@@ -28,7 +44,7 @@ const CardFeature: React.FC<CardFeatureProps> = ({
   <div className={`flex justify-between ${className}`}>
     <div className="flex">
       {icon && (
-        <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
+        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
           <FaCheck />
         </span>
       )}
@@ -42,7 +58,7 @@ const CardFeature: React.FC<CardFeatureProps> = ({
   </div>
 );
 
-export const Cashback: React.FC<CardProps> = ({ cardDetail }) => {
+export const CardBenefits: React.FC<CardProps> = ({ cardDetail }) => {
   const COLORS = {
     PRIMARY: '#1F3B4D',
     TEXT_PRIMARY: '#4b5563',
@@ -51,34 +67,30 @@ export const Cashback: React.FC<CardProps> = ({ cardDetail }) => {
 
   return (
     <CardDetailSection
-      title="Cashback"
-      icon={<CircleDollarSign color={COLORS.HIGHLIGHT} />}
+      title="Benefícios Exclusivos"
+      icon={<Gift color={COLORS.HIGHLIGHT} />}
       className='text-md font-semibold'
     >
       <div style={{ color: COLORS.TEXT_PRIMARY }}>
-        {cardDetail?.obs_cashback.length
-        ?
-        <CardFeature label="Percentual de:" value={cardDetail.cashback} icon={true} />
-        :
-        <CardFeature label="Percentual de:" value={cardDetail.cashback} icon={false} />}
-        
-        {cardDetail?.obs_cashback &&
+      {cardDetail.exclusives?.tag_name &&
+        <CardFeature label="Tag pedágios:" value={cardDetail.exclusives.tag_name} icon />}
+
+        {cardDetail.exclusives?.exclusive_offers?.length &&
           <div className='flex justify-between'>
-            <p><span className="ml-4">Obs: </span></p>
+            <p><span className="ml-4">Exclusivos: </span></p>
               <p>
                 <span>                    
                   <ul className='text-gray-950 font-semibold'>
-                    {cardDetail.obs_cashback.map((item) => (
+                    {cardDetail.exclusives.exclusive_offers.map((item) => (
                       <li className='ml-4 text-right'>{item}</li>
                     ))}
                   </ul>
                 </span>
               </p>
           </div>}
-      </div>
+        </div>
     </CardDetailSection>
   );
 };
 
-export default Cashback;
-
+export default CardBenefits;

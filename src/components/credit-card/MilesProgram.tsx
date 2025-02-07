@@ -1,86 +1,108 @@
-import { useEffect, useState } from 'react'
-import { api } from '../services/api'
+import React from 'react';
+import { Award } from 'lucide-react';
+import { FaCheck } from 'react-icons/fa';
+import CardDetailSection from './CardDetailSection';
 
 interface CardProps{
-  id: string;
-  card_name: string;
-  issuer: string;
-  annual_fee: number;
-  card_brand: string;
-  category: string;
-  virtual_wallets: [];
-  add_cards_amount: number;
-  add_cards_charge: number;
-  card_limit: string;
-  req_min_income: number;
-  req_min_investment: number;
-  card_material: string;
-  contactless: boolean;
-  get_conditions: [];
-  spread_on: string;
-  cashback: string;
-  obs_add_cards: string;
-  obs_cashback: string;
-  mileages: [{
+  cardDetail: {
     id: string;
-    program_name: string;
-    transfer_program:  string[];
-    airlines:          string[];
-    hotels:            string[]
-    rate_points_miles: number;
-    min_transfer:      number;
-    exchange_store:    string[];
-    pay_bills:         boolean;
-    pay_cashback:      boolean;
-    other_options:     string[];
-  }]
+    card_name: string;
+    mileages: {
+      id: string;
+      program_name: string;
+      transfer_program:  string[];
+      airlines:          string[];
+      hotels:            string[]
+      rate_points_miles: number;
+      min_transfer:      number;
+      exchange_store:    string[];
+      pay_bills:         boolean;
+      pay_cashback:      boolean;
+      other_options:     string[];
+    }[]
+  }
 }
 
-export default function Mileage(){
+interface CardFeatureProps {
+  label: string;
+  value: string | string[] | number | boolean;
+  icon?: boolean;
+  className?: string;
+}
 
-  const [cards, setCards] = useState<CardProps[]>([])
+const CardFeature: React.FC<CardFeatureProps> = ({ 
+  label, 
+  value, 
+  icon = false, 
+  className = ''
+}) => (
+  <div className={`ml-2 flex justify-between ${className}`}>
+    <div className="flex">
+      {icon && (
+        <span className={typeof value === 'boolean' ? (value ? 'text-green-500' : 'text-yellow-500') : 'text-green-500'}>
+          <FaCheck />
+        </span>
+      )}
+      <span>{label}</span>
+    </div>
+    <div>
+      <span className="text-gray-950 font-semibold">
+        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
+      </span>
+    </div>
+  </div>
+);
 
-  useEffect(() => {
-    loadCards();
-  }, [])
+export const MilesProgram: React.FC<CardProps> = ({ cardDetail }) => {
+  const COLORS = {
+    PRIMARY: '#1F3B4D',
+    TEXT_PRIMARY: '#4b5563',
+    HIGHLIGHT: '#4169e1',
+  };
 
-  async function loadCards() {
-    const response = await api.get("/mileages")
-    setCards(response.data);
-  }
+  return (
+    <CardDetailSection
+      title="Programa de milhas"
+      icon={<Award color={COLORS.HIGHLIGHT} />}
+      className='text-md font-semibold'
+    >
+      <div style={{ color: COLORS.TEXT_PRIMARY }}>
+        {cardDetail?.mileages.map((item) => (
+          <ul>
+            <li>
+              <CardFeature label="Nome:" value={item.program_name} />
 
-  return(
-    <div className="w-full max-w-8xl">
-      <div className="flex flex-col lg:flex-row gap-4">
-        {cards.map( (card) => (
-          <div 
-            key={card.id}
-            className="bg-white rounded-lg shadow-md p-4 flex flex-col flex-1 ml-4">
-            
-          
-            
-              <div>
-                <ul> 
-                  {card.mileages.map((item) => (
-                    <li>
-                      <p><span className="text-blue-500 font-bold">Programa de milhagem: </span>{item.program_name}</p>
-                      <p><span className="text-blue-500">Pontos podem ser transferidos para: </span></p>
-                      
-                      {(item.transfer_program[0]) &&
-                      <p><span className="text-blue-500">Programa de pontos: </span>{item.transfer_program}</p>}
-                      {(item.airlines[0]) &&
-                      <p><span className="text-blue-500">Companhias aéreas: </span>{item.airlines}</p>}
-                      {(item.hotels[0]) &&
-                      <p><span className="text-blue-500">Hotéis: </span>{item.hotels}</p>}
-                      <p><span className="text-blue-500">Transfere pontos para a fatura: </span>{item.airlines}</p>
-                      <p><span className="text-blue-500">Transfere pontos para cashback: </span>{item.airlines}</p>
-                    </li>
-                    ))}
-                </ul>
-              </div>      
-          </div>  
+              {item.transfer_program[0] === 'Livelo'
+              ?
+              <CardFeature label="Pontos podem ser transferidos para o programa:" value={item.transfer_program} icon={true} />
+              :
+              <div className='ml-2 flex justify-between'>
+                <div>
+                  <span>Pontos podem ser transferidos para o programa:</span>
+                </div>
+                <div>
+                  <span className="text-gray-950 font-semibold">Não há</span>
+                </div>
+              </div>}
+              
+              {item?.airlines.length > 3 &&
+              <CardFeature label="Para companhias aéreas:" value={item.airlines} icon={true} />}
+     
+              {item?.hotels[0] &&
+              <CardFeature label="Para hotéis:" value={item.hotels} />}
+
+              {item.pay_bills &&
+              <CardFeature label="Pontos(cashback) para a fatura:" value='Sim'  />}
+              
+              {item?.other_options &&
+              <CardFeature label="Obs:" value={item.other_options} />}
+            </li>
+          </ul>
         ))}
       </div>
-    </div>
-  )
-}
+    </CardDetailSection>
+  );
+};
+
+export default MilesProgram;
+

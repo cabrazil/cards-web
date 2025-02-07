@@ -38,3 +38,16 @@ return (
   >
     <span className='text-gray-950 font-semibold text-right'>Não oferece</span>
   </CardDetailSection>}
+
+
+{(item.points_per_real > 100)
+  ?
+  <><div className='flex justify-between'>
+      <span className='ml-4'>{item.expenses}:</span>
+      <span className='text-gray-950 font-semibold text-right'>{item.rules} <DivideBy100 amount={item.points_per_real} divisor={100} /> pontos por real</span>
+  </div></>
+  :
+  <><div className='flex justify-between'>
+      <span className='ml-4'>{item.expenses}:</span>
+      <span className='text-gray-950 font-semibold text-right'>{item.rules} {item.points_per_real} pontos por real</span>
+  </div></>}

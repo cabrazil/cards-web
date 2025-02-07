@@ -8,6 +8,10 @@ import Rewards from './credit-card/Rewards';
 import NoRewards from './credit-card/NoRewards';
 import Cashback from './credit-card/Cashback';
 import VipLounges from './credit-card/VipLounges';
+import MilesProgram from './credit-card/MilesProgram';
+import Zerofee from './credit-card/ZeroFee';
+import CardBenefits from './credit-card/CardBenefits';
+import BrandBenefits from './credit-card/BrandBenefits';
 
 
 // Tipos
@@ -45,6 +49,9 @@ interface CardProps {
   src_card_picture:      string;
   segment:               string;
   issuer_name:           string;
+  points_expire:         boolean;
+  obs_system_points:     string[];
+  virtual_cards:         boolean;
   zerofees: {
     id:             string;
     expenses:       string;
@@ -52,7 +59,7 @@ interface CardProps {
     fee_discount:   number;
     notes:          string;
     get_conditions: string[];
-  };
+  }[];
   rewards: {
     id:                 string;
     expenses:           string;
@@ -160,29 +167,31 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
       <section className="credit-card-details gap-4">
         <div>
           <AboutCard cardDetail={cardDetail} />
-          <CardRequirements cardDetail={cardDetail} />
+          
           {cardDetail.ranking_points > 0
           ? 
           <Rewards cardDetail={cardDetail} />
           :
           <NoRewards />}
-          <Cashback cardDetail={cardDetail} />
-          <VipLounges cardDetail={cardDetail} />
+          
+          
+          <MilesProgram cardDetail={cardDetail} />
+          <BrandBenefits cardDetail={cardDetail} />
         </div>
       </section>
 
       {/* Coluna da direita - Informações secundárias */}
       <section className="credit-card-details gap-4">
         <div>
-          <AboutCard cardDetail={cardDetail} />
+          
+          
           <CardRequirements cardDetail={cardDetail} />
-          {cardDetail.ranking_points > 0
-          ? 
-          <Rewards cardDetail={cardDetail} />
-          :
-          <NoRewards />}
+          <Zerofee cardDetail={cardDetail} />
+         
           <Cashback cardDetail={cardDetail} />
           <VipLounges cardDetail={cardDetail} />
+          <CardBenefits cardDetail={cardDetail} />
+          
         </div>
       </section>
     </div>

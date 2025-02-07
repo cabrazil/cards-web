@@ -2,6 +2,7 @@ import React from 'react';
 import { Globe } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import CardDetailSection from './CardDetailSection';
+import { Separator } from '../Separator';
 
 interface CardProps {
   cardDetail: {
@@ -33,7 +34,7 @@ const CardFeature: React.FC<CardFeatureProps> = ({
   icon = false, 
   className = ''
 }) => (
-  <div className={`flex justify-between ${className}`}>
+  <div className={`ml-2 flex justify-between ${className}`}>
     <div className="flex">
       {icon && (
         <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
@@ -54,17 +55,16 @@ export const VipLounges: React.FC<CardProps> = ({ cardDetail }) => {
   const COLORS = {
     PRIMARY: '#1F3B4D',
     TEXT_PRIMARY: '#4b5563',
+    HIGHLIGHT: '#4169e1',
   };
 
   return (
     <CardDetailSection
       title="Acesso às Salas VIP"
-      icon={<Globe color={COLORS.PRIMARY} />}
+      icon={<Globe color={COLORS.HIGHLIGHT} />}
       className='text-md font-semibold'
     >
       <div style={{ color: COLORS.TEXT_PRIMARY }}>
-        {cardDetail.vip_lounge_app &&
-          <CardFeature label="Aplicativo:" value={cardDetail.vip_lounge_app} icon={true} />}
 
         {cardDetail?.lounges.map((item) => (
           <ul>
@@ -86,9 +86,17 @@ export const VipLounges: React.FC<CardProps> = ({ cardDetail }) => {
               
               {item.conditions &&
               <CardFeature label="Condições:" value={item.conditions} />}
+
+              <div>
+                <Separator   />
+              </div>
+              
             </li>
           </ul>
         ))}
+
+        {cardDetail.vip_lounge_app &&
+          <CardFeature label="Aplicativo:" value={cardDetail.vip_lounge_app} icon={true} />}
       </div>
     </CardDetailSection>
   );
