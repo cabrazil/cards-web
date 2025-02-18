@@ -9,15 +9,15 @@ const COLORS = {
   TEXT_SECONDARY: '#030712' //#666666
 };
 
-interface CardDetailSectionProps2 {
+interface CardDetailSectionProps3 {
   title: string;
   icon: ReactNode;
-  img: string;
+  icon2: ReactNode;
   children: ReactNode;
   className?: string;
 }
-// Para usar a imagem do cartão
-const CardDetailSection2 = ({ title, icon, img, children, className = '' }: CardDetailSectionProps2) => (
+// Para usar com tooltip e texto
+const CardDetailSection3 = ({ title, icon, icon2, children, className = '' }: CardDetailSectionProps3) => (
   <div 
     className={`card-section p-2 rounded-lg mb-4 shadow-sm ${className}`}
     style={{ 
@@ -38,8 +38,8 @@ const CardDetailSection2 = ({ title, icon, img, children, className = '' }: Card
             {title}
           </h3>
       </div>
-      <div>
-        <img className='w-[12rem] h-[8rem]' src={img} alt="cartão de crédito" />
+      <div style={{ color: COLORS.TEXT_PRIMARY }}>
+        {icon2}
       </div>
       
     </div>
@@ -47,4 +47,4 @@ const CardDetailSection2 = ({ title, icon, img, children, className = '' }: Card
   </div>
 );
 
-export default CardDetailSection2;
+export default CardDetailSection3;

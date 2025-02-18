@@ -36,11 +36,38 @@ const CardFeature: React.FC<CardFeatureProps> = ({
 }) => (
   <div className={`ml-2 flex justify-between ${className}`}>
     <div className="flex">
-      {icon && (
+      {/* {icon && (
         <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
           <FaCheck />
         </span>
-      )}
+      )} */}
+      {icon 
+        ?
+        <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
+          <FaCheck />
+        </span>
+        :
+        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
+          <FaCheck />
+        </span>
+      }
+      <span>{label}</span>
+    </div>
+    <div>
+      <span className="text-gray-950 font-semibold">
+        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
+      </span>
+    </div>
+  </div>
+);
+
+const CardFeature2: React.FC<CardFeatureProps> = ({ 
+  label, 
+  value, 
+  className = ''
+}) => (
+  <div className={`ml-2 flex justify-between ${className}`}>
+    <div className="flex">
       <span>{label}</span>
     </div>
     <div>
@@ -76,16 +103,19 @@ export const VipLounges: React.FC<CardProps> = ({ cardDetail }) => {
               <CardFeature label="Sala:" value={item.lounge_name} icon={false} />}
 
               {item?.br_airport[0] &&
-              <CardFeature label="Aeroportos nacionais:" value={item.br_airport} />}
+              <CardFeature2 label="Aeroportos nacionais:" value={item.br_airport} />}
               
               {item?.int_airport[0] &&
-              <CardFeature label="Aeroportos internacionais:" value={item.int_airport} />}
+              <CardFeature2 label="Aeroportos internacionais:" value={item.int_airport} />}
      
-              {item.access_limit &&
-              <CardFeature label="Limite de acessos:" value={item.access_limit} />}
+              {cardDetail.ranking_vip_lounges > 2
+              ?
+              <CardFeature label="Limite de acessos:" value={item.access_limit} icon={true} />
+              :
+              <CardFeature2 label="Limite de acessos:" value={item.access_limit} />}
               
               {item.conditions &&
-              <CardFeature label="Condições:" value={item.conditions} />}
+              <CardFeature2 label="Condições:" value={item.conditions} />}
 
               <div>
                 <Separator   />

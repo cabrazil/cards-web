@@ -52,6 +52,7 @@ interface CardProps {
   points_expire:         boolean;
   obs_system_points:     string[];
   virtual_cards:         boolean;
+  points_accelerator:    boolean;
   zerofees: {
     id:             string;
     expenses:       string;

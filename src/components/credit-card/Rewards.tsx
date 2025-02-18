@@ -40,11 +40,21 @@ const CardFeature: React.FC<CardFeatureProps> = ({
 }) => (
   <div className={`ml-2 flex justify-between ${className}`}>
     <div className="flex">
-      {icon && (
+      {/* {icon && (
         <span className={typeof value === 'boolean' ? (value ? 'text-green-500' : 'text-yellow-500') : 'text-green-500'}>
           <FaCheck />
         </span>
-      )}
+      )} */}
+      {icon 
+        ?
+        <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
+          <FaCheck />
+        </span>
+        :
+        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
+          <FaCheck />
+        </span>
+      }
       <span>{label}</span>
     </div>
     <div>
@@ -72,7 +82,16 @@ export const Rewards: React.FC<CardProps> = ({ cardDetail }) => {
         {cardDetail?.rewards.map((item) => (
           <ul>
             <li>
-              {item.points_per_dollar > 0  &&
+              {item.points_per_dollar > 2.4
+              ?
+              <><div className='ml-2 flex justify-between'>
+                <div>
+                  <span className='inline-flex text-green-500'><FaCheck /></span>
+                  <span>{item.expenses}:</span>
+                </div>
+                  <span className='text-gray-950 font-semibold text-right'>{item.rules} {item.points_per_dollar} pontos por dólar</span>
+              </div></>
+              :
               <><div className='flex justify-between'>
                   <span className='ml-2'>{item.expenses}:</span>
                   <span className='text-gray-950 font-semibold text-right'>{item.rules} {item.points_per_dollar} pontos por dólar</span>

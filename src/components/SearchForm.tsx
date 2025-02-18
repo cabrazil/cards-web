@@ -114,7 +114,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
           className="block text-sm font-medium text-muted-foreground mb-2"
           style={{ color: COLORS.TEXT_PRIMARY }}
         >
-          Instituição Financeira
+          Instituição Emissora
         </label>
         <div className="relative">
 

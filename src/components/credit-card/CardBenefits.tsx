@@ -10,13 +10,13 @@ interface CardProps {
     card_name:        string;
     card_brand:       string;
     category:         string;
-    exclusives: {
+    exclusives?: {
       id:               string;
       tag_name:         string;
       tag_amount:       number;
       exclusive_offers: string[];
       additional_info:  string[];
-    };
+    }
     brand: {
       id:           string;
       brand_name:   string;
@@ -43,11 +43,38 @@ const CardFeature: React.FC<CardFeatureProps> = ({
 }) => (
   <div className={`flex justify-between ${className}`}>
     <div className="flex">
-      {icon && (
+      {/* {icon && (
         <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
           <FaCheck />
         </span>
-      )}
+      )} */}
+      {icon 
+        ?
+        <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
+          <FaCheck />
+        </span>
+        :
+        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
+          <FaCheck />
+        </span>
+      }
+      <span>{label}</span>
+    </div>
+    <div>
+      <span className="text-gray-950 font-semibold">
+        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
+      </span>
+    </div>
+  </div>
+);
+
+const CardFeature2: React.FC<CardFeatureProps> = ({ 
+  label, 
+  value, 
+  className = ''
+}) => (
+  <div className={`ml-2 flex justify-between ${className}`}>
+    <div className="flex">
       <span>{label}</span>
     </div>
     <div>
@@ -75,20 +102,23 @@ export const CardBenefits: React.FC<CardProps> = ({ cardDetail }) => {
       {cardDetail.exclusives?.tag_name &&
         <CardFeature label="Tag pedágios:" value={cardDetail.exclusives.tag_name} icon />}
 
-        {cardDetail.exclusives?.exclusive_offers?.length &&
-          <div className='flex justify-between'>
-            <p><span className="ml-4">Exclusivos: </span></p>
-              <p>
-                <span>                    
-                  <ul className='text-gray-950 font-semibold'>
-                    {cardDetail.exclusives.exclusive_offers.map((item) => (
-                      <li className='ml-4 text-right'>{item}</li>
-                    ))}
-                  </ul>
-                </span>
-              </p>
-          </div>}
-        </div>
+      {((cardDetail.exclusives?.tag_amount ?? 0) > 2) &&
+        <CardFeature label="Quantidade:" value={`Até ${cardDetail.exclusives?.tag_amount}`} icon />}
+
+      {cardDetail.exclusives?.exclusive_offers?.length &&
+        <div className='flex justify-between'>
+          <p><span className="ml-2">Exclusivos: </span></p>
+            <p>
+              <span>                    
+                <ul className='text-gray-950 font-semibold'>
+                  {cardDetail.exclusives.exclusive_offers.map((item) => (
+                    <li className='ml-2 text-right'>{item}</li>
+                  ))}
+                </ul>
+              </span>
+            </p>
+        </div>}
+      </div>
     </CardDetailSection>
   );
 };

@@ -38,11 +38,38 @@ const CardFeature: React.FC<CardFeatureProps> = ({
 }) => (
   <div className={`ml-2 flex justify-between ${className}`}>
     <div className="flex">
-      {icon && (
+      {/* {icon && (
         <span className={typeof value === 'boolean' ? (value ? 'text-green-500' : 'text-yellow-500') : 'text-green-500'}>
           <FaCheck />
         </span>
-      )}
+      )} */}
+      {icon 
+        ?
+        <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
+          <FaCheck />
+        </span>
+        :
+        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
+          <FaCheck />
+        </span>
+      }
+      <span>{label}</span>
+    </div>
+    <div>
+      <span className="text-gray-950 font-semibold">
+        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
+      </span>
+    </div>
+  </div>
+);
+
+const CardFeature2: React.FC<CardFeatureProps> = ({ 
+  label, 
+  value, 
+  className = ''
+}) => (
+  <div className={`ml-2 flex justify-between ${className}`}>
+    <div className="flex">
       <span>{label}</span>
     </div>
     <div>
@@ -70,20 +97,13 @@ export const MilesProgram: React.FC<CardProps> = ({ cardDetail }) => {
         {cardDetail?.mileages.map((item) => (
           <ul>
             <li>
-              <CardFeature label="Nome:" value={item.program_name} />
+              <CardFeature2 label="Nome:" value={item.program_name} />
 
-              {item.transfer_program[0] === 'Livelo'
+              {(item.transfer_program[0] === 'Livelo' || item.transfer_program[0] === 'Esfera')
               ?
-              <CardFeature label="Pontos podem ser transferidos para o programa:" value={item.transfer_program} icon={true} />
+              <CardFeature label="Transferência para programas parceiros:" value={item.transfer_program} icon={true} />
               :
-              <div className='ml-2 flex justify-between'>
-                <div>
-                  <span>Pontos podem ser transferidos para o programa:</span>
-                </div>
-                <div>
-                  <span className="text-gray-950 font-semibold">Não há</span>
-                </div>
-              </div>}
+              <CardFeature label="Transferência para programas parceiros:" value={item.transfer_program} />}
               
               {item?.airlines.length > 3 &&
               <CardFeature label="Para companhias aéreas:" value={item.airlines} icon={true} />}
