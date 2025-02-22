@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText } from 'lucide-react';
+import { CreditCard } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import DateFormated from '../DateFormatedBr';
 import CardDetailSection2  from './CardDetailSection2';
@@ -13,10 +13,12 @@ interface CardProps {
     card_brand: string;
     category: string;
     card_material: string;
+    ranking_benefits: number;
     virtual_wallets: string[];
     contactless: boolean;
     iof_rate: number;
     spread_rate: number;
+    ranking_vip_lounges: number;
     spread_on: string;
     src_card_picture: string;
     virtual_cards: boolean;
@@ -95,13 +97,13 @@ export const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
   return (
     <CardDetailSection2
       title="Sobre o Cartão"
-      icon={<FileText color={COLORS.HIGHLIGHT} />}
+      icon={<CreditCard color={COLORS.HIGHLIGHT} />}
       className="text-md font-semibold"
       img={cardDetail.src_card_picture}
     >
       <div style={{ color: COLORS.TEXT_PRIMARY }}>
       {/* data de atualização da informação */}
-      <div className='ml-2 flex justify-between'>
+        <div className='ml-2 flex justify-between'>
           <div>
             <span>Informações atualizadas em: </span>
           </div>

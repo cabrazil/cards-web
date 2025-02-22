@@ -107,16 +107,16 @@ export const CardBenefits: React.FC<CardProps> = ({ cardDetail }) => {
 
       {cardDetail.exclusives?.exclusive_offers?.length &&
         <div className='flex justify-between'>
-          <p><span className="ml-2">Exclusivos: </span></p>
-            <p>
+          <span className="ml-2">Exclusivos: </span>
+            
               <span>                    
                 <ul className='text-gray-950 font-semibold'>
-                  {cardDetail.exclusives.exclusive_offers.map((item) => (
-                    <li className='ml-2 text-right'>{item}</li>
+                  {cardDetail.exclusives.exclusive_offers.map((item, index) => (
+                    <li key={index} className='ml-2 text-right'>{item}</li>
                   ))}
                 </ul>
               </span>
-            </p>
+            
         </div>}
       </div>
     </CardDetailSection>

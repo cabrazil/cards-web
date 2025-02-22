@@ -103,8 +103,8 @@ export const BrandBenefits: React.FC<CardProps> = ({ cardDetail }) => {
            <div>
              <span>                    
                <ul className='text-gray-950 font-semibold'>
-                 {cardDetail.brand.general_benefits.map((item) => (
-                   <li className='ml-4 text-right'>{item}</li>
+                 {cardDetail.brand.general_benefits.map((item, index) => (
+                   <li key={index} className='ml-4 text-right'>{item}</li>
                  ))}
                </ul>
              </span>

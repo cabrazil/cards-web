@@ -1,21 +1,28 @@
 import React from 'react';
-import { CircleDollarSign, CircleHelp } from 'lucide-react';
+import { CircleDollarSign, Lightbulb } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import CardDetailSection3 from './CardDetailSection3';
 import { TooltipIcon } from '../TooltipIcon';
 
 interface CardProps {
   cardDetail: {
-    id:                    string;
-    cashback:              string;
-    obs_add_cards:         string;
-    obs_cashback:          string[];
+    id:                 string;
+    card_name:          string;
+    obs_add_cards:      string;
+    contactless: boolean;
+    cashbacks: {
+      id:               string;
+      pct_cashback:     number;
+      txt_cashback:     string;
+      obs_cashback:     string[];
+      cash_tips:        string[];
+    }[];
   }
 }
 
 interface CardFeatureProps {
   label: string;
-  value: string | number | boolean;
+  value: string | string[] |number | boolean;
   icon?: boolean;
   className?: string;
 }
@@ -53,7 +60,7 @@ const CardFeature: React.FC<CardFeatureProps> = ({
   </div>
 );
 
-const CardFeature2: React.FC<CardFeatureProps> = ({ 
+/* const CardFeature2: React.FC<CardFeatureProps> = ({ 
   label, 
   value, 
   className = ''
@@ -68,7 +75,7 @@ const CardFeature2: React.FC<CardFeatureProps> = ({
       </span>
     </div>
   </div>
-);
+); */
 
 export const Cashback: React.FC<CardProps> = ({ cardDetail }) => {
   const COLORS = {
@@ -76,35 +83,39 @@ export const Cashback: React.FC<CardProps> = ({ cardDetail }) => {
     TEXT_PRIMARY: '#4b5563',
     HIGHLIGHT: '#4169e1',
   };
-
+  //console.log("Dados recebidos:", Cashback);
   return (
     <CardDetailSection3
       title="Cashback"
       icon={<CircleDollarSign color={COLORS.HIGHLIGHT} />}
       className='text-md font-semibold'
-      icon2={<TooltipIcon text={cardDetail.obs_add_cards} icon={<CircleHelp /> } /> }
+      icon2={cardDetail?.cashbacks[0].cash_tips.length > 0 
+        ? <TooltipIcon text={cardDetail.cashbacks[0].cash_tips.join("\n")} icon={<Lightbulb />} /> 
+        : <span></span> }
     > 
       <div style={{ color: COLORS.TEXT_PRIMARY }}>
-        {cardDetail?.cashback.length
-        ?
-        <CardFeature label="Percentual de:" value={cardDetail.cashback} icon={true} />
-        :
-        <CardFeature2 label="Sem percentual nas compras" value={cardDetail.cashback}/>  
-        }
-        
-        {cardDetail?.obs_cashback &&
-          <div className='flex justify-between'>
-            <p><span className="ml-2">Obs: </span></p>
-              <p>
-                <span>                    
-                  <ul className='text-gray-950 font-semibold'>
-                    {cardDetail.obs_cashback.map((item) => (
-                      <li className='ml-4 text-right'>{item}</li>
-                    ))}
-                  </ul>
-                </span>
-              </p>
-          </div>}
+        {cardDetail?.cashbacks.map((item) => 
+          <ul key={item.id}>
+            <li>
+              {item.pct_cashback > 0 &&
+              <CardFeature label="Percentual de:" value={`${item.pct_cashback}% ${item.txt_cashback}`} icon={true} />}
+            
+              {item.obs_cashback &&
+                <div className='flex justify-between'>
+                  <span className="ml-2">Obs: </span>
+                    
+                      <span>                    
+                        <ul className='text-gray-950 font-semibold'>
+                          {item.obs_cashback.map((item, index) => (
+                            <li key={index} className='ml-4 text-right'>{item}</li>
+                          ))}
+                        </ul>
+                      </span>
+                    
+                </div>}
+            </li>
+          </ul>
+        )}
       </div>
     </CardDetailSection3>
   );

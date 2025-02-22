@@ -1,5 +1,5 @@
 import React from 'react';
-import { CreditCard } from 'lucide-react';
+import { Target } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import CardDetailSection from './CardDetailSection';
 
@@ -88,7 +88,7 @@ export const CardRequirements: React.FC<CardProps> = ({ cardDetail }) => {
   return (
     <CardDetailSection
       title="Para obter o Cartão"
-      icon={<CreditCard color={COLORS.HIGHLIGHT} />}
+      icon={<Target color={COLORS.HIGHLIGHT} />}
       className='text-md font-semibold'
     >
       <div style={{ color: COLORS.TEXT_PRIMARY }}>

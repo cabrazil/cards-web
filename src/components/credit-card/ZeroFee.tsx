@@ -123,23 +123,23 @@ export const Zerofee: React.FC<ZerofeeProps> = ({ cardDetail }) => {
         
         {/* Condições */}
         {cardDetail.zerofees.map((item) => (
-          <ul>
+          <ul key={item.id}>
             {(item.fee_discount > 0) && (item.notes != 'Isento')
             ?
             <div>
               <CardFeature2 label="Concede isenção de:" value={`${item.fee_discount}%`} />
               <li>
                 <div className='flex justify-between'>
-                  <p><span className="ml-2">Precisa:</span></p>
-                  <p>
+                  <span className="ml-2">Precisa:</span>
+                  
                     <span>                    
                       <ul className='text-gray-950 font-semibold'>
-                        {item.get_conditions.map((item) => (
-                          <li className='text-right'>{item}</li>
+                        {item.get_conditions.map((item, index) => (
+                          <li key={index} className='text-right'>{item}</li>
                         ))}
                       </ul>
                     </span>
-                  </p>
+                  
                 </div>
               </li>
             </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Award } from 'lucide-react';
+import { Plane } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import CardDetailSection from './CardDetailSection';
 
@@ -90,12 +90,12 @@ export const MilesProgram: React.FC<CardProps> = ({ cardDetail }) => {
   return (
     <CardDetailSection
       title="Programa de milhas"
-      icon={<Award color={COLORS.HIGHLIGHT} />}
+      icon={<Plane color={COLORS.HIGHLIGHT} />}
       className='text-md font-semibold'
     >
       <div style={{ color: COLORS.TEXT_PRIMARY }}>
         {cardDetail?.mileages.map((item) => (
-          <ul>
+          <ul key={item.id}>
             <li>
               <CardFeature2 label="Nome:" value={item.program_name} />
 

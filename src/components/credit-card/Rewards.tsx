@@ -1,5 +1,5 @@
 import React from 'react';
-import { TicketPlus } from 'lucide-react';
+import { Gem } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import CardDetailSection from './CardDetailSection';
 import DivideBy100 from '../DivedeBy100';
@@ -75,12 +75,12 @@ export const Rewards: React.FC<CardProps> = ({ cardDetail }) => {
   return (
     <CardDetailSection
       title="Pontuação do Cartão"
-      icon={<TicketPlus color={COLORS.HIGHLIGHT} />}
+      icon={<Gem color={COLORS.HIGHLIGHT} />}
       className='text-md font-semibold'
     >
       <div style={{ color: COLORS.TEXT_PRIMARY }}>
         {cardDetail?.rewards.map((item) => (
-          <ul>
+          <ul key={item.id}>
             <li>
               {item.points_per_dollar > 2.4
               ?
@@ -108,16 +108,16 @@ export const Rewards: React.FC<CardProps> = ({ cardDetail }) => {
 
         {cardDetail?.obs_system_points &&
           <div className='flex justify-between'>
-            <p><span className="ml-2">Obs: </span></p>
-              <p>
+            <span className="ml-2">Obs: </span>
+              
                 <span>                    
                   <ul className='text-gray-950 font-semibold'>
-                    {cardDetail.obs_system_points.map((item) => (
-                      <li className='ml-2 text-right'>{item}</li>
+                    {cardDetail.obs_system_points.map((item, index) => (
+                      <li key={index} className='ml-2 text-right'>{item}</li>
                     ))}
                   </ul>
                 </span>
-              </p>
+              
           </div>}
 
         {/* {(cardDetail.points_accelerator && 

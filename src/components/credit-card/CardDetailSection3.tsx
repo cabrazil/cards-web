@@ -12,7 +12,7 @@ const COLORS = {
 interface CardDetailSectionProps3 {
   title: string;
   icon: ReactNode;
-  icon2: ReactNode;
+  icon2?: ReactNode;
   children: ReactNode;
   className?: string;
 }

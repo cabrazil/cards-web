@@ -94,7 +94,7 @@ export const VipLounges: React.FC<CardProps> = ({ cardDetail }) => {
       <div style={{ color: COLORS.TEXT_PRIMARY }}>
 
         {cardDetail?.lounges.map((item) => (
-          <ul>
+          <ul key={item.id}>
             <li>
               {!item.ispaid
               ?

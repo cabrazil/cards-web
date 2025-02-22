@@ -42,7 +42,7 @@ const App: React.FC = () => {
   return (
     <div>
       <div 
-        className="credit-card-blog p-6 max-w-7xl mx-auto"
+        className="credit-card-blog p-20 max-w-7xl mx-auto"
         style={{ backgroundColor: COLORS.BACKGROUND }}
       >
         <Header />

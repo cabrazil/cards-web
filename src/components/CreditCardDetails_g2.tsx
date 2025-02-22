@@ -179,13 +179,11 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
   }
 
   return (
-    <div className="grid md:grid-cols-1 gap-3">
+    <div className="grid md:grid-cols-2 gap-3">
       {/* Coluna da esquerda - Informações principais */}
-      <section className="credit-card-details">
+      <section className="credit-card-details gap-4">
         <div>
           <AboutCard cardDetail={cardDetail} />
-          <CardRequirements cardDetail={cardDetail} />
-          <Zerofee cardDetail={cardDetail} />
           
           {cardDetail.ranking_points > 0
           ? 
@@ -198,7 +196,19 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
           <MilesProgram cardDetail={cardDetail} />
           :
           <NoMilesProgram />}
-        
+
+          <BrandBenefits cardDetail={cardDetail} />
+        </div>
+      </section>
+
+      {/* Coluna da direita - Informações secundárias */}
+      <section className="credit-card-details gap-4">
+        <div>
+          
+          
+          <CardRequirements cardDetail={cardDetail} />
+          <Zerofee cardDetail={cardDetail} />
+          
           {cardDetail.cashback.length
           ?
           <Cashback cardDetail={cardDetail} />
@@ -206,7 +216,6 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
           <NoCashback />}
           <VipLounges cardDetail={cardDetail} />
           <CardBenefits cardDetail={cardDetail} />
-          <BrandBenefits cardDetail={cardDetail} />
           
         </div>
       </section>
