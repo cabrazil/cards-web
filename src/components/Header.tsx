@@ -15,9 +15,10 @@ export function Header() {
       </h1>
 
       <p className="text-md font-semibold mb-4" style={{ color: COLORS.TEXT_SECONDARY }}>
-        De acordo com seu segmento de renda, selecionamos os melhores cartões de crédito do mercado,
-        destacando suas principais vantagens para que você encontre o que mais se adapta às suas
-         necessidades. Explore nosso ranking e faça a escolha certa para transformar seu consumo em experiências valiosas!
+      Bem-vindo ao universo dos cartões de crédito! Será que existe um cartão perfeito para todos? <span className="text-[#4169e1] italic">Spoiler: não!</span> Sua renda, hábitos e sonhos, sua realidade define o que é ideal para você. 
+      Mas se olharmos para: <span className="text-[#4169e1] italic">grupos de pessoas com realidades semelhantes</span> podemos encontrar ótimas opções. Quer saber como e achar o cartão que combina com sua vida? Aqui, revelamos dicas e
+      curiosidades para transformar escolhas em oportunidades. O próximo passo é seu! 
+      Explore nosso ranking e faça a escolha certa para transformar seu consumo em experiências valiosas!
       </p>
 
     </header>

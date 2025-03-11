@@ -13,11 +13,12 @@ interface CardDetailSectionProps2 {
   title: string;
   icon: ReactNode;
   img: string;
+  icon2: ReactNode;
   children: ReactNode;
   className?: string;
 }
-// Para usar a imagem do cartão
-const CardDetailSection2 = ({ title, icon, img, children, className = '' }: CardDetailSectionProps2) => (
+// Para usar a imagem do cartão e agora com tooltip de conclusão
+const CardDetailSection2 = ({ title, icon, img, icon2, children, className = '' }: CardDetailSectionProps2) => (
   <div 
     className={`card-section p-2 rounded-lg mb-4 shadow-sm ${className}`}
     style={{ 
@@ -29,7 +30,7 @@ const CardDetailSection2 = ({ title, icon, img, children, className = '' }: Card
     }}
   >
     <div className="flex mb-2">
-      <div className='flex items-center mr-64'>
+      <div className='flex items-center mr-auto'>
         {icon}
           <h3 
             className="text-lg font-semibold ml-2"
@@ -40,6 +41,9 @@ const CardDetailSection2 = ({ title, icon, img, children, className = '' }: Card
       </div>
       <div>
         <img className='w-[12rem] h-[8rem]' src={img} alt="cartão de crédito" />
+      </div>
+      <div className="flex items-center ml-auto">
+        {icon2}
       </div>
       
     </div>

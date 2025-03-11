@@ -49,11 +49,9 @@ interface SearchFormProps {
 }
 
 const segmentOptions = [
-  { value: '1', label: 'Até R$ 1.000' },
-  { value: '2', label: 'R$ 1.001 a R$ 3.000' },
-  { value: '3', label: 'R$ 3.001 a R$ 6.000' },
-  { value: '4', label: 'R$ 6.001 a R$ 12.000' },
-  { value: '3', label: 'Acima de R$ 12.000' },
+  { value: 'ALTARENDA', label: 'Alta Renda' },
+  { value: 'ENTRADA', label: 'Entrada' },
+  { value: 'INTERMEDIARIO', label: 'Intermediário' },
 ];
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
@@ -97,7 +95,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
           className="block text-sm font-medium text-muted-foreground mb-2"
           style={{ color: COLORS.TEXT_PRIMARY }}
         >
-          Faixa de Gastos 
+          Segmento de Renda 
         </label>
         <Select
           theme={customTheme}

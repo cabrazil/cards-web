@@ -1,8 +1,9 @@
 import React from 'react';
-import { CreditCard } from 'lucide-react';
+import { CreditCard, FlagIcon } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import DateFormated from '../DateFormatedBr';
 import CardDetailSection2  from './CardDetailSection2';
+import { TooltipIcon } from '../TooltipIcon';
 
 // Interfaces
 interface CardProps {
@@ -22,6 +23,7 @@ interface CardProps {
     spread_on: string;
     src_card_picture: string;
     virtual_cards: boolean;
+    obs_summary: string[];
     exclusives?: {
       additional_info?: string[];
     };
@@ -100,6 +102,7 @@ export const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
       icon={<CreditCard color={COLORS.HIGHLIGHT} />}
       className="text-md font-semibold"
       img={cardDetail.src_card_picture}
+      icon2={<TooltipIcon text={cardDetail.obs_summary.join("\n")} icon={<FlagIcon />} />}
     >
       <div style={{ color: COLORS.TEXT_PRIMARY }}>
       {/* data de atualização da informação */}

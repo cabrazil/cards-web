@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Header } from './components/Header';
-import SearchForm from './components/SearchForm';
+import SearchForm from './components/SearchForm_renda';
 import CreditCardList from './components/CreditCardList';
 import { CreditCardDetails } from './components/CreditCardDetails';
 

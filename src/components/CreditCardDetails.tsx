@@ -14,6 +14,7 @@ import CardBenefits from './credit-card/CardBenefits';
 import BrandBenefits from './credit-card/BrandBenefits';
 import NoCashback from './credit-card/NoCashback';
 import NoMilesProgram from './credit-card/NoMilesProgram';
+import NoVipLounges from './credit-card/NoVipLounges';
 
 
 // Tipos
@@ -40,7 +41,6 @@ interface CardProps {
   spread_on:             string;
   cashback:              string;
   obs_add_cards:         string;
-  obs_cashback:          string[];
   account_holder:        boolean;
   international_card:    boolean;
   card_modality:         string;
@@ -55,6 +55,8 @@ interface CardProps {
   obs_system_points:     string[];
   virtual_cards:         boolean;
   points_accelerator:    boolean;
+  obs_summary:           string[];
+  expense_code:          number;
   zerofees: {
     id:             string;
     expenses:       string;
@@ -204,7 +206,12 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
           <Cashback cardDetail={cardDetail} />
           :
           <NoCashback />}
+          {cardDetail.ranking_vip_lounges > 0
+          ?
           <VipLounges cardDetail={cardDetail} />
+          :
+          <NoVipLounges />}
+          
           <CardBenefits cardDetail={cardDetail} />
           <BrandBenefits cardDetail={cardDetail} />
           
