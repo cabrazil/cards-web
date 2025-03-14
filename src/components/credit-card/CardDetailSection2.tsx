@@ -40,7 +40,7 @@ const CardDetailSection2 = ({ title, icon, img, icon2, children, className = '' 
           </h3>
       </div>
       <div>
-        <img className='w-[12rem] h-[8rem]' src={img} alt="cartão de crédito" />
+        <img className='w-[13rem] h-[9rem]' src={img} alt="cartão de crédito" />
       </div>
       <div className="flex items-center ml-auto">
         {icon2}

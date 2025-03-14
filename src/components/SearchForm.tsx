@@ -45,19 +45,19 @@ function customTheme(theme: any) {
 };
 
 interface SearchFormProps {
-  onSearch: (segment: string, issuer: string) => void;
+  onSearch: (expense: string, issuer: string) => void;
 }
 
-const segmentOptions = [
+const expenseOptions: DropdownOption[] = [
   { value: '1', label: 'Até R$ 1.000' },
   { value: '2', label: 'R$ 1.001 a R$ 3.000' },
   { value: '3', label: 'R$ 3.001 a R$ 6.000' },
   { value: '4', label: 'R$ 6.001 a R$ 12.000' },
-  { value: '3', label: 'Acima de R$ 12.000' },
+  { value: '5', label: 'Acima de R$ 12.000' },
 ];
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
-  const [selectedSegment, setSelectedSegment] = useState<SingleValue<DropdownOption>>(null);
+  const [selectedExpense, setSelectedExpense] = useState<SingleValue<DropdownOption>>(null);
   const [selectedIssuer, setSelectedIssuer] = useState<SingleValue<DropdownOption>>(null);
 
   const [issuers, setIssuers] = useState<issuerProps[]>([])
@@ -84,8 +84,8 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
   console.log(issuerOptions);
 
   const handleSearch = () => {
-    if (selectedSegment && selectedIssuer) {
-      onSearch(selectedSegment.value, selectedIssuer.value);
+    if (selectedExpense && selectedIssuer) {
+      onSearch(selectedExpense.value, selectedIssuer.value);
     } 
   };
 
@@ -102,9 +102,9 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
         <Select
           theme={customTheme}
           styles={customStyles}
-          value={selectedSegment}
-          onChange={setSelectedSegment}
-          options={segmentOptions}
+          value={selectedExpense}
+          onChange={setSelectedExpense}
+          options={expenseOptions}
           placeholder="Selecione..."
           isClearable
         />

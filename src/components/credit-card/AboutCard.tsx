@@ -8,25 +8,24 @@ import { TooltipIcon } from '../TooltipIcon';
 // Interfaces
 interface CardProps {
   cardDetail: {
-    updated_at: string;
+    updated_at:         string;
     international_card: boolean;
-    card_modality: string;
-    card_brand: string;
-    category: string;
-    card_material: string;
-    ranking_benefits: number;
-    virtual_wallets: string[];
-    contactless: boolean;
-    iof_rate: number;
-    spread_rate: number;
+    card_modality:      string;
+    card_brand:         string;
+    category:           string;
+    card_material:      string;
+    ranking_benefits:   number;
+    virtual_wallets:    string[];
+    contactless:        boolean;
+    iof_rate:           number;
+    spread_rate:        number;
     ranking_vip_lounges: number;
-    spread_on: string;
-    src_card_picture: string;
-    virtual_cards: boolean;
-    obs_summary: string[];
-    exclusives?: {
-      additional_info?: string[];
-    };
+    spread_on:          string;
+    src_card_picture:   string;
+    virtual_cards:      boolean;
+    obs_summary:        string[];
+    additional_info:    string[];
+    is_debit:           boolean;
   };
 }
 
@@ -118,7 +117,7 @@ export const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
         {/* Cartão Internacional */}
         {cardDetail.international_card
         ?
-        <CardFeature2 label="Cartão Internacional:" value={cardDetail.international_card} />
+        <CardFeature label="Cartão Internacional:" value={cardDetail.international_card} />
         :
         <CardFeature label="Cartão Internacional:" value={cardDetail.international_card} icon={false} />}
 
@@ -135,7 +134,7 @@ export const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
           </div>
         </div>
         :
-        <CardFeature label="Modalidade:" value={cardDetail.card_modality} />}
+        <CardFeature2 label="Modalidade:" value={cardDetail.card_modality} />}
         
         {/* Bandeira e categoria */}
         {(cardDetail.category === 'Black' || cardDetail.category === 'Infinite')
@@ -155,6 +154,20 @@ export const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
           </div>
           <div>
             <span className="text-gray-950 font-semibold">{cardDetail.card_material}</span>
+          </div>
+        </div>}
+
+        {/* Material do cartão */}
+        {cardDetail.is_debit
+        ?
+        <CardFeature label="Aceito no débito:" value={"Sim"} icon />
+        :
+        <div className='ml-2 flex justify-between'>
+          <div>
+            <span>Aceito no débito:</span>
+          </div>
+          <div>
+            <span className="text-gray-950 font-semibold">{"Não"}</span>
           </div>
         </div>}
         
@@ -196,14 +209,14 @@ export const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
         <CardFeature label="Spread:" value={`${cardDetail.spread_rate}%`} />}
 
         {/* Informações adicionais */}
-        {cardDetail.exclusives?.additional_info && cardDetail.exclusives.additional_info.length > 0 && (
+        {cardDetail.additional_info && cardDetail.additional_info.length > 0 && (
           <div className="flex justify-between">
             <div>
               <span className="ml-4">Obs: </span>
             </div>
             <div>
               <ul className="text-gray-950 font-semibold text-right">
-                {cardDetail.exclusives.additional_info.map((info, index) => (
+                {cardDetail.additional_info.map((info, index) => (
                   <li key={index} className="first:ml-2">{info}</li>
                 ))}
               </ul>

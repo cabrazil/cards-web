@@ -3,7 +3,7 @@ import { api } from '../services/api';
 
 // Importando os componentes auxiliares
 import AboutCard from './credit-card/AboutCard';
-import CardRequirements from './credit-card/CardRequirements';
+import CardRequirements from './credit-card/Requirements';
 import Rewards from './credit-card/Rewards';
 import NoRewards from './credit-card/NoRewards';
 import Cashback from './credit-card/Cashback';

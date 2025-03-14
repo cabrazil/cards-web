@@ -3,7 +3,7 @@ import { api } from '../services/api';
 
 // Importando os componentes auxiliares
 import AboutCard from './credit-card/AboutCard';
-import CardRequirements from './credit-card/CardRequirements';
+import Requirements from './credit-card/Requirements';
 import Rewards from './credit-card/Rewards';
 import NoRewards from './credit-card/NoRewards';
 import Cashback from './credit-card/Cashback';
@@ -57,6 +57,8 @@ interface CardProps {
   points_accelerator:    boolean;
   obs_summary:           string[];
   expense_code:          number;
+  additional_info:       string[];
+  is_debit:              boolean;
   zerofees: {
     id:             string;
     expenses:       string;
@@ -115,6 +117,18 @@ interface CardProps {
     tag_amount:       number;
     exclusive_offers: string[];
     additional_info:  string[];
+  };
+
+  requirements: {
+    id:               string;
+    account_holder:   boolean;
+    add_cards_amount: number;
+    obs_add_cards:    string;
+    add_cards_charge: number;
+    card_limit:       string;
+    get_conditions:   string[];
+    notes:            string[];
+    req_tips:         string[];
   };
 
   brand: {
@@ -186,7 +200,7 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
       <section className="credit-card-details">
         <div>
           <AboutCard cardDetail={cardDetail} />
-          <CardRequirements cardDetail={cardDetail} />
+          <Requirements cardDetail={cardDetail} />
           <Zerofee cardDetail={cardDetail} />
           
           {cardDetail.ranking_points > 0

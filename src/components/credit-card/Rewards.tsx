@@ -11,7 +11,7 @@ interface CardProps {
     ranking_points:      number;
     points_expire:       boolean;
     obs_system_points:   string[];
-    points_accelerator:   boolean;
+    points_accelerator:  boolean;
     rewards: {
       id:                string;
       expenses:          string;

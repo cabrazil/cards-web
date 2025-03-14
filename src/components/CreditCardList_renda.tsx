@@ -14,21 +14,18 @@ interface CreditCard {
   id: string;
   card_name: string;
   issuer_name: string;
-  expense_code: number;
 }
 
 const CreditCardList: React.FC<{ 
-  expense: string; 
+  segment: string; 
   issuer: string; 
   onCardSelect: (card: CreditCard) => void;
   onNoResults: () => void;
-}> = ({ expense, issuer, onCardSelect, onNoResults }) => {
-
-  console.log('Duplo no início', expense, issuer)
-  const expenseNumber = Number(expense);
+}> = ({ segment, issuer, onCardSelect, onNoResults }) => {
+  console.log('Duplo no início', segment, issuer)
 
   async function loadCards() {
-    const response = await api.get(`/cardexpense?expense=${expenseNumber}&issuer=${issuer}`);
+    const response = await api.get(`/cardsegment?segment=${segment}&issuer=${issuer}`);
     setCreditCards(response.data);
   }
 
@@ -49,7 +46,7 @@ const CreditCardList: React.FC<{
         onNoResults();
     }
         
-  }, [expenseNumber, issuer, onNoResults, firstRender]);
+  }, [segment, issuer, onNoResults, firstRender]);
 
   const handleCardClick = (card: CreditCard) => {
     setSelectedCardId(card.id);

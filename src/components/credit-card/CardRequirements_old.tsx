@@ -87,7 +87,7 @@ export const CardRequirements: React.FC<CardProps> = ({ cardDetail }) => {
 
   return (
     <CardDetailSection
-      title="Para obter o Cartão"
+      title="Para obter o Cartão, adicionais e limite"
       icon={<Target color={COLORS.HIGHLIGHT} />}
       className='text-md font-semibold'
     >

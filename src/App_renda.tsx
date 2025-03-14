@@ -18,16 +18,15 @@ interface CreditCard {
   id: string;
   card_name: string;
   issuer_name: string;
-  expense_code: number;
 }
 
 const App: React.FC = () => {
-  const [expense, setExpense] = useState<string | null>(null);
+  const [segment, setSegment] = useState<string | null>(null);
   const [issuer, setIssuer] = useState<string | null>(null);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
-  const handleSearch = (selectedExpense: string | null, selectedIssuer: string | null) => {
-    setExpense(selectedExpense);
+  const handleSearch = (selectedSegment: string | null, selectedIssuer: string | null) => {
+    setSegment(selectedSegment);
     setIssuer(selectedIssuer);
     setSelectedCardId(null);
   };
@@ -48,9 +47,9 @@ const App: React.FC = () => {
       >
         <Header />
         <SearchForm onSearch={handleSearch} />
-        {expense && issuer && (
+        {segment && issuer && (
           <CreditCardList 
-            expense={expense} 
+            segment={segment} 
             issuer={issuer} 
             onCardSelect={handleCardSelect}
             onNoResults={handleNoResults}
