@@ -1,125 +1,109 @@
-import React from 'react';
-import { CircleDollarSign, Lightbulb } from 'lucide-react';
-import { FaCheck } from 'react-icons/fa';
-import CardDetailSection3 from './CardDetailSection3';
-import { TooltipIcon } from '../TooltipIcon';
+import React, { useState } from "react";
+import { CircleDollarSign, MessageCircleWarning } from "lucide-react";
+import { motion } from "framer-motion";
+import { FaCheck } from "react-icons/fa";
+import CardDetailSection3 from "./CardDetailSection3";
+import { TooltipIcon } from "../TooltipIcon";
+import { Separator_thin } from "../Separator_thin";
 
+// Interfaces
 interface CardProps {
   cardDetail: {
-    id:                 string;
-    card_name:          string;
-    obs_add_cards:      string;
+    id: string;
+    card_name: string;
     contactless: boolean;
     cashbacks: {
-      id:               string;
-      pct_cashback:     number;
-      txt_cashback:     string;
-      obs_cashback:     string[];
-      cash_tips:        string[];
+      id: string;
+      pct_cashback: number;
+      txt_cashback: string;
+      obs_cashback: string[];
+      cash_tips: string[];
     }[];
-  }
+  };
 }
 
-interface CardFeatureProps {
-  label: string;
-  value: string | string[] |number | boolean;
-  icon?: boolean;
-  className?: string;
-}
-
-const CardFeature: React.FC<CardFeatureProps> = ({ 
-  label, 
-  value, 
-  icon = false, 
-  className = ''
+// Componente reutilizável para exibir detalhes com ícone FaCheck
+const CardFeature: React.FC<{ label: string; value: string | string[] | number | boolean; icon?: boolean }> = ({
+  label,
+  value,
+  icon = false,
 }) => (
-  <div className={`flex justify-between ${className}`}>
-    <div className="flex">
-      {/* {icon && (
-        <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
-          <FaCheck />
-        </span>
-      )} */}
-      {icon 
-        ?
-        <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
-          <FaCheck />
-        </span>
-        :
-        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
-          <FaCheck />
-        </span>
-      }
+  <div className="flex justify-between items-center">
+    <div className="flex items-center">
+      {icon && <FaCheck className="text-green-500 mr-2" />}
       <span>{label}</span>
     </div>
     <div>
       <span className="text-gray-950 font-semibold">
-        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
+        {typeof value === "boolean" ? (value ? "Sim" : "Não") : value}
       </span>
     </div>
   </div>
 );
 
-/* const CardFeature2: React.FC<CardFeatureProps> = ({ 
-  label, 
-  value, 
-  className = ''
-}) => (
-  <div className={`ml-2 flex justify-between ${className}`}>
-    <div className="flex">
-      <span>{label}</span>
-    </div>
-    <div>
-      <span className="text-gray-950 font-semibold">
-        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
-      </span>
-    </div>
-  </div>
-); */
+const Cashback: React.FC<CardProps> = ({ cardDetail }) => {
+  const [expanded, setExpanded] = useState<boolean>(false);
 
-export const Cashback: React.FC<CardProps> = ({ cardDetail }) => {
-  const COLORS = {
-    PRIMARY: '#1F3B4D',
-    TEXT_PRIMARY: '#4b5563',
-    HIGHLIGHT: '#4169e1',
-  };
-  //console.log("Dados recebidos:", Cashback);
   return (
     <CardDetailSection3
       title="Cashback"
-      icon={<CircleDollarSign color={COLORS.HIGHLIGHT} />}
-      className='text-md font-semibold'
-      icon2={cardDetail?.cashbacks[0].cash_tips.length > 0 
-        ? <TooltipIcon text={cardDetail.cashbacks[0].cash_tips.join("\n")} icon={<Lightbulb />} /> 
-        : <span></span> }
-    > 
-      <div style={{ color: COLORS.TEXT_PRIMARY }}>
-        {cardDetail?.cashbacks.map((item) => 
-          <ul key={item.id}>
-            <li>
-              {item.pct_cashback > 0 &&
-              <CardFeature label="Percentual de:" value={`${item.pct_cashback}% ${item.txt_cashback}`} icon={true} />}
-            
-              {item.obs_cashback &&
-                <div className='flex justify-between'>
-                  <span className="ml-2">Obs: </span>
-                    
-                      <span>                    
-                        <ul className='text-gray-950 font-semibold'>
-                          {item.obs_cashback.map((item, index) => (
-                            <li key={index} className='ml-4 text-right'>{item}</li>
-                          ))}
-                        </ul>
-                      </span>
-                    
-                </div>}
-            </li>
-          </ul>
+      icon={<CircleDollarSign className="text-blue-500" />}
+      className="text-md font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-3 rounded-lg"
+      icon2={
+        cardDetail?.cashbacks[0]?.cash_tips.length > 0 ? (
+          <TooltipIcon text={cardDetail.cashbacks[0].cash_tips.join("\n")} icon={<MessageCircleWarning />} />
+        ) : null
+      }
+    >
+      <motion.div
+        className="flex flex-col items-center p-6 bg-white shadow-lg rounded-xl border border-gray-200"
+        whileHover={{ scale: 1.05 }}
+      >
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+        >
+          {expanded ? "Ocultar Detalhes" : "Ver Cashback"}
+        </button>
+
+        {/* Expansão de detalhes */}
+        {expanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="mt-4 text-gray-700 w-full text-center text-sm space-y-2"
+          >
+            {cardDetail?.cashbacks.map((item) => (
+              <motion.div
+                key={item.id}
+                className="bg-gray-50 p-4 rounded-lg shadow-md mb-3 w-full"
+                whileHover={{ scale: 1.02 }}
+              >
+                <p className="text-lg font-semibold text-blue-600">Cashback</p>
+
+                {item.pct_cashback > 0 && (
+                  <CardFeature label="Percentual de Cashback:" value={`${item.pct_cashback}% ${item.txt_cashback}`} icon={true} />
+                )}
+
+                {item.obs_cashback.length > 0 && (
+                  <div className="mt-2">
+                    <p className="font-semibold">Observações:</p>
+                    <ul className="text-gray-950 font-medium text-center">
+                      {item.obs_cashback.map((obs, index) => (
+                        <li key={index} className="mt-1">{obs}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <Separator_thin />
+              </motion.div>
+            ))}
+          </motion.div>
         )}
-      </div>
+      </motion.div>
     </CardDetailSection3>
   );
 };
 
 export default Cashback;
-

@@ -11,7 +11,7 @@ export function TooltipIcon({ text, icon }: TooltipIconProps) {
     <Tooltip.Provider>
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
-          <span className="cursor-pointer text-[#4169e1]">{icon}</span>
+          <span className="cursor-pointer text-white">{icon}</span>
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Content className="bg-[#4169e1] text-white p-2 rounded-md shadow-md whitespace-pre-wrap max-w-md break-words">

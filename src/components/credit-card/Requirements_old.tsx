@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { motion } from "framer-motion";
-import { MessageCircleWarning, Target } from 'lucide-react';
+import React from 'react';
+import { Target } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
-import CardDetailSection2 from './CardDetailSection2';
-import { TooltipIcon } from '../TooltipIcon';
+import CardDetailSection from './CardDetailSection';
 
 // Interfaces
 interface CardProps {
@@ -31,7 +29,34 @@ interface CardFeatureProps {
   className?: string;
 }
 
-// Componente reutilizável para exibir detalhes com ícone FaCheck
+/* const CardFeature: React.FC<CardFeatureProps> = ({ 
+  label, 
+  value, 
+  icon = false, 
+  className = ''
+}) => (
+  <div className={`ml-2 flex justify-between ${className}`}>
+    <div className="flex">
+      {icon 
+        ?
+        <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
+          <FaCheck />
+        </span>
+        :
+        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
+          <FaCheck />
+        </span>
+      }
+      <span>{label}</span>
+    </div>
+    <div>
+      <span className="text-gray-950 font-semibold">
+        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
+      </span>
+    </div>
+  </div>
+); */
+
 const CardFeature2: React.FC<CardFeatureProps> = ({ 
   label, 
   value, 
@@ -49,44 +74,21 @@ const CardFeature2: React.FC<CardFeatureProps> = ({
   </div>
 );
 
-// Componente principal Requirements
+
 export const Requirements: React.FC<CardProps> = ({ cardDetail }) => {
-  const [expanded, setExpanded] = useState(false);
   const COLORS = {
     PRIMARY: '#1F3B4D',
     TEXT_PRIMARY: '#4b5563',
     HIGHLIGHT: '#4169e1',
-    TEXT_TITLES: '#FFFFFF',
   };
 
   return (
-    <CardDetailSection2
+    <CardDetailSection
       title="Para obter o Cartão, Adicionais e Limite"
-      icon={<Target color={COLORS.TEXT_TITLES} />}
-      className="text-md font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-3 rounded-lg"
-      icon2={cardDetail.requirements.req_tips[0]?.length > 0 
-              ? <TooltipIcon text={cardDetail.requirements.req_tips.join("\n")} icon={<MessageCircleWarning />} /> 
-              : <span></span> }
-      title2=""
+      icon={<Target color={COLORS.HIGHLIGHT} />}
+      className='text-md font-semibold'
     >
-      <motion.div
-        className="relative flex flex-col items-center p-4 bg-white shadow-lg rounded-xl border border-gray-200"
-        whileHover={{ scale: 1.05 }}
-      >
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
-        >
-          {expanded ? "Ocultar Detalhes" : "Ver Detalhes"}
-        </button>
-
-        {/* Expansão de detalhes */}
-        {expanded && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            className="mt-4 text-gray-700 w-full text-sm"
-          >
+      <div style={{ color: COLORS.TEXT_PRIMARY }}>
       
           <CardFeature2 label="Somente correntistas:" value={cardDetail.requirements.account_holder} />
           
@@ -155,11 +157,10 @@ export const Requirements: React.FC<CardProps> = ({ cardDetail }) => {
               </div>
             </div>
           )}
+
           <CardFeature2 label="Limite do cartão:" value={cardDetail.requirements.card_limit} />
-        </motion.div>
-      )}
-      </motion.div>
-    </CardDetailSection2>
+      </div>
+    </CardDetailSection>
   );
 };
 

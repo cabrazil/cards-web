@@ -15,6 +15,7 @@ import BrandBenefits from './credit-card/BrandBenefits';
 import NoCashback from './credit-card/NoCashback';
 import NoMilesProgram from './credit-card/NoMilesProgram';
 import NoVipLounges from './credit-card/NoVipLounges';
+import { Separator } from './Separator';
 
 
 // Tipos
@@ -27,21 +28,15 @@ interface CardProps {
   annual_fee:            number;
   card_brand:            string;
   category:              string;
-  card_limit:            string;
   ranking_points:        number;
   ranking_benefits:      number;
   ranking_annuity:       number;
   ranking_miles_program: number;
   virtual_wallets:       string[];
-  add_cards_amount:      number;
-  add_cards_charge:      number;
   card_material:         string;
   contactless:           boolean;
-  get_conditions:        string[];
   spread_on:             string;
   cashback:              string;
-  obs_add_cards:         string;
-  account_holder:        boolean;
   international_card:    boolean;
   card_modality:         string;
   vip_lounge_app:        string;
@@ -66,6 +61,7 @@ interface CardProps {
     fee_discount:   number;
     notes:          string;
     get_conditions: string[];
+    fee_tips:       string[];
   }[];
 
   cashbacks: {
@@ -200,8 +196,11 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
       <section className="credit-card-details">
         <div>
           <AboutCard cardDetail={cardDetail} />
+          <Separator />
           <Requirements cardDetail={cardDetail} />
+          <Separator />
           <Zerofee cardDetail={cardDetail} />
+          <Separator />
           
           {cardDetail.ranking_points > 0
           ? 

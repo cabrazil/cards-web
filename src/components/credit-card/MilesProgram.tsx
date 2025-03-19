@@ -1,128 +1,121 @@
-import React from 'react';
-import { Plane } from 'lucide-react';
-import { FaCheck } from 'react-icons/fa';
-import CardDetailSection from './CardDetailSection';
+import React, { useState } from "react";
+import { Plane } from "lucide-react";
+import { motion } from "framer-motion";
+import { FaCheck } from "react-icons/fa";
+import CardDetailSection from "./CardDetailSection";
+import { Separator_thin } from "../Separator_thin";
 
-interface CardProps{
+// Interfaces
+interface CardProps {
   cardDetail: {
     id: string;
     card_name: string;
     mileages: {
       id: string;
       program_name: string;
-      transfer_program:  string[];
-      airlines:          string[];
-      hotels:            string[]
+      transfer_program: string[];
+      airlines: string[];
+      hotels: string[];
       rate_points_miles: number;
-      min_transfer:      number;
-      exchange_store:    string[];
-      pay_bills:         boolean;
-      pay_cashback:      boolean;
-      other_options:     string[];
-    }[]
-  }
-}
-
-interface CardFeatureProps {
-  label: string;
-  value: string | string[] | number | boolean;
-  icon?: boolean;
-  className?: string;
-}
-
-const CardFeature: React.FC<CardFeatureProps> = ({ 
-  label, 
-  value, 
-  icon = false, 
-  className = ''
-}) => (
-  <div className={`ml-2 flex justify-between ${className}`}>
-    <div className="flex">
-      {/* {icon && (
-        <span className={typeof value === 'boolean' ? (value ? 'text-green-500' : 'text-yellow-500') : 'text-green-500'}>
-          <FaCheck />
-        </span>
-      )} */}
-      {icon 
-        ?
-        <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
-          <FaCheck />
-        </span>
-        :
-        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
-          <FaCheck />
-        </span>
-      }
-      <span>{label}</span>
-    </div>
-    <div>
-      <span className="text-gray-950 font-semibold">
-        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
-      </span>
-    </div>
-  </div>
-);
-
-const CardFeature2: React.FC<CardFeatureProps> = ({ 
-  label, 
-  value, 
-  className = ''
-}) => (
-  <div className={`ml-2 flex justify-between ${className}`}>
-    <div className="flex">
-      <span>{label}</span>
-    </div>
-    <div>
-      <span className="text-gray-950 font-semibold">
-        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
-      </span>
-    </div>
-  </div>
-);
-
-export const MilesProgram: React.FC<CardProps> = ({ cardDetail }) => {
-  const COLORS = {
-    PRIMARY: '#1F3B4D',
-    TEXT_PRIMARY: '#4b5563',
-    HIGHLIGHT: '#4169e1',
+      min_transfer: number;
+      exchange_store: string[];
+      pay_bills: boolean;
+      pay_cashback: boolean;
+      other_options: string[];
+    }[];
   };
+}
+
+// Componente reutilizável para exibir detalhes com ícone FaCheck
+const CardFeature: React.FC<{ label: string; value: string | string[] | number | boolean; icon?: boolean }> = ({
+  label,
+  value,
+  icon = false,
+}) => (
+  <div className="flex justify-between items-center">
+    <div className="flex items-center">
+      {icon && <FaCheck className="text-green-500 mr-2" />}
+      <span>{label}</span>
+    </div>
+    <div>
+      <span className="text-gray-950 font-semibold">
+        {typeof value === "boolean" ? (value ? "Sim" : "Não") : value}
+      </span>
+    </div>
+  </div>
+);
+
+const MilesProgram: React.FC<CardProps> = ({ cardDetail }) => {
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   return (
     <CardDetailSection
-      title="Programa de milhas"
-      icon={<Plane color={COLORS.HIGHLIGHT} />}
-      className='text-md font-semibold'
+      title="Programa de Milhas"
+      icon={<Plane className="text-blue-500" />}
+      className="text-md font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-3 rounded-lg"
     >
-      <div style={{ color: COLORS.TEXT_PRIMARY }}>
-        {cardDetail?.mileages.map((item) => (
-          <ul key={item.id}>
-            <li>
-              <CardFeature2 label="Nome:" value={item.program_name} />
+      <motion.div
+        className="flex flex-col items-center p-6 bg-white shadow-lg rounded-xl border border-gray-200"
+        whileHover={{ scale: 1.05 }}
+      >
+        <button
+          onClick={() => setExpanded(expanded ? null : "all")}
+          className="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+        >
+          {expanded ? "Ocultar Detalhes" : "Ver Programas de Milhas"}
+        </button>
 
-              {(item.transfer_program[0] === 'Livelo' || item.transfer_program[0] === 'Esfera')
-              ?
-              <CardFeature label="Transferência para programas parceiros:" value={item.transfer_program} icon={true} />
-              :
-              <CardFeature label="Transferência para programas parceiros:" value={item.transfer_program} />}
-              
-              {item?.airlines.length > 3 &&
-              <CardFeature label="Para companhias aéreas:" value={item.airlines} icon={true} />}
-     
-              {item?.hotels[0] &&
-              <CardFeature label="Para hotéis:" value={item.hotels} />}
+        {/* Expansão de detalhes */}
+        {expanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="mt-4 text-gray-700 w-full text-center text-sm space-y-2"
+          >
+            {cardDetail?.mileages.map((item) => (
+              <motion.div
+                key={item.id}
+                className="bg-gray-50 p-4 rounded-lg shadow-md mb-3 w-full"
+                whileHover={{ scale: 1.02 }}
+              >
+                <p className="text-lg font-semibold text-blue-600">{item.program_name}</p>
 
-              {item.pay_bills &&
-              <CardFeature label="Pontos(cashback) para a fatura:" value='Sim'  />}
-              
-              {item?.other_options &&
-              <CardFeature label="Obs:" value={item.other_options} />}
-            </li>
-          </ul>
-        ))}
-      </div>
+                <CardFeature
+                  label="Transferência para Programas Parceiros:"
+                  value={item.transfer_program.join(", ")}
+                  icon={item.transfer_program.includes("Livelo") || item.transfer_program.includes("Esfera")}
+                />
+
+                <CardFeature
+                  label="Companhias Aéreas Parceiras:"
+                  value={item.airlines.join(", ")}
+                  icon={item.airlines.length > 3}
+                />
+
+                {item.hotels.length > 0 && (
+                  <CardFeature label="Hotéis Parceiros:" value={item.hotels.join(", ")} />
+                )}
+
+                <CardFeature
+                  label="Pontos Convertidos em Cashback:"
+                  value={item.pay_cashback}
+                  icon={item.pay_cashback}
+                />
+
+                <CardFeature label="Pontos na Fatura:" value={item.pay_bills} icon={item.pay_bills} />
+
+                {item.other_options.length > 0 && (
+                  <CardFeature label="Outras Opções:" value={item.other_options.join(", ")} />
+                )}
+
+                <Separator_thin />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </motion.div>
     </CardDetailSection>
   );
 };
 
 export default MilesProgram;
-

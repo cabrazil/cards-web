@@ -6,6 +6,7 @@ const COLORS = {
   PRIMARY: '#1F3B4D',      // Azul-marinho profundo
   SECUNDARY: '#d1d5db',    // Cinza-300
   HIGHLIGHT: '#4169e1',    // Dourado #FF9000
+  MENULIST: "#DEEBFF",     // Azul-claro
   BACKGROUND: '#F5F5F5',   // Cinza-claro
   TEXT_PRIMARY: '#333333', // Cinza-escuro
   TEXT_SECONDARY: '#666666' // Cinza-médio
@@ -27,9 +28,18 @@ const customStyles = {
     borderColor: COLORS.SECUNDARY,
     color: COLORS.TEXT_PRIMARY,
   }),
-  option: (provided: any, state: { isSelected: any; }) => ({...provided,
+  option: (provided: any, state: { isSelected: any; isFocused: any; }) => ({...provided,
+    className: `py-2 px-4 my-1 ${state.isSelected ? 'bg-[#DEEBFF] text-white' : state.isFocused ? 'bg-gray-200' : 'bg-white text-gray-800'}`,
     color: COLORS.TEXT_PRIMARY,
-    backgroundColor: state.isSelected ? "#4169e1" : "white"
+  }),
+  
+  menu: (provided: any) => ({
+    ...provided,
+    className: 'mt-2 rounded-lg shadow-lg',
+  }),
+  menuList: (provided: any) => ({
+    ...provided,
+    className: 'p-1',
   }),
 }
 
@@ -49,11 +59,11 @@ interface SearchFormProps {
 }
 
 const expenseOptions: DropdownOption[] = [
-  { value: '1', label: 'Até R$ 1.000' },
-  { value: '2', label: 'R$ 1.001 a R$ 3.000' },
-  { value: '3', label: 'R$ 3.001 a R$ 6.000' },
-  { value: '4', label: 'R$ 6.001 a R$ 12.000' },
-  { value: '5', label: 'Acima de R$ 12.000' },
+  { value: '1', label: '| Até R$ 1.000 |' },
+  { value: '2', label: '| R$ 1.001 a R$ 3.000 |' },
+  { value: '3', label: '| R$ 3.001 a R$ 6.000 |' },
+  { value: '4', label: '| R$ 6.001 a R$ 12.000 |' },
+  { value: '5', label: '| Acima de R$ 12.000 |' },
 ];
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
@@ -97,7 +107,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
           className="block text-sm font-medium text-muted-foreground mb-2"
           style={{ color: COLORS.TEXT_PRIMARY }}
         >
-          Faixa de Gastos 
+          Perfil de Gastos 
         </label>
         <Select
           theme={customTheme}

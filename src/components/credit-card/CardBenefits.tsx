@@ -1,124 +1,115 @@
-import React from 'react';
-import { Gift } from 'lucide-react';
-import { FaCheck } from 'react-icons/fa';
-import CardDetailSection from './CardDetailSection';
+import React, { useState } from "react";
+import { Gift } from "lucide-react";
+import { motion } from "framer-motion";
+import { FaCheck } from "react-icons/fa";
+import CardDetailSection from "./CardDetailSection";
+import { Separator_thin } from "../Separator_thin";
 
 // Interfaces
 interface CardProps {
   cardDetail: {
-    id:               string;
-    card_name:        string;
-    card_brand:       string;
-    category:         string;
+    id: string;
+    card_name: string;
+    card_brand: string;
+    category: string;
     exclusives?: {
-      id:               string;
-      tag_name:         string;
-      tag_amount:       number;
+      id: string;
+      tag_name: string;
+      tag_amount: number;
       exclusive_offers: string[];
-      additional_info:  string[];
-    }
+      additional_info: string[];
+    };
     brand: {
-      id:           string;
-      brand_name:   string;
+      id: string;
+      brand_name: string;
       variant_name: string;
       general_benefits: string[];
-      isActive:     boolean;
-      site_info:    string;
+      isActive: boolean;
+      site_info: string;
     };
-  }
-}
-
-interface CardFeatureProps {
-  label: string;
-  value: string | number | boolean;
-  icon?: boolean;
-  className?: string;
-}
-
-const CardFeature: React.FC<CardFeatureProps> = ({ 
-  label, 
-  value, 
-  icon = false, 
-  className = ''
-}) => (
-  <div className={`flex justify-between ${className}`}>
-    <div className="flex">
-      {/* {icon && (
-        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
-          <FaCheck />
-        </span>
-      )} */}
-      {icon 
-        ?
-        <span className={typeof value === 'boolean' && value ? 'text-yellow-500' : 'text-green-500'}>
-          <FaCheck />
-        </span>
-        :
-        <span className={typeof value === 'boolean' && value ? 'text-green-500' : 'text-yellow-500'}>
-          <FaCheck />
-        </span>
-      }
-      <span>{label}</span>
-    </div>
-    <div>
-      <span className="text-gray-950 font-semibold">
-        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
-      </span>
-    </div>
-  </div>
-);
-
-const CardFeature2: React.FC<CardFeatureProps> = ({ 
-  label, 
-  value, 
-  className = ''
-}) => (
-  <div className={`ml-2 flex justify-between ${className}`}>
-    <div className="flex">
-      <span>{label}</span>
-    </div>
-    <div>
-      <span className="text-gray-950 font-semibold">
-        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
-      </span>
-    </div>
-  </div>
-);
-
-export const CardBenefits: React.FC<CardProps> = ({ cardDetail }) => {
-  const COLORS = {
-    PRIMARY: '#1F3B4D',
-    TEXT_PRIMARY: '#4b5563',
-    HIGHLIGHT: '#4169e1',
   };
+}
+
+// Componente reutilizável para exibir detalhes com ícone FaCheck
+const CardFeature: React.FC<{ label: string; value: string | number | boolean; icon?: boolean }> = ({
+  label,
+  value,
+  icon = false,
+}) => (
+  <div className="flex justify-between items-center">
+    <div className="flex items-center">
+      {icon && <FaCheck className="text-green-500 mr-2" />}
+      <span>{label}</span>
+    </div>
+    <div>
+      <span className="text-gray-950 font-semibold">
+        {typeof value === "boolean" ? (value ? "Sim" : "Não") : value}
+      </span>
+    </div>
+  </div>
+);
+
+const CardBenefits: React.FC<CardProps> = ({ cardDetail }) => {
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
     <CardDetailSection
       title="Benefícios Exclusivos"
-      icon={<Gift color={COLORS.HIGHLIGHT} />}
-      className='text-md font-semibold'
+      icon={<Gift className="text-blue-500" />}
+      className="text-md font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-3 rounded-lg"
     >
-      <div style={{ color: COLORS.TEXT_PRIMARY }}>
-      {cardDetail.exclusives?.tag_name &&
-        <CardFeature label="Tag pedágios:" value={cardDetail.exclusives.tag_name} icon />}
+      <motion.div
+        className="flex flex-col items-center p-6 bg-white shadow-lg rounded-xl border border-gray-200"
+        whileHover={{ scale: 1.05 }}
+      >
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+        >
+          {expanded ? "Ocultar Benefícios" : "Ver Benefícios"}
+        </button>
 
-      {((cardDetail.exclusives?.tag_amount ?? 0) > 2) &&
-        <CardFeature label="Quantidade:" value={`Até ${cardDetail.exclusives?.tag_amount}`} icon />}
+        {/* Expansão de detalhes */}
+        {expanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="mt-4 text-gray-700 w-full text-center text-sm space-y-2"
+          >
+            {cardDetail.exclusives?.tag_name && (
+              <CardFeature label="Tag de Pedágios:" value={cardDetail.exclusives.tag_name} icon />
+            )}
 
-      {cardDetail.exclusives?.exclusive_offers?.length &&
-        <div className='flex justify-between'>
-          <span className="ml-2">Exclusivos: </span>
-            
-              <span>                    
-                <ul className='text-gray-950 font-semibold'>
-                  {cardDetail.exclusives.exclusive_offers.map((item, index) => (
-                    <li key={index} className='ml-2 text-right'>{item}</li>
+            {cardDetail.exclusives?.tag_amount && cardDetail.exclusives.tag_amount > 2 && (
+              <CardFeature label="Quantidade de Tags:" value={`Até ${cardDetail.exclusives.tag_amount}`} icon />
+            )}
+
+            {cardDetail.exclusives?.exclusive_offers?.[0]?.length && (
+              <div className="mt-2">
+                <p className="font-semibold">Ofertas Exclusivas:</p>
+                <ul className="text-gray-950 font-medium text-center">
+                  {cardDetail.exclusives?.exclusive_offers.map((offer, index) => (
+                    <li key={index} className="mt-1">{offer}</li>
                   ))}
                 </ul>
-              </span>
-            
-        </div>}
-      </div>
+              </div>
+            )}
+
+            {cardDetail.exclusives?.additional_info[0]?.length && (
+              <div className="mt-2">
+                <p className="font-semibold">Informações Adicionais:</p>
+                <ul className="text-gray-950 font-medium text-center">
+                  {cardDetail.exclusives?.additional_info.map((info, index) => (
+                    <li key={index} className="mt-1">{info}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <Separator_thin />
+          </motion.div>
+        )}
+      </motion.div>
     </CardDetailSection>
   );
 };
