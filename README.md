@@ -1,3 +1,59 @@
+# Sistema de Busca de Cartões de Crédito
+
+## Visão Geral
+Este é um sistema frontend desenvolvido em React + TypeScript + Vite para busca e visualização de cartões de crédito. O sistema permite aos usuários buscar cartões de crédito e visualizar seus detalhes de forma intuitiva e responsiva.
+
+## Documentação
+Para uma documentação mais detalhada do projeto, consulte a pasta `/src/docs/README.md`.
+
+## Tecnologias
+- React 18
+- TypeScript
+- Vite
+- ESLint
+- Prettier
+
+## Configuração do Ambiente
+
+### Pré-requisitos
+- Node.js (versão 18 ou superior)
+- npm ou yarn
+
+### Instalação
+1. Clone o repositório
+2. Instale as dependências:
+```bash
+npm install
+```
+
+### Executando o Projeto
+Para desenvolvimento:
+```bash
+npm run dev
+```
+
+Para produção:
+```bash
+npm run build
+```
+
+## Estrutura do Projeto
+O projeto segue uma estrutura modular organizada em:
+- `/src/components`: Componentes React
+- `/src/services`: Integrações com API
+- `/src/styles`: Estilos globais
+- `/src/docs`: Documentação do projeto
+
+## Contribuição
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
+4. Push para a branch (`git push origin feature/nova-feature`)
+5. Abra um Pull Request
+
+## Licença
+Este projeto está sob a licença MIT.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
