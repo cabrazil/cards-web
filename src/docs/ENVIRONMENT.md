@@ -20,7 +20,7 @@ Para o deploy na Vercel, configure as seguintes variáveis de ambiente:
 
 ```env
 # API Configuration
-VITE_API_URL=https://cards-backend-hz1t.vercel.app
+VITE_API_URL=https://cards-backend-beta.vercel.app
 
 # Environment
 NODE_ENV=production
@@ -37,7 +37,7 @@ NODE_ENV=production
 
 | Nome | Valor | Ambiente |
 |------|-------|----------|
-| `VITE_API_URL` | `https://cards-backend-hz1t.vercel.app` | Production |
+| `VITE_API_URL` | `https://cards-backend-beta.vercel.app` | Production |
 | `NODE_ENV` | `production` | Production |
 
 ### 2. Configuração via CLI (opcional)
@@ -60,7 +60,7 @@ vercel env add NODE_ENV production
 - **Instituições:** `GET /issuers`
 
 ### Backend na Vercel (Produção)
-- **URL Base:** `https://cards-backend-hz1t.vercel.app`
+- **URL Base:** `https://cards-backend-beta.vercel.app`
 - **Busca de Cartões:** `GET /api/search`
 - **Detalhes do Cartão:** `GET /cardid?id={cardId}`
 - **Instituições:** `GET /issuers`
