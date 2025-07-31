@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { Plane } from "lucide-react";
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
-import CardDetailSection from "./CardDetailSection";
-import { Separator_thin } from "./Separator_thin";
 
 // Interfaces
 interface CardProps {
   cardDetail: {
     id: string;
     card_name: string;
+    ranking_miles_program?: number;
     mileages: {
       id: string;
       program_name: string;
@@ -76,13 +75,15 @@ const MilesProgram: React.FC<CardProps> = ({ cardDetail }) => {
           className="space-y-0"
         >
           {/* Ranking do programa de milhas - sempre visível */}
-          <div className="ml-2 flex justify-between items-center py-0.5">
-            <div className="flex items-center">
-              <FaCheck className="text-green-500 mr-2 w-3 h-3" />
-              <span className="text-sm text-white">Ranking do programa:</span>
+          {cardDetail.ranking_miles_program && (
+            <div className="ml-2 flex justify-between items-center py-0.5">
+              <div className="flex items-center">
+                <FaCheck className="text-green-500 mr-2 w-3 h-3" />
+                <span className="text-sm text-white">Ranking do programa:</span>
+              </div>
+              <span className="text-white font-semibold text-sm">{cardDetail.ranking_miles_program}</span>
             </div>
-            <span className="text-white font-semibold text-sm">{cardDetail.ranking_miles_program}</span>
-          </div>
+          )}
 
           {/* Detalhes expandidos */}
           {expanded && (

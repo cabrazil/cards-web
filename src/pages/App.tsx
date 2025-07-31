@@ -4,16 +4,6 @@ import SearchForm from '../features/card-search/components/SearchForm';
 import CreditCardList from '../features/card-search/components/CreditCardList';
 import { getThemeClasses } from '../shared/theme/theme';
 
-// Configuração de cores baseada no documento
-const COLORS = {
-  PRIMARY: '#1F3B4D',      // Azul-marinho profundo
-  SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#4169e1',    // Azul Royal
-  BACKGROUND: '#F5F5F5',   // Cinza-claro
-  TEXT_PRIMARY: '#333333', // Cinza-escuro
-  TEXT_SECONDARY: '#666666' // Cinza-médio
-};
-
 interface CreditCard {
   id: string;
   card_name: string;
@@ -24,7 +14,6 @@ interface CreditCard {
 const App: React.FC = () => {
   const [expense, setExpense] = useState<string | null>(null);
   const [issuer, setIssuer] = useState<string | null>(null);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = (selectedExpense: string | null, selectedIssuer: string | null) => {
@@ -57,11 +46,11 @@ const App: React.FC = () => {
   };
 
   const handleNoResults = useCallback(() => {
-    setSearchResults([]);
+    // Função vazia - searchResults removido
   }, []);
 
-  const handleSearchResults = useCallback((results: any[]) => {
-    setSearchResults(results);
+  const handleSearchResults = useCallback((_results: any[]) => {
+    // Função vazia - searchResults removido
   }, []);
 
   const clearSavedState = () => {
@@ -71,7 +60,6 @@ const App: React.FC = () => {
     setExpense(null);
     setIssuer(null);
     setHasSearched(false);
-    setSearchResults([]);
   };
 
   // Restaurar estado quando a página é carregada

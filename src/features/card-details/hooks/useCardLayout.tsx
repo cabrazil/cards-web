@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { CardProps } from '../types';
 
 // Definição das propriedades de cada tipo de card

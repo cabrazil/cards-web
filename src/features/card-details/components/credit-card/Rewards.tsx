@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { Gem } from "lucide-react";
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
-import CardDetailSection from "./CardDetailSection";
-import { DivideBy100 } from "./DivideBy100";
-import { Separator_thin } from "./Separator_thin";
 
 // Interfaces
 interface CardProps {
@@ -121,7 +118,7 @@ const Rewards: React.FC<CardProps> = ({ cardDetail }) => {
                   {item.points_per_real > 100 && (
                     <CardFeature
                       label="Pontos por Real:"
-                      value={<DivideBy100 amount={item.points_per_real} divisor={100} />}
+                      value={`${item.points_per_real / 100}`}
                     />
                   )}
 

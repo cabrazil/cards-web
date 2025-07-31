@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Globe, MessageCircleWarning } from "lucide-react";
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
-import { Separator_thin } from "./Separator_thin";
-import CardDetailSection2 from "./CardDetailSection2";
 import { TooltipIcon } from "./TooltipIcon";
 
 // Interfaces

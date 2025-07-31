@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Medal } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import CardDetailSection from './CardDetailSection';
+
 
 // Interfaces
 interface CardProps {
@@ -29,31 +29,9 @@ interface CardProps {
   }
 }
 
-interface CardFeatureProps {
-  label: string;
-  value: string | number | boolean;
-  icon?: boolean;
-  className?: string;
-}
 
-const CardFeature: React.FC<CardFeatureProps> = ({ 
-  label, 
-  value, 
-  icon = false, 
-  className = ''
-}) => (
-  <div className={`ml-2 flex justify-between items-center py-0.5 ${className}`}>
-    <div className="flex items-center">
-      {icon && <FaCheck className="text-green-500 mr-2 w-3 h-3" />}
-      <span className="text-sm text-white">{label}</span>
-    </div>
-    <div>
-      <span className="text-white font-semibold text-sm">
-        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
-      </span>
-    </div>
-  </div>
-);
+
+
 
 export const BrandBenefits: React.FC<CardProps> = ({ cardDetail }) => {
   const [expanded, setExpanded] = useState<boolean>(false);

@@ -60,27 +60,16 @@ export const useSearch = () => {
 
 // Exemplo de componente usando o hook
 export const SearchApplication: React.FC = () => {
-  const { results, loading, error, search } = useSearch();
+  // Componente de exemplo - não utilizado
 
-  const handleSearch = (segment: string, issuer: string) => {
-    search({ segment, issuer });
-  };
+
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <SearchForm onSearch={handleSearch} />
-
-      {loading ? (
-        <div className="text-center mt-10">
-          <p className="text-white text-center">Carregando...</p>
-        </div>
-      ) : error ? (
-        <div className="text-center mt-10">
-          <p className="text-red-400 text-center">{error}</p>
-        </div>
-      ) : (
-        <ResultCards results={results} />
-      )}
+      {/* SearchForm e ResultCards removidos - não utilizados */}
+      <div className="text-center mt-10">
+        <p className="text-white text-center">Componente de exemplo - não utilizado</p>
+      </div>
     </div>
   );
 };

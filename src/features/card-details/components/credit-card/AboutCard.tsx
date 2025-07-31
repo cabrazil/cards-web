@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { CreditCard, MessageCircleWarning, NotebookText } from "lucide-react";
+import { CreditCard, MessageCircleWarning } from "lucide-react";
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
 import DateFormatedBr from "./DateFormatedBr";
-import CardDetailSection2 from "./CardDetailSection2";
 import { TooltipIcon } from "./TooltipIcon";
-import { theme, getThemeClasses } from "../../../../shared/theme/theme";
 
 // Interfaces
 interface CardProps {

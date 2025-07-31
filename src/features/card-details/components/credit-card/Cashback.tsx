@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { CircleDollarSign, MessageCircleWarning } from "lucide-react";
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
-import CardDetailSection3 from "./CardDetailSection3";
 import { TooltipIcon } from "./TooltipIcon";
-import { Separator_thin } from "./Separator_thin";
 
 // Interfaces
 interface CardProps {
@@ -23,23 +21,7 @@ interface CardProps {
 }
 
 // Componente reutilizável para exibir detalhes com ícone FaCheck
-const CardFeature: React.FC<{ label: string; value: string | string[] | number | boolean; icon?: boolean }> = ({
-  label,
-  value,
-  icon = false,
-}) => (
-  <div className="ml-2 flex justify-between items-center py-0.5">
-    <div className="flex items-center">
-      {icon && <FaCheck className="text-green-500 mr-2 w-3 h-3" />}
-      <span className="text-sm text-white">{label}</span>
-    </div>
-    <div>
-      <span className="text-white font-semibold text-sm">
-        {typeof value === "boolean" ? (value ? "Sim" : "Não") : value}
-      </span>
-    </div>
-  </div>
-);
+
 
 const Cashback: React.FC<CardProps> = ({ cardDetail }) => {
   const [expanded, setExpanded] = useState<boolean>(false);

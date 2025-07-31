@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Gift } from "lucide-react";
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
-import CardDetailSection from "./CardDetailSection";
-import { Separator_thin } from "./Separator_thin";
+
 
 // Interfaces
 interface CardProps {

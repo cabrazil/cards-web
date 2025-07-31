@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion } from "framer-motion";
 import { MessageCircleWarning, Target } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
-import CardDetailSection2 from './CardDetailSection2';
 import { TooltipIcon } from './TooltipIcon';
 
 // Interfaces

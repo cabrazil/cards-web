@@ -4,7 +4,6 @@ import { CalendarOff, MessageCircleWarning } from 'lucide-react';
 import { FaCheck } from 'react-icons/fa';
 import { CurrencyFormatter } from "./CurrencyFormatter";
 import { TooltipIcon } from "./TooltipIcon";
-import CardDetailSection2 from './CardDetailSection2';
 
 // Interfaces
 interface ZerofeeProps {

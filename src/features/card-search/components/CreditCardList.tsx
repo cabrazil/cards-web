@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../../core/api/api';
-import { getThemeClasses } from '../../../shared/theme/theme';
 
 interface CreditCard {
   id: string;
