@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { api } from '../../../core/api/api';
 
 // Definição do tipo para os resultados
 interface ResultItem {
@@ -25,7 +25,7 @@ export const useSearch = () => {
     setError(null);
 
     try {
-      const response = await axios.get<ResultItem[]>('/api/search', {
+      const response = await api.get<ResultItem[]>('/api/search', {
         params: {
           segment: params.segment,
           issuer: params.issuer
@@ -61,8 +61,6 @@ export const useSearch = () => {
 // Exemplo de componente usando o hook
 export const SearchApplication: React.FC = () => {
   // Componente de exemplo - não utilizado
-
-
 
   return (
     <div className="container mx-auto px-4 py-8">
