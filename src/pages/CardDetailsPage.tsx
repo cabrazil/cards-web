@@ -33,7 +33,7 @@ const CardDetailsPage: React.FC<CardDetailsPageProps> = ({ cardId, selectedFilte
     <div className="min-h-screen font-roboto flex flex-col" style={{ backgroundColor: '#011627' }}>
       {/* Header com badges */}
       <div className="bg-slate-800 border-b border-slate-700 px-6 py-4">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[1400px] mx-auto">
           {/* Título da página centralizado */}
           <div className="text-center mb-6">
             <h1 className="text-white text-h3 font-bold mb-2">
@@ -61,18 +61,20 @@ const CardDetailsPage: React.FC<CardDetailsPageProps> = ({ cardId, selectedFilte
       </div>
 
       {/* Conteúdo principal */}
-      <div className="flex-1 max-w-7xl mx-auto px-6 py-8">
-        <CreditCardDetails cardId={cardId} />
+      <div className="flex-1 max-w-[1400px] mx-auto px-6 py-8">
+        <div className="w-full">
+          <CreditCardDetails cardId={cardId} />
+        </div>
       </div>
 
       {/* Footer com botão voltar centralizado */}
       <div className="bg-slate-800 border-t border-slate-700 px-6 py-6">
-        <div className="max-w-7xl mx-auto text-center">
+        <div className="max-w-[1400px] mx-auto text-center">
           <button
             onClick={handleBack}
             className={`${getThemeClasses.button.primary} px-6 py-3 rounded-md text-base font-medium transition-all duration-200`}
           >
-            ← Voltar à Lista de Cartões
+            Voltar à Lista de Cartões
           </button>
         </div>
       </div>

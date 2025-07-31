@@ -48,10 +48,10 @@ const CreditCardList: React.FC<{
 
   // Verificar se não há resultados após o carregamento
   useEffect(() => {
-    if (creditCards.length === 0 && expense && issuer) {
+    if (creditCards.length === 0 && expense && issuer && !isLoading) {
       onNoResults();
     }
-  }, [creditCards.length, expense, issuer]);
+  }, [creditCards.length, expense, issuer, isLoading]);
 
   const handleCardClick = (card: CreditCard) => {
     setSelectedCardId(card.id);
@@ -68,9 +68,11 @@ const CreditCardList: React.FC<{
       </div>
 
       <div className="credit-cards grid md:grid-cols-3 gap-4">
-        {(creditCards.length > 0)
-        ?
-        (
+        {isLoading ? (
+          <div className="col-span-full text-center py-8">
+            <p className="text-white text-h6">Carregando cartões...</p>
+          </div>
+        ) : creditCards.length > 0 ? (
           creditCards.map(card => (
             <div 
               key={card.id} 
@@ -93,8 +95,10 @@ const CreditCardList: React.FC<{
             </div>
           ))
         ) : (
-        <p className="text-white text-center">Nenhum cartão de crédito foi selecionado.</p>
-      )}
+          <div className="col-span-full text-center py-8">
+            <p className="text-white text-center">Nenhum cartão de crédito foi encontrado.</p>
+          </div>
+        )}
       </div>
     </div>
   );

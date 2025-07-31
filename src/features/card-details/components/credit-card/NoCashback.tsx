@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export const NoCashback: React.FC = () => {
   return (
-    <div className="rounded-lg border overflow-hidden shadow-md" style={{ backgroundColor: '#163D57', borderColor: '#FF9F1C' }}>
+    <div className="rounded-lg border overflow-hidden shadow-md w-full min-w-[600px] max-w-[700px]" style={{ backgroundColor: '#163D57', borderColor: '#FF9F1C' }}>
       {/* Header com título e ícone */}
       <div className="bg-slate-800 px-4 py-3 border-b border-slate-700">
         <div className="flex items-center justify-between">

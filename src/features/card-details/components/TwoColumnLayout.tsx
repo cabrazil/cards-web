@@ -73,19 +73,19 @@ export const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ cards, classNa
 
   return (
     <motion.div
-      className={`grid grid-cols-1 lg:grid-cols-2 gap-6 ${className}`}
+      className={`grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 ${className}`}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       {/* Coluna Esquerda */}
-      <motion.div className="space-y-6">
+      <motion.div className="space-y-8 flex flex-col items-center">
         {leftColumn.map((card) => (
           <motion.div
             key={card.id}
             variants={cardVariants}
             layout
-            className="w-full"
+            className="w-full max-w-[700px]"
           >
             {card.component}
           </motion.div>
@@ -93,13 +93,13 @@ export const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ cards, classNa
       </motion.div>
 
       {/* Coluna Direita */}
-      <motion.div className="space-y-6">
+      <motion.div className="space-y-8 flex flex-col items-center">
         {rightColumn.map((card) => (
           <motion.div
             key={card.id}
             variants={cardVariants}
             layout
-            className="w-full"
+            className="w-full max-w-[700px]"
           >
             {card.component}
           </motion.div>

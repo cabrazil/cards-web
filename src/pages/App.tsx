@@ -116,7 +116,7 @@ const App: React.FC = () => {
             }}
             className={`${getThemeClasses.button.primary} px-6 py-3 rounded-md text-base font-medium transition-all duration-200`}
           >
-            ← Voltar à Home
+            Voltar à Home
           </button>
         </div>
       </div>

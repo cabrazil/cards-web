@@ -10,7 +10,7 @@ interface CardProps {
   cardDetail: {
     id:                 string;
     card_name:          string;
-    requirements: {
+    requirements?: {
       id:               string;
       account_holder:   boolean;
       add_cards_amount: number;
@@ -53,8 +53,27 @@ const CardFeature2: React.FC<CardFeatureProps> = ({
 export const Requirements: React.FC<CardProps> = ({ cardDetail }) => {
   const [expanded, setExpanded] = useState(false);
 
+  // Verificar se requirements existe
+  if (!cardDetail.requirements) {
+    return (
+      <div className="rounded-lg border overflow-hidden shadow-md" style={{ backgroundColor: '#163D57', borderColor: '#FF9F1C' }}>
+        <div className="bg-slate-800 px-4 py-3 border-b border-slate-700">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Target className="text-white w-5 h-5" />
+              <h3 className="text-white font-semibold text-base">Para obter o Cartão, Adicionais e Limite</h3>
+            </div>
+          </div>
+        </div>
+        <div className="p-4">
+          <p className="text-white text-center">Informações de requisitos não disponíveis</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="rounded-lg border overflow-hidden shadow-md" style={{ backgroundColor: '#163D57', borderColor: '#FF9F1C' }}>
+    <div className="rounded-lg border overflow-hidden shadow-md w-full min-w-[600px] max-w-[700px]" style={{ backgroundColor: '#163D57', borderColor: '#FF9F1C' }}>
       {/* Header com título e ícone */}
       <div className="bg-slate-800 px-4 py-3 border-b border-slate-700">
         <div className="flex items-center justify-between">
@@ -62,7 +81,7 @@ export const Requirements: React.FC<CardProps> = ({ cardDetail }) => {
             <Target className="text-white w-5 h-5" />
             <h3 className="text-white font-semibold text-base">Para obter o Cartão, Adicionais e Limite</h3>
           </div>
-          {cardDetail.requirements.req_tips && cardDetail.requirements.req_tips.length > 0 && (
+          {cardDetail.requirements?.req_tips && cardDetail.requirements.req_tips.length > 0 && (
             <TooltipIcon 
               text={cardDetail.requirements.req_tips.join("\n")} 
               icon={<MessageCircleWarning className="text-white w-4 h-4" />} 
@@ -87,10 +106,14 @@ export const Requirements: React.FC<CardProps> = ({ cardDetail }) => {
           className="space-y-0"
         >
           {/* Somente correntistas */}
-          <CardFeature2 label="Somente correntistas:" value={cardDetail.requirements.account_holder} />
+          {cardDetail.requirements?.account_holder !== undefined && (
+            <CardFeature2 label="Somente correntistas:" value={cardDetail.requirements.account_holder} />
+          )}
           
           {/* Limite do cartão */}
-          <CardFeature2 label="Limite do cartão:" value={cardDetail.requirements.card_limit} />
+          {cardDetail.requirements?.card_limit && (
+            <CardFeature2 label="Limite do cartão:" value={cardDetail.requirements.card_limit} />
+          )}
 
           {/* Detalhes expandidos */}
           {expanded && (
@@ -121,7 +144,7 @@ export const Requirements: React.FC<CardProps> = ({ cardDetail }) => {
               )}
 
               {/* Cartões Adicionais */}
-              {cardDetail.requirements.add_cards_amount > 0 && (
+              {cardDetail.requirements?.add_cards_amount > 0 && (
                 <div className="ml-2 flex justify-between items-center py-0.5">
                   <div className="flex items-center">
                     <FaCheck className={`mr-2 w-3 h-3 ${cardDetail.requirements.add_cards_amount >= 4 ? 'text-green-500' : 'text-yellow-500'}`} />
@@ -139,7 +162,7 @@ export const Requirements: React.FC<CardProps> = ({ cardDetail }) => {
               )}
 
               {/* Valor mínimo por fatura */}
-              {cardDetail.requirements.add_cards_charge > 0 && (
+              {cardDetail.requirements?.add_cards_charge > 0 && (
                 <div className="ml-2 py-0.5">
                   <div className="flex items-start">
                     <span className="text-sm text-white">Valor mínimo de fatura por adicional:</span>
