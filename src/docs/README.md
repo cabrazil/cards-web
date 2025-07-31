@@ -1,7 +1,7 @@
-# Documentação do Sistema de Busca de Cartões de Crédito
+# Documentação do Cards Web - Sistema de Busca de Cartões de Crédito
 
 ## Visão Geral
-Este é um sistema frontend desenvolvido em React + TypeScript + Vite para busca e visualização de cartões de crédito. O sistema permite aos usuários buscar cartões de crédito e visualizar seus detalhes de forma intuitiva e responsiva.
+Este é um sistema web desenvolvido em React + TypeScript + Vite para busca e visualização de cartões de crédito. O sistema permite aos usuários buscar cartões de crédito e visualizar seus detalhes de forma intuitiva e responsiva.
 
 ## Estrutura do Projeto
 
