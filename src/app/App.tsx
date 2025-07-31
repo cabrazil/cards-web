@@ -1,66 +1,44 @@
-import { useState } from 'react';
-import { Header } from '../shared/components/layout/Header';
-import SearchForm from '../features/card-search/components/SearchForm';
-import CreditCardList from '../features/card-search/components/CreditCardList';
-import { CreditCardDetails } from '../features/card-details/components/CreditCardDetails';
+import { useState, useEffect } from 'react';
+import Home from '../pages/Home';
+import App from '../pages/App';
 
-// Configuração de cores baseada no documento
-const COLORS = {
-  PRIMARY: '#1F3B4D',      // Azul-marinho profundo
-  SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#4169e1',    // Azul Royal
-  BACKGROUND: '#F5F5F5',   // Cinza-claro
-  TEXT_PRIMARY: '#333333', // Cinza-escuro
-  TEXT_SECONDARY: '#666666' // Cinza-médio
-};
+const MainApp: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState<'home' | 'app'>('home');
 
-interface CreditCard {
-  id: string;
-  card_name: string;
-  issuer_name: string;
-  expense_code: number;
-}
+  // Verificar rota inicial e mudanças de rota
+  useEffect(() => {
+    const checkRoute = () => {
+      if (window.location.pathname === '/app') {
+        setCurrentPage('app');
+      } else {
+        setCurrentPage('home');
+      }
+    };
 
-const App: React.FC = () => {
-  const [expense, setExpense] = useState<string | null>(null);
-  const [issuer, setIssuer] = useState<string | null>(null);
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+    // Verificar rota inicial
+    checkRoute();
 
-  const handleSearch = (selectedExpense: string | null, selectedIssuer: string | null) => {
-    setExpense(selectedExpense);
-    setIssuer(selectedIssuer);
-    setSelectedCardId(null);
-  };
+    // Listener para mudanças de rota
+    const handlePopState = () => {
+      checkRoute();
+    };
 
-  const handleCardSelect = (card: CreditCard) => {
-    setSelectedCardId(card.id);
-  };
+    window.addEventListener('popstate', handlePopState);
 
-  const handleNoResults = () => {
-    setSelectedCardId(null);
-  };
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   return (
     <div>
-      <div 
-        className="credit-card-blog p-20 max-w-7xl mx-auto"
-        style={{ backgroundColor: COLORS.BACKGROUND }}
-      >
-        <Header />
-        <SearchForm onSearch={handleSearch} />
-        {expense && issuer && (
-          <CreditCardList 
-            expense={expense} 
-            issuer={issuer} 
-            onCardSelect={handleCardSelect}
-            onNoResults={handleNoResults}
-          />
-        )}
-        {selectedCardId && <CreditCardDetails cardId={selectedCardId} />}
-        
-      </div> 
+      {currentPage === 'home' ? (
+        <Home />
+      ) : (
+        <App />
+      )}
     </div>
   );
 };
 
-export default App;
+export default MainApp;

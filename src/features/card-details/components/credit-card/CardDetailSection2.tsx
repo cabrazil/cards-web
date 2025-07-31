@@ -13,8 +13,8 @@ const COLORS = {
 interface CardDetailSectionProps2 {
   title: string;
   icon: ReactNode;
-  icon2: ReactNode;
-  title2: string;
+  icon2?: ReactNode;
+  title2?: string;
   children: ReactNode;
   className?: string;
 }

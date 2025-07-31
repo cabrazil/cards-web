@@ -56,7 +56,7 @@ const CardFeature: React.FC<CardFeatureProps> = ({
       <span>{label}</span>
     </div>
     <div>
-      <span className="text-gray-950 font-semibold">
+      <span className="text-white font-semibold">
         {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
       </span>
     </div>
@@ -73,7 +73,7 @@ const CardFeature2: React.FC<CardFeatureProps> = ({
       <span>{label}</span>
     </div>
     <div>
-      <span className="text-gray-950 font-semibold">
+      <span className="text-white font-semibold">
         {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
       </span>
     </div>

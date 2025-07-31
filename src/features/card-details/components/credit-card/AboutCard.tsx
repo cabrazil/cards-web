@@ -5,6 +5,7 @@ import { FaCheck } from "react-icons/fa";
 import DateFormatedBr from "./DateFormatedBr";
 import CardDetailSection2 from "./CardDetailSection2";
 import { TooltipIcon } from "./TooltipIcon";
+import { theme, getThemeClasses } from "../../../../shared/theme/theme";
 
 // Interfaces
 interface CardProps {
@@ -36,13 +37,13 @@ const CardFeature: React.FC<{ label: string; value: React.ReactNode; icon?: bool
   value,
   icon = false,
 }) => (
-  <div className="ml-2 flex justify-between">
+  <div className="ml-2 flex justify-between items-center py-0.5">
     <div className="flex items-center">
-      {icon && <FaCheck className="text-green-500 mr-2" />}
-      <span>{label}</span>
+      {icon && <FaCheck className="text-green-500 mr-2 w-3 h-3" />}
+                <span className="text-sm text-white">{label}</span>
     </div>
     <div>
-      <span className="text-gray-950 font-semibold">
+                <span className="text-white font-semibold text-sm">
         {typeof value === "boolean" ? (value ? "Sim" : "Não") : value}
       </span>
     </div>
@@ -53,87 +54,158 @@ const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <CardDetailSection2
-      title="Sobre o Cartão"
-      icon={<CreditCard className="text-white" />}
-      className="text-md font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-3 rounded-lg"
-      icon2={<TooltipIcon text={cardDetail.obs_summary.join("\n")} icon={<MessageCircleWarning />} />}
-      title2=""
-    >
-      {/* Destacando a imagem do cartão */}
-      <motion.div
-        className="relative flex flex-col items-center p-4 bg-white shadow-lg rounded-xl border border-gray-200"
-        whileHover={{ scale: 1.05 }}
-      >
-        <motion.img
-          src={cardDetail.src_card_picture}
-          alt="Cartão de Crédito"
-          className="w-64 h-40 rounded-lg shadow-md"
-          whileHover={{ rotateY: 10 }}
-        />
+    <div className="rounded-lg border overflow-hidden shadow-md" style={{ backgroundColor: '#163D57', borderColor: '#FF9F1C' }}>
+      {/* Header com título e ícone */}
+      <div className="bg-slate-800 px-4 py-3 border-b border-slate-700">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <CreditCard className="text-white w-5 h-5" />
+            <h3 className="text-white font-semibold text-base">Sobre o Cartão</h3>
+          </div>
+          {cardDetail.obs_summary && cardDetail.obs_summary.length > 0 && (
+            <TooltipIcon 
+              text={cardDetail.obs_summary.join("\n")} 
+              icon={<MessageCircleWarning className="text-white w-4 h-4" />} 
+            />
+          )}
+        </div>
+      </div>
 
+      {/* Conteúdo do card */}
+      <div className="p-4">
+        {/* Imagem do cartão centralizada */}
+        <div className="flex justify-center mb-4">
+          <motion.img
+            src={cardDetail.src_card_picture}
+            alt="Cartão de Crédito"
+            className="w-40 h-24 rounded-md shadow-sm object-cover"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          />
+        </div>
+
+        {/* Botão para expandir/recolher */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+          className="w-full mb-4 px-3 py-2 border border-amber-500 text-white font-medium text-sm rounded-md hover:bg-amber-500/20 transition-colors duration-200"
         >
           {expanded ? "Ocultar Detalhes" : "Ver Detalhes"}
         </button>
 
-        {/* Expansão de detalhes */}
-        {expanded && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            className="mt-4 text-gray-700 w-full text-sm"
-          >
-            <CardFeature label="Informações atualizadas em:" value={<DateFormatedBr data={cardDetail.updated_at} />} />
-            <CardFeature label="Modalidade:" value={cardDetail.card_modality} icon={cardDetail.card_modality.length > 10} />
-            <CardFeature
-              label="Bandeira e Categoria:"
-              value={`${cardDetail.card_brand} ${cardDetail.category}`}
-              icon={cardDetail.category === "Black" || cardDetail.category === "Infinite"}
-            />
-            <CardFeature label="Material:" value={cardDetail.card_material} icon={cardDetail.card_material === "Metal"} />
-            <CardFeature label="Cartão Internacional:" value={cardDetail.international_card} />
-            <CardFeature label="Pagamentos por Aproximação:" value={cardDetail.contactless} />
-            <CardFeature label="IOF:" value={`${cardDetail.iof_rate}%`} icon={cardDetail.iof_rate === 0} />
-            <CardFeature label="Spread:" value={`${cardDetail.spread_rate}%`} icon={cardDetail.spread_rate < 5} />
-            <CardFeature label="Aceito no Débito:" value={cardDetail.is_debit} icon={cardDetail.is_debit} />
+        {/* Detalhes - sempre mostrar as informações principais e expandir adicionais */}
+        <motion.div
+          animate={{ height: expanded ? "auto" : "auto" }}
+          className="space-y-0"
+        >
+          {/* Informações atualizadas */}
+          <CardFeature 
+            label="Informações atualizadas em:" 
+            value={<DateFormatedBr data={cardDetail.updated_at} />} 
+          />
+          
+          {/* Modalidade */}
+          <CardFeature 
+            label="Modalidade:" 
+            value={cardDetail.card_modality} 
+            icon={!!(cardDetail.card_modality && cardDetail.card_modality.length > 10)} 
+          />
+          
+          {/* Bandeira e Categoria */}
+          <CardFeature
+            label="Bandeira e Categoria:"
+            value={`${cardDetail.card_brand} ${cardDetail.category}`}
+            icon={cardDetail.category === "Black" || cardDetail.category === "Infinite"}
+          />
+          
+          {/* Internacional */}
+          <CardFeature 
+            label="Cartão Internacional:" 
+            value={cardDetail.international_card} 
+          />
+          
+          {/* IOF */}
+          <CardFeature 
+            label="IOF:" 
+            value={`${cardDetail.iof_rate}%`} 
+            icon={cardDetail.iof_rate === 0} 
+          />
+          
+          {/* Spread */}
+          <CardFeature 
+            label="Spread:" 
+            value={`${cardDetail.spread_rate}%`} 
+            icon={cardDetail.spread_rate < 5} 
+          />
+          
+          {/* Débito */}
+          <CardFeature 
+            label="Aceito no Débito:" 
+            value={cardDetail.is_debit} 
+            icon={cardDetail.is_debit} 
+          />
 
-            {cardDetail.virtual_cards && (
-              <CardFeature label="Aceita cartões virtuais:" value="Sim" icon={true} />
-            )}
+          {/* Detalhes expandidos */}
+          {expanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="mt-2 pt-2 border-t border-gray-200 space-y-0"
+            >
+              {/* Material */}
+              <CardFeature 
+                label="Material:" 
+                value={cardDetail.card_material} 
+                icon={cardDetail.card_material === "Metal"} 
+              />
+              
+              {/* Contactless */}
+              <CardFeature 
+                label="Pagamentos por Aproximação:" 
+                value={cardDetail.contactless} 
+              />
 
-            {cardDetail.virtual_wallets.length > 0 && (
-              <div className="ml-2 flex justify-between">
-                <div className="flex items-center">
-                  <FaCheck className="text-green-500 mr-2" />
-                  <span>Aceito nas carteiras digitais:</span>
+              {/* Cartões virtuais */}
+              {cardDetail.virtual_cards && (
+                <CardFeature 
+                  label="Aceita cartões virtuais:" 
+                  value="Sim" 
+                  icon={true} 
+                />
+              )}
+
+              {/* Carteiras virtuais */}
+              {cardDetail.virtual_wallets && cardDetail.virtual_wallets.length > 0 && (
+                <div className="ml-2 flex justify-between items-center py-0.5">
+                  <div className="flex items-center">
+                    <FaCheck className="text-green-500 mr-2 w-3 h-3" />
+                    <span className="text-sm text-white">Aceito nas carteiras digitais:</span>
+                  </div>
+                  <div className="text-white font-semibold text-sm flex gap-1 flex-wrap">
+                    {cardDetail.virtual_wallets.map((wallet, index) => (
+                      <span key={index}>{wallet}{index < cardDetail.virtual_wallets.length - 1 ? ',' : ''}</span>
+                    ))}
+                  </div>
                 </div>
-                <ul className="text-gray-950 font-semibold display: inline-flex gap-2">
-                  {cardDetail.virtual_wallets.map((wallet, index) => (
-                    <li key={index} className="first:ml-2">{wallet}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+              )}
 
-            {cardDetail.additional_info.length > 0 && (
-              <div className="flex justify-between">
-                <div>
-                  <span className="ml-4">Obs:</span>
+              {/* Informações adicionais */}
+              {cardDetail.additional_info && cardDetail.additional_info.length > 0 && (
+                <div className="ml-2 py-0.5">
+                  <div className="flex items-start">
+                    <span className="text-sm text-white">Obs:</span>
+                  </div>
+                  <div className="ml-5 mt-1">
+                    {cardDetail.additional_info.map((info, index) => (
+                      <div key={index} className="text-white font-semibold text-sm mb-1">{info}</div>
+                    ))}
+                  </div>
                 </div>
-                <ul className="text-gray-950 font-semibold text-right">
-                  {cardDetail.additional_info.map((info, index) => (
-                    <li key={index} className="first:ml-2">{info}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </motion.div>
-    </CardDetailSection2>
+              )}
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    </div>
   );
 };
 

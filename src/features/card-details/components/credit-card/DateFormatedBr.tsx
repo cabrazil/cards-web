@@ -1,5 +1,5 @@
 interface DateFormatedBrProps {
-  date: string;
+  date?: string;
   data?: string;
 }
 

@@ -46,7 +46,7 @@ const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
         whileHover={{ scale: 1.05 }}
       >
         {/* Ícone no canto superior direito */}
-        <div className="absolute top-2 right-2 text-gray-600">
+        <div className="absolute top-2 right-2 text-white">
           <TooltipIcon text="Informações adicionais" icon={<NotebookText size={20} />} />
         </div>
 
@@ -111,7 +111,7 @@ const AboutCard: React.FC<CardProps> = ({ cardDetail }) => {
             {cardDetail.additional_info.length > 0 && (
               <div className="mt-2">
                 <p className="font-semibold">Observações:</p>
-                <ul className="text-gray-950 font-medium text-center">
+                <ul className="text-white font-medium text-center">
                   {cardDetail.additional_info.map((info, index) => (
                     <li key={index} className="mt-1">{info}</li>
                   ))}

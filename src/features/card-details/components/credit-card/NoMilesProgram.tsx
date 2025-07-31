@@ -1,23 +1,36 @@
 import React from 'react';
 import { Plane } from 'lucide-react';
-import CardDetailSection from './CardDetailSection';
-
+import { motion } from 'framer-motion';
 
 export const NoMilesProgram: React.FC = () => {
-  const COLORS = {
-    PRIMARY: '#1F3B4D',
-    TEXT_PRIMARY: '#4b5563',
-    HIGHLIGHT: '#4169e1',
-  };
-
   return (
-    <CardDetailSection
-      title="Programa de Milhas"
-      icon={<Plane color={COLORS.HIGHLIGHT} />}
-      className='text-md font-semibold flex justify-between'
-    >
-      <span className='text-gray-950 font-semibold text-right'>Não oferece</span>
-    </CardDetailSection>
+    <div className="rounded-lg border overflow-hidden shadow-md" style={{ backgroundColor: '#163D57', borderColor: '#FF9F1C' }}>
+      {/* Header com título e ícone */}
+      <div className="bg-slate-800 px-4 py-3 border-b border-slate-700">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Plane className="text-white w-5 h-5" />
+            <h3 className="text-white font-semibold text-base">Programa de Milhas</h3>
+          </div>
+        </div>
+      </div>
+
+      {/* Conteúdo do card */}
+      <div className="p-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col items-center justify-center py-6"
+        >
+          <p className="text-white text-sm font-medium text-center">
+            Este cartão não possui programa de milhas
+          </p>
+          <p className="text-gray-300 text-xs text-center mt-1">
+            Explore outros benefícios disponíveis
+          </p>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 

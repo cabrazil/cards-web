@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
 import Select, { SingleValue } from 'react-select';
 import { api } from '../../../core/api/api';
-
-const COLORS = {
-  PRIMARY: '#1F3B4D',      // Azul-marinho profundo
-  SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#4169e1',    // Dourado #FF9000
-  MENULIST: "#DEEBFF",     // Azul-claro
-  BACKGROUND: '#F5F5F5',   // Cinza-claro
-  TEXT_PRIMARY: '#333333', // Cinza-escuro
-  TEXT_SECONDARY: '#666666' // Cinza-médio
-};
+import { theme, getThemeClasses } from '../../../shared/theme/theme';
 
 interface issuerProps {
   id: string;
@@ -25,17 +16,24 @@ interface DropdownOption {
 //react-select options
 const customStyles = {
   control: (provided: any) => ({...provided,
-    borderColor: COLORS.SECUNDARY,
-    color: COLORS.TEXT_PRIMARY,
+    borderColor: theme.colors.secondary,
+    color: theme.colors.text.dark,
+    '&:hover': {
+      borderColor: theme.colors.highlight,
+    },
+    '&:focus': {
+      borderColor: theme.colors.highlight,
+      boxShadow: `0 0 0 1px ${theme.colors.highlight}`,
+    },
   }),
   option: (provided: any, state: { isSelected: any; isFocused: any; }) => ({...provided,
-    className: `py-2 px-4 my-1 ${state.isSelected ? 'bg-[#DEEBFF] text-white' : state.isFocused ? 'bg-gray-200' : 'bg-white text-gray-800'}`,
-    color: COLORS.TEXT_PRIMARY,
+    className: `py-2 px-4 my-1 ${state.isSelected ? 'bg-[#FF9F1C] text-white' : state.isFocused ? 'bg-[#FF9F1C]/20' : 'bg-white text-gray-800'}`,
+    color: theme.colors.text.dark,
   }),
   
   menu: (provided: any) => ({
     ...provided,
-    className: 'mt-2 rounded-lg shadow-lg',
+    className: 'mt-2 rounded-lg shadow-lg border border-gray-200',
   }),
   menuList: (provided: any) => ({
     ...provided,
@@ -44,12 +42,12 @@ const customStyles = {
 }
 
 //This function customize border color 
-function customTheme(theme: any) {
+function customTheme(reactSelectTheme: any) {
   return {
-    ...theme,
+    ...reactSelectTheme,
     colors: {
-      ...theme.colors,
-      primary: COLORS.HIGHLIGHT
+      ...reactSelectTheme.colors,
+      primary: theme.colors.highlight
     },
   };
 };
@@ -104,8 +102,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
       <div className="income-filter flex-1">
         <label 
           htmlFor="income" 
-          className="block text-sm font-medium text-muted-foreground mb-2"
-          style={{ color: COLORS.TEXT_PRIMARY }}
+          className="block text-sm font-medium text-white mb-2"
         >
           Perfil de Gastos 
         </label>
@@ -123,8 +120,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
       <div className="institution-filter flex-1">
         <label 
           htmlFor="institution" 
-          className="block text-sm font-medium text-muted-foreground mb-2"
-          style={{ color: COLORS.TEXT_PRIMARY }}
+          className="block text-sm font-medium text-white mb-2"
         >
           Instituição Emissora
         </label>
@@ -143,7 +139,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
       </div>
       
       <button
-        className='px-4 rounded-md font-semibold h-9 mt-7 border-2 border-[#4169e1] text-[#4169e1] hover:bg-[#4169e1] hover:text-white'
+        className={`px-4 rounded-md font-semibold h-9 mt-7 ${getThemeClasses.button.primary}`}
         onClick={handleSearch}
       >
         Buscar

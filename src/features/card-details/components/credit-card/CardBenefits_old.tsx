@@ -61,7 +61,7 @@ const CardFeature: React.FC<CardFeatureProps> = ({
       <span>{label}</span>
     </div>
     <div>
-      <span className="text-gray-950 font-semibold">
+      <span className="text-white font-semibold">
         {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
       </span>
     </div>
@@ -78,7 +78,7 @@ const CardFeature2: React.FC<CardFeatureProps> = ({
       <span>{label}</span>
     </div>
     <div>
-      <span className="text-gray-950 font-semibold">
+      <span className="text-white font-semibold">
         {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
       </span>
     </div>
@@ -110,7 +110,7 @@ export const CardBenefits: React.FC<CardProps> = ({ cardDetail }) => {
           <span className="ml-2">Exclusivos: </span>
             
               <span>                    
-                <ul className='text-gray-950 font-semibold'>
+                <ul className='text-white font-semibold'>
                   {cardDetail.exclusives.exclusive_offers.map((item, index) => (
                     <li key={index} className='ml-2 text-right'>{item}</li>
                   ))}

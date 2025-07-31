@@ -28,13 +28,13 @@ const CardFeature: React.FC<{ label: string; value: string | string[] | number |
   value,
   icon = false,
 }) => (
-  <div className="flex justify-between items-center">
+  <div className="ml-2 flex justify-between items-center py-0.5">
     <div className="flex items-center">
-      {icon && <FaCheck className="text-green-500 mr-2" />}
-      <span>{label}</span>
+      {icon && <FaCheck className="text-green-500 mr-2 w-3 h-3" />}
+      <span className="text-sm text-white">{label}</span>
     </div>
     <div>
-      <span className="text-gray-950 font-semibold">
+      <span className="text-white font-semibold text-sm">
         {typeof value === "boolean" ? (value ? "Sim" : "Não") : value}
       </span>
     </div>
@@ -45,64 +45,77 @@ const Cashback: React.FC<CardProps> = ({ cardDetail }) => {
   const [expanded, setExpanded] = useState<boolean>(false);
 
   return (
-    <CardDetailSection3
-      title="Cashback"
-      icon={<CircleDollarSign className="text-blue-500" />}
-      className="text-md font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-3 rounded-lg"
-      icon2={
-        cardDetail?.cashbacks[0]?.cash_tips.length > 0 ? (
-          <TooltipIcon text={cardDetail.cashbacks[0].cash_tips.join("\n")} icon={<MessageCircleWarning />} />
-        ) : null
-      }
-    >
-      <motion.div
-        className="flex flex-col items-center p-6 bg-white shadow-lg rounded-xl border border-gray-200"
-        whileHover={{ scale: 1.05 }}
-      >
+    <div className="rounded-lg border overflow-hidden shadow-md" style={{ backgroundColor: '#163D57', borderColor: '#FF9F1C' }}>
+      {/* Header com título e ícone */}
+      <div className="bg-slate-800 px-4 py-3 border-b border-slate-700">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <CircleDollarSign className="text-white w-5 h-5" />
+            <h3 className="text-white font-semibold text-base">Cashback</h3>
+          </div>
+          {cardDetail?.cashbacks[0]?.cash_tips.length > 0 && (
+            <TooltipIcon text={cardDetail.cashbacks[0].cash_tips.join("\n")} icon={<MessageCircleWarning />} />
+          )}
+        </div>
+      </div>
+
+      {/* Conteúdo do card */}
+      <div className="p-4">
+        {/* Botão para expandir/recolher */}
         <button
           onClick={() => setExpanded(!expanded)}
-          className="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+          className="w-full mb-4 px-3 py-2 border border-amber-500 text-white font-medium text-sm rounded-md hover:bg-amber-500/20 transition-colors duration-200"
         >
-          {expanded ? "Ocultar Detalhes" : "Ver Cashback"}
+          {expanded ? "Ocultar Detalhes" : "Ver Detalhes"}
         </button>
 
-        {/* Expansão de detalhes */}
-        {expanded && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            className="mt-4 text-gray-700 w-full text-center text-sm space-y-2"
-          >
-            {cardDetail?.cashbacks.map((item) => (
-              <motion.div
-                key={item.id}
-                className="bg-gray-50 p-4 rounded-lg shadow-md mb-3 w-full"
-                whileHover={{ scale: 1.02 }}
-              >
-                <p className="text-lg font-semibold text-blue-600">Cashback</p>
+        {/* Detalhes - sempre mostrar as informações principais e expandir adicionais */}
+        <motion.div
+          animate={{ height: expanded ? "auto" : "auto" }}
+          className="space-y-0"
+        >
+          {/* Percentual de cashback - sempre visível */}
+          {cardDetail?.cashbacks[0]?.pct_cashback > 0 && (
+            <div className="ml-2 flex justify-between items-center py-0.5">
+              <div className="flex items-center">
+                <FaCheck className="text-green-500 mr-2 w-3 h-3" />
+                <span className="text-sm text-white">Percentual de Cashback:</span>
+              </div>
+              <span className="text-white font-semibold text-sm">
+                {cardDetail.cashbacks[0].pct_cashback}% {cardDetail.cashbacks[0].txt_cashback}
+              </span>
+            </div>
+          )}
 
-                {item.pct_cashback > 0 && (
-                  <CardFeature label="Percentual de Cashback:" value={`${item.pct_cashback}% ${item.txt_cashback}`} icon={true} />
-                )}
-
-                {item.obs_cashback.length > 0 && (
-                  <div className="mt-2">
-                    <p className="font-semibold">Observações:</p>
-                    <ul className="text-gray-950 font-medium text-center">
-                      {item.obs_cashback.map((obs, index) => (
-                        <li key={index} className="mt-1">{obs}</li>
-                      ))}
-                    </ul>
+          {/* Detalhes expandidos */}
+          {expanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="mt-2 pt-2 border-t border-gray-200 space-y-0"
+            >
+              {/* Observações do cashback */}
+              {cardDetail?.cashbacks[0]?.obs_cashback.length > 0 && (
+                <div className="mb-3">
+                  <div className="ml-2 flex justify-between items-center py-0.5">
+                    <div className="flex items-center">
+                      <span className="text-sm text-white font-medium">Observações:</span>
+                    </div>
                   </div>
-                )}
-
-                <Separator_thin />
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </motion.div>
-    </CardDetailSection3>
+                  <ul className="ml-4 space-y-0">
+                    {cardDetail.cashbacks[0].obs_cashback.map((obs, index) => (
+                      <li key={index} className="text-sm text-white py-0.5">
+                        • {obs}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    </div>
   );
 };
 

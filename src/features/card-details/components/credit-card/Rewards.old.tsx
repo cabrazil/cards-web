@@ -58,7 +58,7 @@ const CardFeature: React.FC<CardFeatureProps> = ({
       <span>{label}</span>
     </div>
     <div>
-      <span className="text-gray-950 font-semibold">
+      <span className="text-white font-semibold">
         {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : value}
       </span>
     </div>
@@ -89,18 +89,18 @@ export const Rewards: React.FC<CardProps> = ({ cardDetail }) => {
                   <span className='inline-flex text-green-500'><FaCheck /></span>
                   <span>{item.expenses}:</span>
                 </div>
-                  <span className='text-gray-950 font-semibold text-right'>{item.rules} {item.points_per_dollar} pontos por dólar</span>
+                  <span className='text-white font-semibold text-right'>{item.rules} {item.points_per_dollar} pontos por dólar</span>
               </div></>
               :
               <><div className='flex justify-between'>
                   <span className='ml-2'>{item.expenses}:</span>
-                  <span className='text-gray-950 font-semibold text-right'>{item.rules} {item.points_per_dollar} pontos por dólar</span>
+                  <span className='text-white font-semibold text-right'>{item.rules} {item.points_per_dollar} pontos por dólar</span>
               </div></>}
 
               {item.points_per_real > 100 &&
               <><div className='flex justify-between'>
                   <span className='ml-2'>{item.expenses}:</span>
-                  <span className='text-gray-950 font-semibold text-right'>{item.rules} <DivideBy100 amount={item.points_per_real} divisor={100} /> pontos por real</span>
+                  <span className='text-white font-semibold text-right'>{item.rules} <DivideBy100 amount={item.points_per_real} divisor={100} /> pontos por real</span>
               </div></>}
             </li>
           </ul>
@@ -111,7 +111,7 @@ export const Rewards: React.FC<CardProps> = ({ cardDetail }) => {
             <span className="ml-2">Obs: </span>
               
                 <span>                    
-                  <ul className='text-gray-950 font-semibold'>
+                  <ul className='text-white font-semibold'>
                     {cardDetail.obs_system_points.map((item, index) => (
                       <li key={index} className='ml-2 text-right'>{item}</li>
                     ))}
