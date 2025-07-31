@@ -20,7 +20,7 @@ Para o deploy na Vercel, configure as seguintes variáveis de ambiente:
 
 ```env
 # API Configuration
-VITE_API_URL=https://cards-backend.vercel.app
+VITE_API_URL=https://cards-backend-hz1t.vercel.app
 
 # Environment
 NODE_ENV=production
@@ -37,7 +37,7 @@ NODE_ENV=production
 
 | Nome | Valor | Ambiente |
 |------|-------|----------|
-| `VITE_API_URL` | `https://cards-backend.vercel.app` | Production |
+| `VITE_API_URL` | `https://cards-backend-hz1t.vercel.app` | Production |
 | `NODE_ENV` | `production` | Production |
 
 ### 2. Configuração via CLI (opcional)
@@ -60,7 +60,7 @@ vercel env add NODE_ENV production
 - **Instituições:** `GET /issuers`
 
 ### Backend na Vercel (Produção)
-- **URL Base:** `https://cards-backend.vercel.app`
+- **URL Base:** `https://cards-backend-hz1t.vercel.app`
 - **Busca de Cartões:** `GET /api/search`
 - **Detalhes do Cartão:** `GET /cardid?id={cardId}`
 - **Instituições:** `GET /issuers`
@@ -71,6 +71,7 @@ vercel env add NODE_ENV production
 
 1. **Erro de CORS**
    - Verifique se o backend está configurado para aceitar requisições do domínio do frontend
+   - Adicione o domínio do frontend na configuração de CORS do backend
 
 2. **API não encontrada**
    - Verifique se a URL da API está correta
