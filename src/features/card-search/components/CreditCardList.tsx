@@ -1,14 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { api } from '../../../core/api/api';
-
-const COLORS = {
-  PRIMARY: '#1F3B4D',      // Azul-marinho profundo
-  SECUNDARY: '#d1d5db',    // Cinza-300
-  HIGHLIGHT: '#4169e1',    // Azul royal
-  BACKGROUND: '#F5F5F5',   // Cinza-claro
-  TEXT_PRIMARY: '#333333', // Cinza-escuro
-  TEXT_SECONDARY: '#666666' // Cinza-médio
-};
+import { getThemeClasses } from '../../../shared/theme/theme';
 
 interface CreditCard {
   id: string;
@@ -58,6 +50,12 @@ const CreditCardList: React.FC<{
 
   return (
     <div className="credit-card-ranking mb-4">
+      {/* Descrição da seção */}
+      <div className="mb-6">
+        <p className="text-gray-300 text-h6 text-center">
+          Clique em um cartão para ver os detalhes completos
+        </p>
+      </div>
 
       <div className="credit-cards grid md:grid-cols-3 gap-4">
         {(creditCards.length > 0)
@@ -66,24 +64,26 @@ const CreditCardList: React.FC<{
           creditCards.map(card => (
             <div 
               key={card.id} 
-              className="credit-card-card bg-white p-4 rounded-lg shadow-md"
-              onClick={() => handleCardClick(card)}
+              className={`credit-card-card p-4 rounded-lg shadow-md cursor-pointer transition-all duration-200 hover:scale-105 ${
+                selectedCardId === card.id ? 'ring-2 ring-[#FF9F1C] ring-opacity-50' : ''
+              }`}
               style={{
-                border: selectedCardId === card.id ? '2px solid #4169e1' : 'none',
+                backgroundColor: '#163D57',
+                border: '2px solid #FF9F1C',
                 cursor: 'pointer',
               }}
-              
+              onClick={() => handleCardClick(card)}
             >
-              <h3 className="text-lg font-semibold" style={{ color: COLORS.TEXT_PRIMARY }}>
+              <h3 className="text-lg font-semibold text-white mb-2">
                 {card.card_name}
               </h3>
-              <p style={{ color: COLORS.TEXT_SECONDARY }}>
+              <p className="text-gray-300">
                 Instituição: {card.issuer_name}
               </p>
             </div>
           ))
         ) : (
-        !firstRender.current && <p>Nenhum cartão de crédito foi selecionado.</p>
+        !firstRender.current && <p className="text-white text-center">Nenhum cartão de crédito foi selecionado.</p>
       )}
       </div>
     </div>

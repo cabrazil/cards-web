@@ -60,7 +60,7 @@ export const useSearch = () => {
 
 // Exemplo de componente usando o hook
 export const SearchApplication: React.FC = () => {
-  const { results, loading, search } = useSearch();
+  const { results, loading, error, search } = useSearch();
 
   const handleSearch = (segment: string, issuer: string) => {
     search({ segment, issuer });
@@ -72,7 +72,11 @@ export const SearchApplication: React.FC = () => {
 
       {loading ? (
         <div className="text-center mt-10">
-          <p>Carregando...</p>
+          <p className="text-white text-center">Carregando...</p>
+        </div>
+      ) : error ? (
+        <div className="text-center mt-10">
+          <p className="text-red-400 text-center">{error}</p>
         </div>
       ) : (
         <ResultCards results={results} />

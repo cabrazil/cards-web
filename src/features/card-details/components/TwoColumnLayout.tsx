@@ -29,12 +29,19 @@ export const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ cards, classNa
     sortedCards.forEach((card) => {
       const cardHeight = card.estimatedHeight || 200; // Altura padrão estimada
       
-      if (leftHeight <= rightHeight) {
-        left.push(card);
-        leftHeight += cardHeight;
-      } else {
+      // Força "Benefícios da Bandeira" para a coluna direita
+      if (card.id === 'brand-benefits') {
         right.push(card);
         rightHeight += cardHeight;
+      } else {
+        // Distribuição normal para os outros cards
+        if (leftHeight <= rightHeight) {
+          left.push(card);
+          leftHeight += cardHeight;
+        } else {
+          right.push(card);
+          rightHeight += cardHeight;
+        }
       }
     });
 

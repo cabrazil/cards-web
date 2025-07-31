@@ -1,6 +1,7 @@
 import React from 'react';
 import { CreditCard } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { getThemeClasses } from '../shared/theme/theme';
 
 const Home: React.FC = () => {
   return (
@@ -13,7 +14,7 @@ const Home: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="mb-8"
         >
-          <p className="text-gray-100 text-h6 font-medium"> 
+          <p className="text-gray-100 text-h4 font-medium"> 
             Bem-vindo(a) ao
           </p>
         </motion.div>
@@ -35,7 +36,7 @@ const Home: React.FC = () => {
               </div>
             </div>
           </div>
-          <h1 className="text-h4 md:text-h3 font-bold text-gray-100 mb-8">
+          <h1 className="text-h4 md:text-h5 font-bold text-gray-100 mb-8">
             O Cartão Ideal
           </h1>
         </motion.div>
@@ -61,7 +62,7 @@ const Home: React.FC = () => {
         >
           <p className="text-gray-200 text-h6 md:text-h5 leading-relaxed max-w-3xl mx-auto">
             Sua renda, hábitos e sonhos, sua realidade define o que é ideal para você.<br />
-            Por outro lado, se olharmos para: <span className="text-blue-300 font-semibold">grupos de pessoas com realidades semelhantes </span> 
+            Por outro lado, se olharmos para: <span className="text-blue-300 font-semibold italic">grupos de pessoas com realidades semelhantes </span> 
             podemos encontrar ótimas opções.<br />
             Quer saber como e achar o cartão que combina com sua vida?
           </p> 
@@ -78,7 +79,7 @@ const Home: React.FC = () => {
               window.history.pushState({}, '', '/app');
               window.dispatchEvent(new PopStateEvent('popstate'));
             }}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg mx-auto"
+            className={`${getThemeClasses.button.primary} font-semibold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg mx-auto`}
           >
             Vamos começar
           </button>

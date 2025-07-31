@@ -41,15 +41,15 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
   }, [cardId]);
 
   if (isLoading) {
-    return <div className="flex justify-center">Carregando detalhes do cartão de crédito...</div>;
+    return <div className="flex justify-center text-white">Carregando detalhes do cartão de crédito...</div>;
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <div className="text-red-400">{error}</div>;
   }
 
   if (!cardDetail) {
-    return <div>Nenhum detalhe do cartão encontrado.</div>;
+    return <div className="text-white text-center">Nenhum detalhe do cartão encontrado.</div>;
   }
 
   return (

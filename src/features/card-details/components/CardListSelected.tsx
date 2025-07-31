@@ -64,7 +64,7 @@ const CreditCardList: React.FC<{ segment: string; issuer: string; onCardSelect: 
           </div>
         ))
       ) : (
-        <p>Nenhum cartão de crédito encontrado.</p>
+        <p className="text-white text-center">Nenhum cartão de crédito encontrado.</p>
       )}
     </div>
   );
@@ -96,7 +96,7 @@ const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
           {/* Adicione aqui outros detalhes do cartão de crédito */}
         </>
       ) : (
-        <p>Carregando detalhes do cartão de crédito...</p>
+        <p className="text-white text-center">Carregando detalhes do cartão de crédito...</p>
       )}
     </div>
   );

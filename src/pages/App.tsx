@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Header } from '../shared/components/layout/Header';
 import SearchForm from '../features/card-search/components/SearchForm';
 import CreditCardList from '../features/card-search/components/CreditCardList';
-import { CreditCardDetails } from '../features/card-details/components/CreditCardDetails';
+import { getThemeClasses } from '../shared/theme/theme';
 
 // Configuração de cores baseada no documento
 const COLORS = {
@@ -24,26 +24,38 @@ interface CreditCard {
 const App: React.FC = () => {
   const [expense, setExpense] = useState<string | null>(null);
   const [issuer, setIssuer] = useState<string | null>(null);
-  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
   const handleSearch = (selectedExpense: string | null, selectedIssuer: string | null) => {
     setExpense(selectedExpense);
     setIssuer(selectedIssuer);
-    setSelectedCardId(null);
   };
 
   const handleCardSelect = (card: CreditCard) => {
-    setSelectedCardId(card.id);
+    // Armazenar estado para a nova página
+    const cardDetailsState = {
+      cardId: card.id,
+      selectedFilters: {
+        expense: expense!,
+        issuer: issuer!
+      }
+    };
+    
+    // Salvar no localStorage
+    localStorage.setItem('cardDetailsState', JSON.stringify(cardDetailsState));
+    
+    // Navegar para a página de detalhes
+    window.history.pushState({}, '', `/card-details/${card.id}`);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
   const handleNoResults = () => {
-    setSelectedCardId(null);
+    // Não é mais necessário resetar selectedCardId
   };
 
   return (
-    <div className="font-roboto min-h-screen" style={{ backgroundColor: '#011627' }}>
+    <div className="font-roboto min-h-screen flex flex-col" style={{ backgroundColor: '#011627' }}>
       <div 
-        className="credit-card-blog p-20 max-w-7xl mx-auto"
+        className="credit-card-blog p-20 max-w-7xl mx-auto flex-1"
       >
         <Header />
         <SearchForm onSearch={handleSearch} />
@@ -55,9 +67,22 @@ const App: React.FC = () => {
             onNoResults={handleNoResults}
           />
         )}
-        {selectedCardId && <CreditCardDetails cardId={selectedCardId} />}
-        
-      </div> 
+      </div>
+
+      {/* Footer com botão voltar à Home */}
+      <div className="bg-slate-800 border-t border-slate-700 px-6 py-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <button
+            onClick={() => {
+              window.history.pushState({}, '', '/');
+              window.dispatchEvent(new PopStateEvent('popstate'));
+            }}
+            className={`${getThemeClasses.button.primary} px-6 py-3 rounded-md text-base font-medium transition-all duration-200`}
+          >
+            ← Voltar à Home
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

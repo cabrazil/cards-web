@@ -53,8 +53,8 @@ const CARD_CONFIG = {
   },
   brandBenefits: {
     id: 'brand-benefits',
-    priority: 9,
-    estimatedHeight: 180,
+    priority: 10, // Aumentado para ser o último
+    estimatedHeight: 250, // Aumentado para garantir que vá para a direita
     hasContent: true // Sempre tem conteúdo
   }
 };
