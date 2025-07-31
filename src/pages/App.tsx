@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Header } from '../shared/components/layout/Header';
 import SearchForm from '../features/card-search/components/SearchForm';
 import CreditCardList from '../features/card-search/components/CreditCardList';
@@ -24,10 +24,18 @@ interface CreditCard {
 const App: React.FC = () => {
   const [expense, setExpense] = useState<string | null>(null);
   const [issuer, setIssuer] = useState<string | null>(null);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = (selectedExpense: string | null, selectedIssuer: string | null) => {
     setExpense(selectedExpense);
     setIssuer(selectedIssuer);
+    setHasSearched(true);
+    
+    // Salvar no localStorage
+    if (selectedExpense) localStorage.setItem('savedExpense', selectedExpense);
+    if (selectedIssuer) localStorage.setItem('savedIssuer', selectedIssuer);
+    localStorage.setItem('savedHasSearched', 'true');
   };
 
   const handleCardSelect = (card: CreditCard) => {
@@ -48,9 +56,36 @@ const App: React.FC = () => {
     window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
-  const handleNoResults = () => {
-    // Não é mais necessário resetar selectedCardId
+  const handleNoResults = useCallback(() => {
+    setSearchResults([]);
+  }, []);
+
+  const handleSearchResults = useCallback((results: any[]) => {
+    setSearchResults(results);
+  }, []);
+
+  const clearSavedState = () => {
+    localStorage.removeItem('savedExpense');
+    localStorage.removeItem('savedIssuer');
+    localStorage.removeItem('savedHasSearched');
+    setExpense(null);
+    setIssuer(null);
+    setHasSearched(false);
+    setSearchResults([]);
   };
+
+  // Restaurar estado quando a página é carregada
+  useEffect(() => {
+    const savedExpense = localStorage.getItem('savedExpense');
+    const savedIssuer = localStorage.getItem('savedIssuer');
+    const savedHasSearched = localStorage.getItem('savedHasSearched');
+    
+    if (savedExpense && savedIssuer && savedHasSearched === 'true') {
+      setExpense(savedExpense);
+      setIssuer(savedIssuer);
+      setHasSearched(true);
+    }
+  }, []);
 
   return (
     <div className="font-roboto min-h-screen flex flex-col" style={{ backgroundColor: '#011627' }}>
@@ -59,12 +94,13 @@ const App: React.FC = () => {
       >
         <Header />
         <SearchForm onSearch={handleSearch} />
-        {expense && issuer && (
+        {hasSearched && expense && issuer && (
           <CreditCardList 
             expense={expense} 
             issuer={issuer} 
             onCardSelect={handleCardSelect}
             onNoResults={handleNoResults}
+            onSearchResults={handleSearchResults}
           />
         )}
       </div>
@@ -74,6 +110,7 @@ const App: React.FC = () => {
         <div className="max-w-7xl mx-auto text-center">
           <button
             onClick={() => {
+              clearSavedState();
               window.history.pushState({}, '', '/');
               window.dispatchEvent(new PopStateEvent('popstate'));
             }}

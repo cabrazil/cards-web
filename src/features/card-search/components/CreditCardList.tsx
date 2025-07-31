@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from '../../../core/api/api';
 import { getThemeClasses } from '../../../shared/theme/theme';
 
@@ -14,34 +14,44 @@ const CreditCardList: React.FC<{
   issuer: string; 
   onCardSelect: (card: CreditCard) => void;
   onNoResults: () => void;
-}> = ({ expense, issuer, onCardSelect, onNoResults }) => {
-
-  console.log('Duplo no início', expense, issuer)
-  const expenseNumber = Number(expense);
+  onSearchResults?: (results: CreditCard[]) => void;
+}> = ({ expense, issuer, onCardSelect, onNoResults, onSearchResults }) => {
 
   async function loadCards() {
-    const response = await api.get(`/cardexpense?expense=${expenseNumber}&issuer=${issuer}`);
-    setCreditCards(response.data);
+    if (isLoading) return; // Evitar múltiplas requisições simultâneas
+    
+    setIsLoading(true);
+    try {
+      const response = await api.get(`/cardexpense?expense=${expense}&issuer=${issuer}`);
+      setCreditCards(response.data);
+      // Notificar componente pai sobre os resultados
+      if (onSearchResults) {
+        onSearchResults(response.data);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar cartões:', error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const [creditCards, setCreditCards] = useState<CreditCard[]>([]);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
-  const firstRender = useRef(true);
+  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
-    if (firstRender.current) {
-      console.log('Effect running... 1a')
-      console.log('Tamanho: ', creditCards.length)
-      firstRender.current = false;
-      return;
-    } else {
-
-    loadCards();
-      if (creditCards.length === 0) 
-        onNoResults();
+    // Só executa se temos expense e issuer válidos e não está carregando
+    if (expense && issuer && !isLoading) {
+      loadCards();
     }
-        
-  }, [expenseNumber, issuer, onNoResults, firstRender]);
+  }, [expense, issuer]); // Removidas dependências problemáticas
+
+  // Verificar se não há resultados após o carregamento
+  useEffect(() => {
+    if (creditCards.length === 0 && expense && issuer) {
+      onNoResults();
+    }
+  }, [creditCards.length, expense, issuer]);
 
   const handleCardClick = (card: CreditCard) => {
     setSelectedCardId(card.id);
@@ -83,7 +93,7 @@ const CreditCardList: React.FC<{
             </div>
           ))
         ) : (
-        !firstRender.current && <p className="text-white text-center">Nenhum cartão de crédito foi selecionado.</p>
+        <p className="text-white text-center">Nenhum cartão de crédito foi selecionado.</p>
       )}
       </div>
     </div>
