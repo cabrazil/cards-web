@@ -21,6 +21,7 @@ const CreditCardList: React.FC<{
     
     setIsLoading(true);
     try {
+      // Usar o endpoint que funcionava no Vercel (com expense e issuer)
       const response = await api.get(`/cardexpense?expense=${expense}&issuer=${issuer}`);
       setCreditCards(response.data);
       // Notificar componente pai sobre os resultados

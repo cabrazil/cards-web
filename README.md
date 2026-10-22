@@ -1,106 +1,137 @@
-# Cards Web - Sistema de Busca de Cartões de Crédito
+# 💳 O Cartão Ideal — Cards Web (Frontend PWA)
 
-## Visão Geral
-Este é um sistema frontend desenvolvido em React + TypeScript + Vite para busca e visualização de cartões de crédito. O sistema permite aos usuários buscar cartões de crédito e visualizar seus detalhes de forma intuitiva e responsiva.
+Aplicação web progressiva (**PWA**) moderna e responsiva desenvolvida em **React 18**, **TypeScript**, **Vite** e **TailwindCSS**, com foco em mobile-first, performance e experiência do usuário fluida para recomendação personalizada e comparação de cartões de crédito.
 
-## Documentação
-Para uma documentação mais detalhada do projeto, consulte a pasta `/src/docs/README.md`.
+---
 
-## Tecnologias
-- React 18
-- TypeScript
-- Vite
-- ESLint
-- Prettier
+## 🚀 Tecnologias
 
-## Configuração do Ambiente
+- **Core:** [React 18](https://react.dev/) & [TypeScript](https://www.typescriptlang.org/)
+- **Bundler & Build Tool:** [Vite 5](https://vitejs.dev/)
+- **Estilização:** [TailwindCSS](https://tailwindcss.com/)
+- **Animações & Microinterações:** [Framer Motion](https://www.framer.com/motion/)
+- **Ícones:** [Lucide React](https://lucide.dev/)
+- **PWA (Progressive Web App):** [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) (Service Workers, offline cache, Web App Manifest)
+- **Cliente HTTP:** [Axios](https://axios-http.com/)
+
+---
+
+## ✨ Funcionalidades
+
+### 1. Progressive Web App (PWA) Completo
+- Instalável nativamente em **iOS**, **Android** e **Desktop**.
+- Banner inteligente com instruções personalizadas para instalação (`PwaInstallPrompt`).
+- Suporte a cache offline via Workbox e Service Worker registrado.
+- Ícones dedicados (192x192, 512x512, maskable e apple-touch-icon).
+
+### 2. Quiz Inteligente de Onboarding & Recomendações
+- Apresentação direta com CTA de início rápido.
+- Quiz interativo dividido em passos objetivos (objetivo financeiro, faixa de gastos, anuidade, banco atual, etc.).
+- Motor de cálculo de match em tempo real, pontuando os cartões do banco de dados por compatibilidade.
+- **Justificativas Dinâmicas:** Apresentação clara de *"Por que é indicado para você"* baseada nas escolhas do usuário (ex: foco em aumento de limite, milhas e viagens, isenção de anuidade, cashback).
+
+### 3. Ficha Técnica e Comparador de Benefícios
+- Página detalhada de cada cartão (`/card-details/:id`):
+  - Isenção de anuidade e regras de gastos mensais ou investimentos.
+  - Acesso a salas VIP (LoungeKey, Priority Pass, DragonPass, salas próprias).
+  - Pontuação de milhas por dólar e programas de fidelidade.
+  - Cashback, spread de compras internacionais e IOF.
+
+### 4. Painel Administrativo de Ingestão com IA (`/admin`)
+- Interface para extração automática de dados de novos cartões a partir de texto ou links da web.
+- Revisão em tempo real antes de persistir no banco de dados.
+
+---
+
+## 📁 Estrutura do Projeto
+
+```text
+frontend_new/
+├── public/                    # Favicons, manifesto e ícones PWA
+├── src/
+│   ├── app/
+│   │   ├── App.tsx            # Roteamento e orquestração de páginas
+│   │   └── main.tsx           # Ponto de entrada React
+│   ├── core/
+│   │   └── api/api.ts         # Instância configurada do Axios
+│   ├── features/
+│   │   ├── card-details/      # Componentes e seções da ficha do cartão
+│   │   └── card-search/       # Lista e filtros de busca de cartões
+│   ├── pages/
+│   │   ├── AdminCardExtractor.tsx # Painel administrativo com IA
+│   │   ├── CardDetailsPage.tsx    # Página de detalhes
+│   │   ├── Home.tsx               # Apresentação do serviço
+│   │   └── OnboardingPage.tsx     # Fluxo do Quiz e Resultados
+│   └── shared/
+│       ├── components/        # Componentes compartilhados e prompt de PWA
+│       └── theme/             # Tokens visuais e cores
+├── .env.example               # Exemplo de configuração de variáveis
+├── DEPLOY_GUIDE.md            # Guia passo a passo de deploy na Vercel
+├── vite.config.ts             # Configuração do Vite e PWA
+└── package.json
+```
+
+---
+
+## 🛠️ Como Executar Localmente
 
 ### Pré-requisitos
-- Node.js (versão 18 ou superior)
-- npm ou yarn
+- **Node.js** (v18+)
+- **npm** ou **yarn** / **pnpm**
+- Backend rodando (localmente em `http://localhost:3333` ou via URL remota)
 
-### Instalação
-1. Clone o repositório
-2. Instale as dependências:
+### 1. Clonar o Repositório
+```bash
+git clone https://github.com/cabrazil/cards-web.git
+cd cards-web
+```
+
+### 2. Instalar as Dependências
 ```bash
 npm install
 ```
 
-### Executando o Projeto
-Para desenvolvimento:
+### 3. Configurar Variáveis de Ambiente
+Copie o arquivo `.env.example` para `.env`:
+```bash
+cp .env.example .env
+```
+
+Edite o arquivo `.env`:
+```env
+# Desenvolvimento local
+VITE_API_URL=http://localhost:3333
+
+# Ambiente
+NODE_ENV=development
+```
+
+### 4. Executar em Desenvolvimento
 ```bash
 npm run dev
 ```
+Acesse `http://localhost:5173` no navegador.
 
-Para produção:
+### 5. Build de Produção
 ```bash
 npm run build
+npm run preview
 ```
 
-## Estrutura do Projeto
-O projeto segue uma estrutura modular organizada em:
-- `/src/components`: Componentes React
-- `/src/services`: Integrações com API
-- `/src/styles`: Estilos globais
-- `/src/docs`: Documentação do projeto
+---
 
-## Contribuição
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
+## 🚀 Deploy
 
-## Licença
-Este projeto está sob a licença MIT.
+O frontend está preparado para deploy contínuo na [Vercel](https://vercel.com):
+- **Framework Preset:** Vite
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
+- **Environment Variable:** `VITE_API_URL` apontando para o backend em produção.
 
-# React + TypeScript + Vite
+Consulte o arquivo [DEPLOY_GUIDE.md](file:///home/cabrazil/credit_card/frontend_new/DEPLOY_GUIDE.md) para detalhes adicionais.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 📜 Licença
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Este projeto é de uso privado para a plataforma de recomendação de cartões de crédito.

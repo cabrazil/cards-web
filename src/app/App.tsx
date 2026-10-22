@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import Home from '../pages/Home';
-import App from '../pages/App';
+import { OnboardingPage } from '../pages/OnboardingPage';
 import CardDetailsPage from '../pages/CardDetailsPage';
+import { AdminCardExtractor } from '../pages/AdminCardExtractor';
+import { PwaInstallPrompt } from '../shared/components/PwaInstallPrompt';
 
 interface CardDetailsState {
   cardId: string;
@@ -12,7 +13,7 @@ interface CardDetailsState {
 }
 
 const MainApp: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<'home' | 'app' | 'card-details'>('home');
+  const [currentPage, setCurrentPage] = useState<'app' | 'card-details' | 'admin'>('app');
   const [cardDetailsState, setCardDetailsState] = useState<CardDetailsState | null>(null);
 
   // Verificar rota inicial e mudanças de rota
@@ -22,27 +23,23 @@ const MainApp: React.FC = () => {
       
       if (path.startsWith('/card-details/')) {
         setCurrentPage('card-details');
-        // Extrair cardId da URL
         const cardId = path.split('/')[2];
-        // Extrair dados do localStorage
         const storedState = localStorage.getItem('cardDetailsState');
         if (storedState) {
           const parsedState = JSON.parse(storedState);
-          // Atualizar cardId da URL se necessário
           parsedState.cardId = cardId;
           setCardDetailsState(parsedState);
         }
-      } else if (path === '/app') {
-        setCurrentPage('app');
+      } else if (path === '/admin') {
+        setCurrentPage('admin');
       } else {
-        setCurrentPage('home');
+        // Rotas '/' e '/app' unificadas diretamente na experiência principal
+        setCurrentPage('app');
       }
     };
 
-    // Verificar rota inicial
     checkRoute();
 
-    // Listener para mudanças de rota
     const handlePopState = () => {
       checkRoute();
     };
@@ -56,16 +53,17 @@ const MainApp: React.FC = () => {
 
   return (
     <div>
-      {currentPage === 'home' ? (
-        <Home />
+      {currentPage === 'admin' ? (
+        <AdminCardExtractor />
       ) : currentPage === 'card-details' && cardDetailsState ? (
         <CardDetailsPage 
           cardId={cardDetailsState.cardId}
           selectedFilters={cardDetailsState.selectedFilters}
         />
       ) : (
-        <App />
+        <OnboardingPage />
       )}
+      <PwaInstallPrompt />
     </div>
   );
 };

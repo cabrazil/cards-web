@@ -83,6 +83,18 @@ const Home: React.FC = () => {
           >
             Vamos começar
           </button>
+
+          <div className="mt-8">
+            <button
+              onClick={() => {
+                window.history.pushState({}, '', '/admin');
+                window.dispatchEvent(new PopStateEvent('popstate'));
+              }}
+              className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+            >
+              ⚙️ Painel Admin (Ingestão de Cartões)
+            </button>
+          </div>
         </motion.div>
       </div>
     </div>

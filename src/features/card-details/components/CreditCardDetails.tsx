@@ -19,7 +19,8 @@ export const CreditCardDetails: React.FC<{ cardId: string }> = ({ cardId }) => {
       setIsLoading(true);
       setError(null);
       console.log('Fazendo requisição para a API com cardId:', cardId);
-      const response = await api.get(`/cardid?id=${cardId}`);
+      // Usar o endpoint correto do backend
+      const response = await api.get(`/cards/${cardId}`);
       console.log('Resposta da API:', response.data);
       setCardDetail(response.data);
     } catch (error) {
